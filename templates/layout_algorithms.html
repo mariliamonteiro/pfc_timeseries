@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+      <div class="py-5">
+        <h2>{{ title }}</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+
+          <div class="container border rounded" style="padding:10px;">
+            <h4 class="text-muted">Descrição</h4>
+            <p style="text-align:justify;">{{ text }}</p>
+
+          </div>
+
+        </div>
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Parâmetros</h4>
+
+          {% block formulario %}
+          {% endblock %}
+
+        </div>
+      </div>
+</div>
+
+{% endblock content %}
