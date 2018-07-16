@@ -12,7 +12,7 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jumbotron.css') }}">
-    
+
 
     {% if title %}
       <title>Séries Temporais | {{ title }}</title>
@@ -24,7 +24,7 @@
 
   <body>
 
-    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #305fa1">
       <a class="navbar-brand" href="/home">Time Series</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,7 @@
               <a class="nav-link" href="/algorithms">Algoritmos</a>
             </li>
           {% endif %}
-          
+
           <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -73,7 +73,7 @@
             </div>
           </li> -->
         </ul>
-        
+
       </div>
     </nav>
 
