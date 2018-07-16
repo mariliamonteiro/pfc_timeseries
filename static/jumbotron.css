@@ -18,3 +18,15 @@ body {
 .btn-outline-primary:hover {
       background-color: #305fa1;
     }
+
+.btn-newcolor {
+      background-color: #fff;
+      border-color: #305fa1;
+      color: #305fa1;
+    }
+
+    .btn-newcolor:hover{
+      background-color: #305fa1;
+      color: #fff;
+      border-color: #fff;
+    }
