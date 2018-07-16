@@ -1,7 +1,45 @@
 {% extends "layout_algorithms.html" %}
 
 {% block formulario %}
-<form class="needs-validation" novalidate>
+<h4 class="mb-3">Parâmetros</h4>
+
+<div class= "content-section">
+
+      <form method="POST", action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+
+          <div class="row">
+          <div class="form-group col-md-4 mb-3">
+            {{ form.p.label(class="form-control-label") }}
+            {{ form.p(class="form-control form-control-lg") }}
+            <small class="form-text text-muted">Ordem da componente autorregressiva</small>
+          </div>
+          <div class="form-group col-md-4 mb-3">
+            {{ form.d.label(class="form-control-label") }}
+            {{ form.d(class="form-control form-control-lg") }}
+            <small class="form-text text-muted">Número de diferenças tomadas na série</small>
+          </div>
+          <div class="form-group col-md-4 mb-3">
+            {{ form.q.label(class="form-control-label") }}
+            {{ form.q(class="form-control form-control-lg") }}
+            <small class="form-text text-muted">Ordem da componente das médias móveis</small>
+          </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-3">
+              {{ form.submit(class= "btn btn-primary") }}
+            </div>
+          </div>
+
+        </fieldset>
+      </form>
+
+</div>
+
+
+<!-- <form class="needs-validation" novalidate>
   <div class="row">
     <div class="col-md-4 mb-3">
       <label>p</label>
@@ -46,6 +84,6 @@
     </div>
   </div>
 
-</form>
+</form> -->
 
 {% endblock formulario %}
