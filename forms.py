@@ -8,6 +8,6 @@ class FormARIMA(FlaskForm):
     d = IntegerField('D',default=0, validators= [InputRequired()])
     q = IntegerField('Q',default=0, validators= [InputRequired()])
 
-    dados = FileField('Dados', validators= [FileAllowed('csv'), FileRequired()])
+    dados = FileField('Dados', validators=[FileAllowed(['csv']), FileRequired()])
 
     submit = SubmitField('Processar')

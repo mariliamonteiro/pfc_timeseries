@@ -33,21 +33,20 @@
               {{ form.dados(class="form-control-file") }}
               {% if form.dados.errors %}
                 {% for error in form.dados.errors %}
-                  <span class="text-danger">{{ error }}</span><br />
+                  <span class="text-danger">{{ error }}</span></br>
                 {% endfor %}
               {% endif %}
 
             </div>
           </div>
-          <hr />
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              {{ form.submit(class= "btn btn-primary") }}
-            </div>
-          </div>
+        <hr>
 
         </fieldset>
+        <div class="row">
+          <div class="form-group col-md-3">
+            {{ form.submit(class= "btn btn-primary") }}
+          </div>
+        </div>
       </form>
 
 </div>

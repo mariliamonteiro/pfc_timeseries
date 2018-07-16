@@ -30,7 +30,6 @@ def algorithms_arima():
 
     if (request.method == 'POST') and form.validate_on_submit():
         if form.data.data:
-
             result = form.data.filename
             return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, result= result)
     else:
