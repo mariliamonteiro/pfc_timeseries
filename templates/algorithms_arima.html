@@ -30,12 +30,11 @@
           <div class="row">
             <div class="form-group col-md-12">
               {{ form.dados.label() }}
-              {{ form.dados(class="form-control-file") }}
-              {% if form.dados.errors %}
-                {% for error in form.dados.errors %}
-                  <span class="text-danger">{{ error }}</span></br>
-                {% endfor %}
-              {% endif %}
+              {{ form.dados }}
+
+              {% for error in form.dados.errors %}
+                <span style="color:red;">{{ error }}</span>
+              {% endfor %}
 
             </div>
           </div>
