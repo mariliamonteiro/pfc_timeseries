@@ -38,35 +38,24 @@ def algorithms():
 def algorithms_arima():
     text = desc_list['arima']
 
-    #form = FormARIMA(request.form)
     form = FormARIMA()
 
     if form.validate_on_submit():
-        #file = request.files['dados']
-
         filename = secure_filename(form.dados.data.filename)
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-
-        #filename = form.dados.data.filename
-        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #filename = files.save(form.dados.data)
         file_url = files.url(form.dados.data.filename)
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url)
+
+        # Retrieving results from the form
+        p = form.p.data
+        q = form.q.data
+        d = form.d.data
+        result = (p, d, q, file_url)
+
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
     else:
         file_url = None
 
     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
-
-
-    #
-    # if (request.method == 'POST') and form.validate_on_submit():
-    #     if form.data.data:
-    #         result = form.data.filename
-    #         return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, result= result)
-    # else:
-    #     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form)
 
 
 
