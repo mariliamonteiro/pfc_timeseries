@@ -80,7 +80,9 @@ def algorithms_acf():
         imgpath = acf_plot(serie, lags)
         result = (lags, imgpath)
 
-        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, result=result)
+        image_file = url_for('static', filename='images/'+imgpath)
+
+        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file)
     else:
         file_url = None
 

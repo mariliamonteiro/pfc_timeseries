@@ -9,9 +9,9 @@ UPLOAD_FOLDER = 'temp_files'
 def acf_plot(series, lags):
     plot_acf(series, lags=lags)
     filename = secrets.token_hex(8)+'.png'
-    figure_name = os.path.join('temp_files', filename)
+    figure_name = os.path.join('static','images', filename)
     pyplot.savefig(figure_name)
-    return figure_name
+    return filename
 
 def data_acf(series, lags):
     autocorr = acf(series, nlags = lags)
