@@ -1,0 +1,38 @@
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+body {
+  padding-top: 3.5rem;
+}
+
+.container {
+  max-width: 960px;
+}
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+.border-top-gray { border-top-color: #adb5bd; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.lh-condensed { line-height: 1.25; }
+
+.btn-outline-primary:hover {
+      background-color: #305fa1;
+}
+
+.btn-newcolor {
+      background-color: #fff;
+      border-color: #305fa1;
+      color: #305fa1;
+}
+
+.btn-newcolor:hover{
+      background-color: #305fa1;
+      color: #fff;
+      border-color: #fff;
+}
+
+hr.style-four{
+      height:60px;
+      border:0;
+      box-shadow:inset 0 60px 60px -60px rgba(0,0,0,0.3);
+}

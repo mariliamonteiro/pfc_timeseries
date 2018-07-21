@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron rounded-0" style="background-color: #4a77b4">
+  <div class="container" style="color: #fff">
+    <h1 class="display-4">Análise de Séries Temporais</h1>
+    <p>Plataforma gratuita para análise de séries temporais empregando algoritmos clássicos</p>
+    <p><a class="btn btn-outline-primary btn-md" style="border-color: #fff; color: #fff" href="/algorithms" role="button">Conheça os algoritmos &raquo;</a></p>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Example row of columns -->
+  <div class="row">
+    <div class="col-md-4">
+      <h2>Fácil de Usar</h2>
+      <p>A plataforma foi projetada de modo a viabilizar a análise de dados temporais de forma simples e rápida. Basta escolher o modelo, os parâmentros e fazer o upload dos seus dados.</p>
+    </div>
+    <div class="col-md-4">
+      <h2>Melhoria Contínua</h2>
+      <p>Novos modelos estão sendo constantemente adicionados à plataforma, de modo a torná-la cada vez mais completa e funcional para os mais diversos problemas.</p>
+    </div>
+    <div class="col-md-4">
+      <h2>Open Source</h2>
+      <p>A plataforma possui código aberto, permitindo a colaboração de qualquer usuário. Além disso, você tem acesso a todos os nossos modelos, podendo acessá-los e usá-los para qualquer aplicaçao mais específica.</p>
+    </div>
+  </div>
+</div>
+
+<div class="container text-center">
+  <p><a class="btn btn-newcolor btn-md" style="margin:20px" href="/docs" role="button">Saiba mais &raquo;</a></p>
+</div>
+
+<hr class="style-four"></hr>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <img src="{{ url_for('static', filename='ime.jpg') }}" class="img-responsive" width="120" >
+    </div>
+    <div class="col-md-10">
+      <h3>Instituto Militar de Engenharia</h3>
+      <p>A plataforma foi desenvolvida no IME (Instito Militar de Engenharia), que se enconta entre as melhores escolas de Engeharia do Brasil. O projeto é de responsabilidade da Seção de Engenharia Cartográfica - SE/6.</p>
+    </div>
+  </row>
+</div>
+
+
+
+
+<!-- /container -->
+
+{% endblock content %}

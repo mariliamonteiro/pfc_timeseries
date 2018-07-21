@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container" style="margin-bottom:50px; margin-top:40px;">
+	<h1 class="display-4">Algoritmos</h1>
+</div>
+
+<div class="container">
+<div class="row">
+	{%for algo in algos_list %}
+
+		<div class="col-md-3">
+			<div class="card" style="width:15rem; margin:10px 10px 10px 10px;">
+				<div class="card-body">
+					<h5 class="card-title"><a href="{{ algo.page }}" style="color: #000000">{{ algo.title }}</a></h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{ algo.subtitle }}</h6>
+					<p class="card-text">{{ algo.desc }}</p>
+					<a href="{{ algo.page }}" class="card-link">Utilizar</a>
+				</div>
+			</div>
+		</div>
+
+	{% endfor %}
+	</div>
+</div>
+{% endblock content %}
