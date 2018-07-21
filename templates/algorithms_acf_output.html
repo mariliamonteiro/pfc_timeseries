@@ -1,0 +1,24 @@
+{% extends "layout_algorithms.html" %}
+
+{% block formulario %}
+<h4 class="mb-3">Resultados</h4>
+<p>{{ result }}</p>
+
+<div>
+  <h5>Parâmetros de entrada</h5>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th scope="row">Lag</th>
+        <td>{{ result[0] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <h5>Gráfico</h5>
+  <img src="{{ result[1] }}" class="rounded mx-auto d-block" alt="Gráfico ACF">
+</div>
+
+{% endblock formulario %}
