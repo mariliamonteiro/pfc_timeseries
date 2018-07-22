@@ -11,8 +11,9 @@ def acf_plot(series, lags):
     filename = secrets.token_hex(8)+'.png'
     figure_name = os.path.join('static','images', filename)
     pyplot.savefig(figure_name)
+    pyplot.close()
     return filename
 
 def data_acf(series, lags):
-    autocorr = acf(series, nlags = lags)
+    autocorr = list(acf(series, nlags = lags))
     return autocorr

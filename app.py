@@ -83,7 +83,7 @@ def algorithms_acf():
         # Generate array of values
         acf_data = data_acf(serie, lags)
 
-        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, dataacf=acf_data)
+        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=acf_data)
     else:
         file_url = None
 
