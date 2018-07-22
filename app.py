@@ -4,6 +4,7 @@ from flask_uploads import UploadSet, configure_uploads, DATA, patch_request_clas
 from forms import FormARIMA
 from variables import *
 from werkzeug.utils import secure_filename
+import secrets
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -41,7 +42,8 @@ def algorithms_arima():
     form = FormARIMA()
 
     if form.validate_on_submit():
-        filename = secure_filename(form.dados.data.filename)
+
+        filename = secrets.token_hex(8) + '.csv'
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file_url = files.url(form.dados.data.filename)
 
