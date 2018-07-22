@@ -5,7 +5,7 @@ from forms import *
 from variables import *
 from werkzeug.utils import secure_filename
 from algo_readfile import extractSerie
-from algo_acf import acf_plot
+from algo_acf import acf_plot, data_acf
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -77,12 +77,13 @@ def algorithms_acf():
         serie = extractSerie(file_url)
 
         # Generate plot
-        imgpath = acf_plot(serie, lags)
-        result = (lags, imgpath)
+        img_name = acf_plot(serie, lags)
+        image_file = url_for('static', filename='images/'+ img_name)
 
-        image_file = url_for('static', filename='images/'+imgpath)
+        # Generate array of values
+        acf_data = data_acf(serie, lags)
 
-        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file)
+        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, dataacf=acf_data)
     else:
         file_url = None
 
