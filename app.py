@@ -1,9 +1,11 @@
 import os
 from flask import Flask, render_template, url_for, redirect, request
 from flask_uploads import UploadSet, configure_uploads, DATA, patch_request_class
-from forms import FormARIMA
+from forms import *
 from variables import *
 from werkzeug.utils import secure_filename
+from algo_readfile import extractSerie
+from algo_acf import acf_plot
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -38,44 +40,53 @@ def algorithms():
 def algorithms_arima():
     text = desc_list['arima']
 
-    #form = FormARIMA(request.form)
     form = FormARIMA()
 
     if form.validate_on_submit():
-        #file = request.files['dados']
-
         filename = secure_filename(form.dados.data.filename)
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-
-        #filename = form.dados.data.filename
-        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #filename = files.save(form.dados.data)
         file_url = files.url(form.dados.data.filename)
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url)
+
+        # Retrieving results from the form
+        p = form.p.data
+        q = form.q.data
+        d = form.d.data
+        result = (p, d, q, file_url)
+
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
     else:
         file_url = None
 
     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
 
+@app.route('/algorithms/acf', methods= ['GET', 'POST'])
+def algorithms_acf():
+    text = desc_list['acf']
 
-    #
-    # if (request.method == 'POST') and form.validate_on_submit():
-    #     if form.data.data:
-    #         result = form.data.filename
-    #         return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, result= result)
-    # else:
-    #     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form)
+    form = FormACF()
 
+    if form.validate_on_submit():
+        filename = secure_filename(form.dados.data.filename)
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(form.dados.data.filename)
 
+        # Retrieving results from the form
+        lags = form.lags.data
 
-# @app.route('/algorithms/autocorrelation')
-# def algorithms_autocorrelation():
-#     text = desc_list['autocorrelation']
-#
-#     return render_template('algorithms_arima.html', title='Autocorrelação', text=text)
+        # Get data from file
+        serie = extractSerie(file_url)
 
+        # Generate plot
+        imgpath = acf_plot(serie, lags)
+        result = (lags, imgpath)
+
+        image_file = url_for('static', filename='images/'+imgpath)
+
+        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file)
+    else:
+        file_url = None
+
+    return render_template('algorithms_acf.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

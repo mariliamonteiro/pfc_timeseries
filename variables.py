@@ -8,8 +8,8 @@ algos_list = [
     'subtitle': 'Forecasting',
     'desc': 'Teste'
     },
-    {'page': '/algorithms/autocorrelation',
-    'title': 'Autocorrelation',
+    {'page': '/algorithms/acf',
+    'title': 'Função de Autocorrelação',
     'subtitle': 'Exploratory Analysis',
     'desc': 'Teste2'
     }
