@@ -6,6 +6,7 @@ from variables import *
 from werkzeug.utils import secure_filename
 from algo_readfile import extractSerie
 from algo_acf import acf_plot, data_acf
+from algo_pacf import pacf_plot, data_pacf
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -89,6 +90,35 @@ def algorithms_acf():
 
     return render_template('algorithms_acf.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url)
 
+@app.route('/algorithms/pacf', methods= ['GET', 'POST'])
+def algorithms_pacf():
+    text = desc_list['pacf']
+
+    form = FormPACF()
+
+    if form.validate_on_submit():
+        filename = secure_filename(form.dados.data.filename)
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(form.dados.data.filename)
+
+        # Retrieving results from the form
+        lags = form.lags.data
+
+        # Get data from file
+        serie = extractSerie(file_url)
+
+        # Generate plot
+        img_name = pacf_plot(serie, lags)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        # Generate array of values
+        pacf_data = data_pacf(serie, lags)
+
+        return render_template('algorithms_pacf_output.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=pacf_data)
+    else:
+        file_url = None
+
+    return render_template('algorithms_pacf.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':
     app.run(debug= True)

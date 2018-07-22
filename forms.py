@@ -17,3 +17,8 @@ class FormACF(FlaskForm):
     lags = IntegerField('Lags',default=1, validators= [InputRequired()])
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     submit = SubmitField('Processar')
+
+class FormPACF(FlaskForm):
+    lags = IntegerField('Lags',default=1, validators= [InputRequired()])
+    dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    submit = SubmitField('Processar')
