@@ -12,6 +12,11 @@ algos_list = [
     'title': 'Função de Autocorrelação',
     'subtitle': 'Exploratory Analysis',
     'desc': 'Teste2'
+    },
+    {'page': '/algorithms/pacf',
+    'title': 'Função de Autocorrelação Parcial',
+    'subtitle': 'Exploratory Analysis',
+    'desc': 'Teste2'
     }
 ]
 
