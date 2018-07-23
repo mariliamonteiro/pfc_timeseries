@@ -1,0 +1,4 @@
+page: movingaverage
+title: Média Móvel
+subtitle: Filtering
+desc: Teste
