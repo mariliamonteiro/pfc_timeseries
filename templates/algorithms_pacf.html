@@ -12,15 +12,19 @@
           <div class="row">
             <div class="form-group col-md-4 mb-3">
               {{ form.lags.label(class="form-control-label") }}
-              {{ form.lags(class="form-control form-control-lg") }}
+              {{ form.lags(class="form-control form-control-md") }}
               <small class="form-text text-muted">Número de Lags (diferenças) a serem consideradas</small>
             </div>
           </div>
 
-          <div class="row">
-            <div class="form-group col-md-12">
-              {{ form.dados.label() }}
-              {{ form.dados }}
+          <hr>
+
+          <h5 class="mb-3">Input de Arquivo</h5>
+
+          <div class="row container">
+            <div class="form-group col-md-12 mb-3 custom-file" lang="pt">
+              {{ form.dados(type="file", class="custom-file-input", id="customFile", lang="pt") }}
+              {{ form.dados.label(class="custom-file-label", for="customFile") }}
 
               {% for error in form.dados.errors %}
                 <span style="color:red;">{{ error }}</span>
@@ -28,6 +32,24 @@
 
             </div>
           </div>
+
+          <div class="form-group row">
+            {{ form.sep.label(class="col-sm-2 col-form-label col-form-label-sm") }}
+            <div class="col-md-2">
+              {{ form.sep(class="form-control form-control-sm") }}
+            </div>
+            {{ form.datec.label(class="col-sm-2.5 col-form-label col-form-label-sm") }}
+            <div class="col-md-2">
+              {{ form.datec(class="form-control form-control-sm") }}
+            </div>
+            <div class="col-md-4">
+              <div class="custom-control custom-checkbox custom-control-inline">
+                {{ form.header(type="checkbox", class="custom-control-input", id="customControlInline") }}
+                {{ form.header.label(class="custom-control-label col-form-label-sm", for="customControlInline") }}
+              </div>
+            </div>
+          </div>
+
         <hr>
 
         </fieldset>
@@ -39,53 +61,4 @@
       </form>
 
 </div>
-
-
-<!-- <form class="needs-validation" novalidate>
-  <div class="row">
-    <div class="col-md-4 mb-3">
-      <label>p</label>
-      <input type="number" class="form-control" id="p" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Ordem da componente autorregressiva</small>
-      <div class="invalid-feedback">
-        Esse campo é obrigatório. Preencha somente com números inteiros.
-      </div>
-
-    </div>
-    <div class="col-md-4 mb-3">
-      <label>d</label>
-      <input type="number" class="form-control" id="d" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Número de diferenças tomadas na série</small>
-
-    </div>
-    <div class="col-md-4 mb-3">
-      <label>q</label>
-      <input type="number" class="form-control" id="q" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Ordem da componente das médias móveis</small>
-
-    </div>
-  </div>
-
-  <hr class="mb-4">
-
-  <h4 class="mb-3 font-weight-normal">Upload de Arquivos</h4>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Buscar Arquivo</label>
-      </div>
-    </div>
-  </div>
-
-  <hr class="mb-4">
-  <div class="row">
-    <div class="col-md-3">
-      <button class="btn btn-primary btn-md btn-block" type="submit">Processar</button>
-    </div>
-  </div>
-
-</form> -->
-
 {% endblock formulario %}

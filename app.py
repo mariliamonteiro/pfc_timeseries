@@ -42,6 +42,13 @@ def about():
 def algorithms():
     return render_template('algorithms.html', title= 'Algoritmos', algos_list= algos_list)
 
+@app.route('/fileformats')
+def fileformats():
+    return render_template('file_formats.html', title= 'Formatos de Arquivos')
+
+@app.route('/examples')
+def examples():
+    return render_template('examples.html', title= 'Exemplos')
 # PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
 @app.route('/algorithms/arima', methods= ['GET', 'POST'])
 def algorithms_arima():
