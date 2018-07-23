@@ -1,1 +1,6 @@
-Nullam aliquam metus ac placerat condimentum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Maecenas finibus convallis lacus vel pharetra. Vivamus sed libero efficitur felis porta consequat id vel erat. Quisque vel posuere justo, eu interdum magna. Cras at euismod erat, imperdiet molestie lacus. Nam malesuada sed odio quis euismod. Phasellus tempus mauris quis turpis ullamcorper, quis sodales justo efficitur. Etiam posuere lorem in tortor sagittis porttitor. Donec lacinia sollicitudin volutpat. Suspendisse pulvinar turpis neque, sit amet tempor risus feugiat vel. Vivamus nisl sapien, consectetur quis arcu ut, dignissim viverra nunc.
+Função de autocorrelação total da série principal dos dados utilizados. Retorna gráfico e tabela apresentando os valores de autocorrelação para cada <i>lag</i> (atraso nos dados, em quantidade de linhas), começando em 0 (correlação 1).
+<br />
+Parâmetros de entrada:
+<ul>
+<li>Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.
+</ul>

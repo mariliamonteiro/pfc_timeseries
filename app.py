@@ -7,8 +7,9 @@ from variables import *
 import os
 from werkzeug.utils import secure_filename
 import pandas as pd
+import secrets
 
-from algo_readfile import read_csv
+from read_file import read_csv
 from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
 
@@ -49,9 +50,9 @@ def algorithms_arima():
     form = FormARIMA()
 
     if form.validate_on_submit():
-        filename = secure_filename(form.dados.data.filename)
+        filename = secrets.token_hex(8) + '.csv'
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        file_url = files.url(form.dados.data.filename)
+        file_url = files.url(filename)
 
         # Retrieving results from the form
         p = form.p.data
@@ -72,19 +73,19 @@ def algorithms_acf():
     form = FormACF()
 
     if form.validate_on_submit():
-        filename = secure_filename(form.dados.data.filename)
+        filename = secrets.token_hex(8) + '.csv'
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        file_url = files.url(form.dados.data.filename)
+        file_url = files.url(filename)
 
         # Retrieving results from the form
         lags = form.lags.data
 
+        # Get data from file
         separator = form.sep.data
         header = form.header.data
         date_column = form.datec.data
 
-        # Get data from file
-        serie = read_csv(file_url, separator, header, date_column)
+        serie = read_csv(file_url, filename, separator, header, date_column)
 
         # Generate plot
         img_name = acf_plot(serie, lags)
@@ -94,6 +95,7 @@ def algorithms_acf():
         acf_data = data_acf(serie, lags)
 
         return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=acf_data)
+
     else:
         file_url = None
 
@@ -106,19 +108,19 @@ def algorithms_pacf():
     form = FormPACF()
 
     if form.validate_on_submit():
-        filename = secure_filename(form.dados.data.filename)
+        filename = secrets.token_hex(8) + '.csv'
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        file_url = files.url(form.dados.data.filename)
+        file_url = files.url(filename)
 
         # Retrieving results from the form
         lags = form.lags.data
 
+        # Get data from file
         separator = form.sep.data
         header = form.header.data
         date_column = form.datec.data
 
-        # Get data from file
-        serie = read_csv(file_url, separator, header, date_column)
+        serie = read_csv(file_url, filename, separator, header, date_column)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -128,6 +130,7 @@ def algorithms_pacf():
         pacf_data = data_pacf(serie, lags)
 
         return render_template('algorithms_pacf_output.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=pacf_data)
+
     else:
         file_url = None
 
