@@ -1,30 +1,34 @@
 from os import listdir, path
 from os.path import isfile, join
+import re
+import codecs
 
 # DESCRICAO DOS CARDS PARA SELECAO DE ALGORITMOS ===============================
-algos_list = [
-    {'page': '/algorithms/arima',
-    'title': 'ARIMA',
-    'subtitle': 'Forecasting',
-    'desc': 'Teste'
-    },
-    {'page': '/algorithms/acf',
-    'title': 'Função de Autocorrelação',
-    'subtitle': 'Exploratory Analysis',
-    'desc': 'Esse é um teste para checar quantos caracteres conseguimos digitar nessa descrição sem ficar muito muito muito bizarríssimo demais'
-    },
-    {'page': '/algorithms/pacf',
-    'title': 'Função de Autocorrelação Parcial',
-    'subtitle': 'Exploratory Analysis',
-    'desc': 'Teste2'
-    }
-]
+
+def shortDesc():
+
+    mypath = 'static/texts_short'
+
+    files_list = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+
+    desc_list = []
+    for s in files_list:
+        file = codecs.open(mypath+'/'+s, encoding='utf-8', mode='r')
+        res = file.readlines()
+        print(res)
+        print([re.split('\s*: \s*|\s*:\s*', s.strip()) for s in res])
+        res = dict([re.split('\s*: \s*|\s*:\s*', s.strip()) for s in res[:4]])
+        res['page'] = '/algorithms/' + res['page']
+
+        desc_list.append(res)
+        file.close()
+
+    return desc_list
 
 # TEXTOS PARA DESCRICAO COMPLETA DE CADA ALGORITMO =============================
 def longDesc():
 
-    dirname = path.dirname(__file__)
-    mypath = path.join(dirname, 'texts')
+    mypath = 'static/texts_long'
 
     files_list = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -32,7 +36,7 @@ def longDesc():
 
     values = []
     for s in files_list:
-        file = open(mypath+'/'+s,'r')
+        file = codecs.open(mypath+'/'+s, encoding='utf-8', mode='r')
         res = file.read()
         values.append(res)
         file.close()

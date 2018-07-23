@@ -1,26 +1,31 @@
-import os
 from flask import Flask, render_template, url_for, redirect, request
 from flask_uploads import UploadSet, configure_uploads, DATA, patch_request_class
+
 from forms import *
 from variables import *
+
+import os
 from werkzeug.utils import secure_filename
-from algo_readfile import extractSerie
+import pandas as pd
+
+from algo_readfile import read_csv
 from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
-desc_list = longDesc()
+
+app.config['UPLOADED_FILES_DEST'] = 'temp_files'
+app.config['UPLOAD_FOLDER'] = 'temp_files'
 
 app.config['SECRET_KEY'] = 'd5fda74dcf2c2fdbfca06a4ebfc65b86a9e0da08d0115dce61f522f183b156d8'
-app.config['UPLOADED_FILES_DEST'] = 'temp_files'
 
 files = UploadSet('files', DATA)
 configure_uploads(app, files)
 patch_request_class(app)
 
-UPLOAD_FOLDER = 'temp_files'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+algos_list = shortDesc()
+desc_list = longDesc()
 
 # PAGINAS PRINCIPAIS ===========================================================
 @app.route('/')
@@ -74,8 +79,12 @@ def algorithms_acf():
         # Retrieving results from the form
         lags = form.lags.data
 
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+
         # Get data from file
-        serie = extractSerie(file_url)
+        serie = read_csv(file_url, separator, header, date_column)
 
         # Generate plot
         img_name = acf_plot(serie, lags)
@@ -104,8 +113,12 @@ def algorithms_pacf():
         # Retrieving results from the form
         lags = form.lags.data
 
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+
         # Get data from file
-        serie = extractSerie(file_url)
+        serie = read_csv(file_url, separator, header, date_column)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -119,6 +132,7 @@ def algorithms_pacf():
         file_url = None
 
     return render_template('algorithms_pacf.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
+
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':
-    app.run(debug= True)
+    app.run(debug= False)

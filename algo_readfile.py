@@ -1,9 +1,7 @@
 import pandas as pd
 import os
 
-def read_csv(filename, separator= ',', header= True, date_column= None):
-
-    fullpath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+def read_csv(fullpath, separator= ',', header= True, date_column= None):
 
     if header == True:
         header = 0
@@ -11,6 +9,7 @@ def read_csv(filename, separator= ',', header= True, date_column= None):
         header = None
 
     df = pd.read_csv(fullpath, sep= separator, header= header)
+    #df = df.drop(df.columns[0], axis=1, inplace= True)
 
     if date_column not in [None, 0]:
         dates = df.iloc[:,date_column-1]

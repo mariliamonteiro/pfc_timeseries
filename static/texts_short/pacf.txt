@@ -1,0 +1,4 @@
+page: pacf
+title: Função de Autocorrelação Parcial
+subtitle: Exploratory Analysis
+desc: Teste
