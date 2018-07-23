@@ -20,7 +20,7 @@ class FormACF(FlaskForm):
     dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho*', default= True)
-    datec = IntegerField('Índice da Coluna de Datas')
+    datec = IntegerField('Coluna de datas')
 
     submit = SubmitField('Processar')
 
@@ -31,6 +31,6 @@ class FormPACF(FlaskForm):
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Índice Coluna de Datas (caso possua)')
+    datec = IntegerField('Coluna de datas')
 
     submit = SubmitField('Processar')
