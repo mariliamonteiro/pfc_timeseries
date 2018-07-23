@@ -11,7 +11,7 @@ algos_list = [
     {'page': '/algorithms/acf',
     'title': 'Função de Autocorrelação',
     'subtitle': 'Exploratory Analysis',
-    'desc': 'Teste2'
+    'desc': 'Esse é um teste para checar quantos caracteres conseguimos digitar nessa descrição sem ficar muito muito muito bizarríssimo demais'
     },
     {'page': '/algorithms/pacf',
     'title': 'Função de Autocorrelação Parcial',
