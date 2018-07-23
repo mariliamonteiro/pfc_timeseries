@@ -4,6 +4,7 @@ import re
 import codecs
 
 # DESCRICAO DOS CARDS PARA SELECAO DE ALGORITMOS ===============================
+
 def shortDesc():
 
     mypath = 'static/texts_short'
