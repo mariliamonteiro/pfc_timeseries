@@ -1,9 +1,10 @@
 {% extends "layout_algorithms.html" %}
 
 {% block formulario %}
-<h4 class="mb-3">Parâmetros</h4>
 
-<div class= "content-section">
+<div class="container-fluid">
+
+      <h4 class="mb-3">Parâmetros</h4>
 
       <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
@@ -17,10 +18,10 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="form-group col-md-12">
-              {{ form.dados.label() }}
-              {{ form.dados }}
+          <div class="row container">
+            <div class="form-group col-md-12 mb-3 custom-file">
+              {{ form.dados(type="file", class="custom-file-input", id="customFile") }}
+              {{ form.dados.label(class="custom-file-label", for="customFile") }}
 
               {% for error in form.dados.errors %}
                 <span style="color:red;">{{ error }}</span>
@@ -29,21 +30,43 @@
             </div>
           </div>
 
-          <div class="row">
-          <div class="form-group col-md-4 mb-3">
-            {{ form.sep.label(class="form-control-label") }}
-            {{ form.sep(class="form-control form-control-lg") }}
+          <div class="row container">
+            <div class="custom-control custom-checkbox my-1 mr-sm-2">
+              {{ form.header(type="checkbox", class="custom-control-input", id="customControlInline") }}
+              {{ form.header.label(class="custom-control-label", for="customControlInline", style="font-size:15px") }}
+            </div>
           </div>
-          <div class="form-group col-md-4 mb-3">
-            {{ form.header.label(class="form-control-label") }}
-            {{ form.header(class="form-control form-control-lg") }}
+
+          <div class="form-group row">
+            {{ form.sep.label(class="col-sm-3 col-form-label col-form-label-sm") }}
+            <div class="col-md-2">
+              {{ form.sep(class="form-control form-control-sm") }}
+            </div>
           </div>
-          <div class="form-group col-md-4 mb-3">
-            {{ form.datec.label(class="form-control-label") }}
-            {{ form.datec(class="form-control form-control-lg") }}
-            <!-- <small class="form-text text-muted">Ordem da componente das médias móveis</small> -->
+
+          <div class="form-group row">
+            {{ form.datec.label(class="col-sm-3 col-form-label col-form-label-sm") }}
+            <div class="col-md-2">
+              {{ form.datec(class="form-control form-control-sm") }}
+            </div>
           </div>
-          </div>
+
+
+          <!-- <div class="row">
+            <div class="form-group col-md-4 mb-3">
+              {{ form.sep.label(class="form-control-label") }}
+              {{ form.sep(class="form-control form-control-sm") }}
+            </div>
+            <div class="form-group col-md-4 mb-3">
+              {{ form.header.label(class="form-control-label") }}
+              {{ form.header(class="form-control form-control-lg", type="radio") }}
+            </div>
+            <div class="form-group col-md-4 mb-3">
+              {{ form.datec.label(class="form-control-label") }}
+              {{ form.datec(class="form-control form-control-lg") }}
+
+            </div>
+          </div> -->
 
         <hr>
 

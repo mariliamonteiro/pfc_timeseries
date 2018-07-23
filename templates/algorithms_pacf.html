@@ -20,7 +20,7 @@
           <div class="row">
             <div class="form-group col-md-12">
               {{ form.dados.label() }}
-              {{ form.dados }}
+              {{ form.dados(class="form-control-file") }}
 
               {% for error in form.dados.errors %}
                 <span style="color:red;">{{ error }}</span>

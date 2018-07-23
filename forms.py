@@ -14,13 +14,13 @@ class FormARIMA(FlaskForm):
     submit = SubmitField('Processar')
 
 class FormACF(FlaskForm):
-    lags = IntegerField('Lags',default=1, validators= [InputRequired()])
+    lags = IntegerField('Lags*',default=1, validators= [InputRequired()])
 
     # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
-    dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
-    sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
-    header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Índice Coluna de Datas (caso possua)')
+    dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
+    header = BooleanField('Cabeçalho*', default= True)
+    datec = IntegerField('Índice da Coluna de Datas')
 
     submit = SubmitField('Processar')
 

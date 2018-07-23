@@ -15,8 +15,6 @@ def shortDesc():
     for s in files_list:
         file = codecs.open(mypath+'/'+s, encoding='utf-8', mode='r')
         res = file.readlines()
-        print(res)
-        print([re.split('\s*: \s*|\s*:\s*', s.strip()) for s in res])
         res = dict([re.split('\s*: \s*|\s*:\s*', s.strip()) for s in res[:4]])
         res['page'] = '/algorithms/' + res['page']
 
