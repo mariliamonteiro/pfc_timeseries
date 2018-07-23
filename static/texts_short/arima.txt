@@ -1,0 +1,4 @@
+page: arima
+title: ARIMA
+subtitle: Forecasting
+desc: Autoregressive integrated moving average
