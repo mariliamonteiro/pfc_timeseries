@@ -9,7 +9,11 @@ class FormARIMA(FlaskForm):
     d = IntegerField('D',default=0, validators= [InputRequired()])
     q = IntegerField('Q',default=0, validators= [InputRequired()])
 
-    dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
+    dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
+    header = BooleanField('Cabeçalho*', default= True)
+    datec = IntegerField('Coluna de datas')
 
     submit = SubmitField('Processar')
 
