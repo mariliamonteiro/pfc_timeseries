@@ -151,7 +151,7 @@ def algorithms_movingaverage():
 
     form = FormMA()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() and request.method == 'POST':
         filename = secrets.token_hex(8) + '.csv'
         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         file_url = files.url(filename)

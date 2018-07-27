@@ -42,7 +42,7 @@ class FormMA(FlaskForm):
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Coluna de datas')
+    datec = IntegerField('Coluna de datas', default= 0)
 
     submit = SubmitField('Processar')
 
