@@ -164,7 +164,7 @@ def algorithms_movingaverage():
         header = form.header.data
         date_column = form.datec.data
 
-        serie = read_csv(file_url, filename, separator, header, date_column)
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, 2, True)
 
         # Generate plot
         img_name = ma_plot(serie, window)
@@ -199,7 +199,7 @@ def algorithms_decomposition():
         header = form.header.data
         date_column = form.datec.data
 
-        serie = read_csv(file_url, filename, separator, header, date_column)
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, 2, True)
 
         # Generate plot
         img_name = decomposition_plot(serie, model)
