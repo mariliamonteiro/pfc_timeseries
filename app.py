@@ -206,6 +206,7 @@ def algorithms_decomposition():
         image_file = url_for('static', filename='images/'+ img_name)
 
         # Generate array of values
+        
 
 
         return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file)
