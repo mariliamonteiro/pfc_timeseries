@@ -1,101 +1,21 @@
 {% extends "layout_algorithms.html" %}
 
 {% block formulario %}
-<h4 class="mb-3">Parâmetros</h4>
-
-<div class= "content-section">
-
-      <form method="POST" action="" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-
-          <div class="row">
-          <div class="form-group col-md-4 mb-3">
-            {{ form.p.label(class="form-control-label") }}
-            {{ form.p(class="form-control form-control-lg") }}
-            <small class="form-text text-muted">Ordem da componente autorregressiva</small>
-          </div>
-          <div class="form-group col-md-4 mb-3">
-            {{ form.d.label(class="form-control-label") }}
-            {{ form.d(class="form-control form-control-lg") }}
-            <small class="form-text text-muted">Número de diferenças tomadas na série</small>
-          </div>
-          <div class="form-group col-md-4 mb-3">
-            {{ form.q.label(class="form-control-label") }}
-            {{ form.q(class="form-control form-control-lg") }}
-            <small class="form-text text-muted">Ordem da componente das médias móveis</small>
-          </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-12">
-              {{ form.dados.label() }}
-              {{ form.dados }}
-
-              {% for error in form.dados.errors %}
-                <span style="color:red;">{{ error }}</span>
-              {% endfor %}
-
-            </div>
-          </div>
-        <hr>
-
-        </fieldset>
-        <div class="row">
-          <div class="form-group col-md-3">
-            {{ form.submit(class= "btn btn-primary") }}
-          </div>
-        </div>
-      </form>
-
+<div class="row">
+  <div class="form-group col-md-4 mb-3">
+    {{ form.p.label(class="form-control-label") }}
+    {{ form.p(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Ordem da componente autorregressiva</small>
+  </div>
+  <div class="form-group col-md-4 mb-3">
+    {{ form.d.label(class="form-control-label") }}
+    {{ form.d(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Número de diferenças tomadas na série</small>
+  </div>
+  <div class="form-group col-md-4 mb-3">
+    {{ form.q.label(class="form-control-label") }}
+    {{ form.q(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Ordem da componente das médias móveis</small>
+  </div>
 </div>
-
-
-<!-- <form class="needs-validation" novalidate>
-  <div class="row">
-    <div class="col-md-4 mb-3">
-      <label>p</label>
-      <input type="number" class="form-control" id="p" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Ordem da componente autorregressiva</small>
-      <div class="invalid-feedback">
-        Esse campo é obrigatório. Preencha somente com números inteiros.
-      </div>
-
-    </div>
-    <div class="col-md-4 mb-3">
-      <label>d</label>
-      <input type="number" class="form-control" id="d" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Número de diferenças tomadas na série</small>
-
-    </div>
-    <div class="col-md-4 mb-3">
-      <label>q</label>
-      <input type="number" class="form-control" id="q" placeholder="" value="" required>
-      <small id="passwordHelpBlock" class="form-text text-muted">Ordem da componente das médias móveis</small>
-
-    </div>
-  </div>
-
-  <hr class="mb-4">
-
-  <h4 class="mb-3 font-weight-normal">Upload de Arquivos</h4>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Buscar Arquivo</label>
-      </div>
-    </div>
-  </div>
-
-  <hr class="mb-4">
-  <div class="row">
-    <div class="col-md-3">
-      <button class="btn btn-primary btn-md btn-block" type="submit">Processar</button>
-    </div>
-  </div>
-
-</form> -->
-
 {% endblock formulario %}
