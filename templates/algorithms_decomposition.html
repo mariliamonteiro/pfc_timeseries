@@ -1,0 +1,13 @@
+{% extends "layout_algorithms.html" %}
+
+{% block formulario %}
+
+<div class="row">
+  <div class="form-group col-md-4 mb-3">
+    {{ form.model.label(class="form-control-label") }}
+    {{ form.model(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Tipo de modelo a ser utilizado na decomposição</small>
+  </div>
+</div>
+
+{% endblock formulario %}

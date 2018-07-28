@@ -1,0 +1,4 @@
+page: decomposition
+title: Decomposição de Série
+subtitle: Exploratory
+desc: Teste

@@ -8,8 +8,8 @@
   <table class="table table-striped table-bordered table-sm">
     <tbody>
       <tr class="d-flex">
-        <th class="col-3" scope="row">Lag</th>
-        <td class="col-9">{{ lag }}</td>
+        <th class="col-3" scope="row">Modelo</th>
+        <td class="col-9">{{ model }}</td>
       </tr>
     </tbody>
   </table>
@@ -17,7 +17,7 @@
 
 <div>
   <h5>Gráfico</h5>
-  <img src="{{ image }}" class="rounded mx-auto d-block" alt="Gráfico ACF">
+  <img src="{{ image }}" class="rounded mx-auto d-block" alt="Gráfico de Decomposição">
 </div>
 
 <h6>Tabelas</h6>
@@ -27,14 +27,14 @@
       <thead>
         <tr class="d-flex">
           <th class="col-3">Lag</th>
-          <th class="col-9">PACF</th>
+          <th class="col-9">ACF</th>
         </tr>
       </thead>
       <tbody>
-        {% for i in range(lag) %}
+        {% for i in range(3) %}
         <tr class="d-flex">
           <td class="col-3">{{ i }}</td>
-          <td class="col-9">{{ data_acf[i] }}</td>
+          <td class="col-9">{{ i }}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -12,6 +12,8 @@ import secrets
 from read_file import read_csv
 from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
+from algo_movingaverage import *
+from algo_decomposition import *
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -142,6 +144,76 @@ def algorithms_pacf():
         file_url = None
 
     return render_template('algorithms_pacf.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/movingaverage', methods= ['GET', 'POST'])
+def algorithms_movingaverage():
+    text = desc_list['movingaverage']
+
+    form = FormMA()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        window = form.window.data
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+
+        serie = read_csv(file_url, filename, separator, header, date_column)
+
+        # Generate plot
+        img_name = ma_plot(serie, window)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        # Generate array of values
+        ma_data = data_ma(serie, window)
+
+        return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_movingaverage.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/decomposition', methods= ['GET', 'POST'])
+def algorithms_decomposition():
+    text = desc_list['decomposition']
+
+    form = FormDecomposition()
+
+    if form.validate_on_submit():
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        model = form.model.data
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+
+        serie = read_csv(file_url, filename, separator, header, date_column)
+
+        # Generate plot
+        img_name = decomposition_plot(serie, model)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        # Generate array of values
+
+
+        return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_decomposition.html', title='Decomposição de Séries', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

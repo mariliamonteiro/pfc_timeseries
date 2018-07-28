@@ -3,25 +3,37 @@
 {% block content %}
 <div class="container" style="margin-bottom:50px; margin-top:40px;">
   <h1 class="display-4">{{ title }}</h1>
+  <p class="text-muted">
+    Para que se faça uso da plataforma e dos seus diversos algoritmos é necessário que seja realizado inicialmente o <i>upload</i> dos dados sobre os quais serão realizadas as análises. A entrada de dados na plataforma é realizada apenas através de arquivos <code class="highlighter-rouge">.csv</code> e é importante que sejam passados os parâmetros corretos na leitura dos arquivos para garantir o bom funcionamento das funções. Entenda mais sobre a estrutura do arquivo e os parâmetros de entrada nos tópicos a seguir.
+  </p>
 </div>
 
 <div class="container">
+  <div class="row container">
+    <h4>Parâmetros de entrada</h4>
+  </div>
+  <br />
   <div class="row">
-    <div class="col-md-6 border-right" style="text-align:justify; padding:30px;">
-      <h2>Sobre o Projeto</h2>
-      <p>A Plataforma de Análise de Séries Temporais faz parte de um dos Projetos de Fim de Curso desenvolvidos na Seção de Engenharia Cartográfica (SE/6) do Instituto Militar de Engenharia no ano de 2018.</p>
-      <p>O projeto faz parte do portifólio que busca desenvolver ferramentas de ajustamento e análise de dados empregando a linguagem de programaçao Python, com propósitos principalmente acadêmicos.</p>
-      <p>Para saber mais sobre o Instituto Militar de Engenharia (IME), acesse o <a href="http://www.ime.eb.mil.br/pt/">Site do Instituto</a></p>
+    <div class="col-md-4 border-right">
+      <h5>Separador</h5>
+      <p style="text-align:justify">
+        O separador é o símbolo empregado para separar os dados de diferentes colunas em um arquivo <code class="highlighter-rouge">.csv</code>. O separador mais comum (principalmente em arquivos na língua inglesa) é a vírgula (<code class="highlighter-rouge">,</code>) mas em muitos arquivos em português emprega-se o ponto-e-vírgula (<code class="highlighter-rouge">;</code>).
+      </p>
     </div>
-
-    <div class="col-md-6" style="text-align:justify; padding:30px;">
-
-      <h2>Código Aberto</h2>
-      <p>Uma das premissas do projeto foi que ele tivesse código aberto, de modo a poder ser editado mesmo depois da graduação de seus autores originais, permitindo melhorias constantes no sistema.</p>
-      <p>O código do projeto encontra-se disponível no <a href="https://github.com/mariliamonteiro/pfc_timeseries/tree/master">GitHub</a></p>
-      <p>Tendo sido desenvolvida em Python 3, a plataforma foi construida empregando <a href="http://flask.pocoo.org/">Flask</a> e os modelos aqui utilizados se baseiam principalmente naqueles disponibilizados pelo <a href="https://www.statsmodels.org/stable/index.html">StatsModels</a>. </p>
-
+    <div class="col-md-4 border-right">
+      <h5>Coluna de Datas</h5>
+      <p style="text-align:justify">
+        O parâmetro "Coluna de datas" é utilizado para identificar qual das colunas do seu arquivo encontram-se os dados de tempo (caso exista uma coluna para tal).
+      </p>
+    </div>
+    <div class="col-md-4">
+      <h5>Cabeçalho</h5>
+      <p style="text-align:justify">
+        Assinale a opção "Cabeçalho" em caso de seu arquivo possuir um cabeçalho, ou seja, no caso da primeira linha do seu arquivo  <code class="highlighter-rouge">.csv</code> conter informações que não são dados a serem analisados, mas sim os títulos das colunas.
+      </p>
     </div>
   </div>
+
 </div>
+
 {% endblock content %}

@@ -6,43 +6,29 @@
 	<h1 class="display-4">Algoritmos</h1>
 </div>
 
+{% for i in range((((algos_list|length)/4)|round(method='ceil'))|int) %}
 <div class="container">
-<div class="row">
-	{% for algo in algos_list %}
-
-		<div class="col-md-3">
-			<div class="card text-center" style="height:220px">
-				<div class="card-header" style="font-size:13px">
-					{{ algo.subtitle }}
-				</div>
-				<div class="card-body" style="padding:10px">
-					<h5 class="card-title text-center" style="font-size:18px; height:40px;"><a href="{{ algo.page }}" style="color: #000000; text-decoration: none">{{ algo.title }}</a></h5>
-					{% if algo.desc|length > 90 %}
-							<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc[0:90] + '...' }}</p>
-					{% else %}
-							<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc }}</p>
-					{% endif %}
-					<a href="{{ algo.page }}" class="btn btn-newcolor btn-sm">Utilizar</a>
-				</div>
-			</div>
-		</div>
-
-<!--
-		<div class="col-md-3">
-			<div class="card text" style="width:15rem; margin:10px 10px 10px 10px;">
-				<div class="card-body">
-					<h5 class="card-title text-center"><a href="{{ algo.page }}" style="color: #000000; text-decoration: none">{{ algo.title }}</a></h5>
-					<p class="card-subtitle mb-2 text-muted">{{ algo.subtitle }}</p>
-					<p class="card-text">{{ algo.desc }}</p>
-					<div class="container text-center">
-						<a href="{{ algo.page }}" class="btn btn-secondary btn-sm">Utilizar</a>
+	<div class="row" style="margin-top:20px">
+		{% for algo in algos_list[i*4:(i+1)*4] %}
+			<div class="col-md-3">
+				<div class="card text-center" style="height:220px">
+					<div class="card-header" style="font-size:13px">
+						{{ algo.subtitle }}
 					</div>
-
+					<div class="card-body" style="padding:10px">
+						<h5 class="card-title text-center" style="font-size:18px; height:40px;"><a href="{{ algo.page }}" style="color: #000000; text-decoration: none">{{ algo.title }}</a></h5>
+						{% if algo.desc|length > 90 %}
+								<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc[0:90] + '...' }}</p>
+						{% else %}
+								<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc }}</p>
+						{% endif %}
+						<a href="{{ algo.page }}" class="btn btn-newcolor btn-sm">Utilizar</a>
+					</div>
 				</div>
 			</div>
-		</div> -->
-
-	{% endfor %}
+		{% endfor %}
 	</div>
 </div>
+{% endfor %}
+
 {% endblock content %}
