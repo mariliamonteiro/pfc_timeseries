@@ -1,6 +1,6 @@
-Função de autocorrelação total da série principal dos dados utilizados. Retorna gráfico e tabela apresentando os valores de autocorrelação para cada <i>lag</i> (atraso nos dados, em quantidade de linhas), começando em 0 (correlação 1).
+Filtragem dos dados empregando média móvel. Retorna o gráfico dos dados filtrados e os valores ponto a ponto da série após a filtragem em tabela.
 <br />
 Parâmetros de entrada:
 <ul>
-<li>Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.
+<li>Janela: define a quantidade de elementos que comporão a janela na operação de média, ou seja, a largura da janela. Quanto maior a janela, mais suavizada será a série de saída.
 </ul>
