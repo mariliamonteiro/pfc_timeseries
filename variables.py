@@ -2,6 +2,7 @@ from os import listdir, path
 from os.path import isfile, join
 import re
 import codecs
+from flask import Markup
 
 # DESCRICAO DOS CARDS PARA SELECAO DE ALGORITMOS ===============================
 
@@ -36,7 +37,7 @@ def longDesc():
     for s in files_list:
         file = codecs.open(mypath+'/'+s, encoding='utf-8', mode='r')
         res = file.read()
-        values.append(res)
+        values.append(Markup(res))
         file.close()
 
     desc_list = dict(zip(keys, values))
