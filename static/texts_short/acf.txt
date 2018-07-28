@@ -1,4 +1,4 @@
 page: acf
 title: Função de Autocorrelação
-subtitle: Exploratory Analysis
-desc: Teste
+subtitle: Análise Exploratória
+desc: Analisa a autocorrelação entre dados separados por diferentes intervalos de tempo

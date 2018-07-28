@@ -1,4 +1,4 @@
 page: decomposition
 title: Decomposição de Série
-subtitle: Exploratory
-desc: Teste
+subtitle: Análise Exploratória
+desc: Decomposição da série em componentes explicativos de diferentes padrões

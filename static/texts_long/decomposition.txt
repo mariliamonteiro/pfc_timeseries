@@ -1,6 +1,2 @@
-Função de autocorrelação total da série principal dos dados utilizados. Retorna gráfico e tabela apresentando os valores de autocorrelação para cada <i>lag</i> (atraso nos dados, em quantidade de linhas), começando em 0 (correlação 1).
+Decomposição da série temporal em componentes representantes de diferentes padrões, sendo elas: tendência (<i>Trend</i>), sasonalidade (<i>Seasonal</i>) e aleatoriedade ou resíduo (<i>Residual</i>). Retorna gráficos de cada uma das componentes.
 <br />
-Parâmetros de entrada:
-<ul>
-<li>Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.
-</ul>

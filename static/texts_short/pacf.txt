@@ -1,4 +1,4 @@
 page: pacf
 title: Função de Autocorrelação Parcial
-subtitle: Exploratory Analysis
-desc: Teste
+subtitle: Análise Exploratória
+desc: Autocorrelação desconsiderando a dependência a dados separados por diferença menor que o lag estabelecido
