@@ -17,7 +17,7 @@
 
 <div>
   <h5>Gráfico</h5>
-  <img src="{{ image }}" class="rounded mx-auto d-block" alt="Gráfico Média Móvel">
+  <img src="{{ image }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Média Móvel">
 </div>
 
 <h6>Tabelas</h6>
@@ -34,7 +34,7 @@
         {% for i in range(data_ma|length) %}
         <tr class="d-flex">
           <td class="col-3">{{ i }}</td>
-          <td class="col-9">{{ data_ma[i] }}</td>
+          <td class="col-9">{{ data_ma[i][0] }}</td>
         </tr>
         {% endfor %}
       </tbody>

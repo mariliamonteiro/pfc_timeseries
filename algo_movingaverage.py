@@ -15,6 +15,7 @@ def ma_plot(series, window):
     return filename
 
 def data_ma(series, window):
-    ma = series.rolling(window).mean()
+    ma = list(series.rolling(window).mean().values)
+    print (ma)
     # ma = list(pd.rolling_mean(series, window))
     return ma
