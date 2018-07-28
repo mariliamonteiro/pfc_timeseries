@@ -1,4 +1,4 @@
 page: movingaverage
 title: Média Móvel
-subtitle: Filtering
-desc: Teste
+subtitle: Filtragem
+desc: Suavização dos dados empregando média dos valores em janelas de largura definida

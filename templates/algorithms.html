@@ -11,16 +11,16 @@
 	<div class="row" style="margin-top:20px">
 		{% for algo in algos_list[i*4:(i+1)*4] %}
 			<div class="col-md-3">
-				<div class="card text-center" style="height:220px">
+				<div class="card text-center" style="height:240px">
 					<div class="card-header" style="font-size:13px">
 						{{ algo.subtitle }}
 					</div>
 					<div class="card-body" style="padding:10px">
 						<h5 class="card-title text-center" style="font-size:18px; height:40px;"><a href="{{ algo.page }}" style="color: #000000; text-decoration: none">{{ algo.title }}</a></h5>
-						{% if algo.desc|length > 90 %}
-								<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc[0:90] + '...' }}</p>
+						{% if algo.desc|length > 105 %}
+								<p class="card-text" style="font-size:13px; height:70px">{{ algo.desc[0:105] + '...' }}</p>
 						{% else %}
-								<p class="card-text" style="font-size:13px; height:50px">{{ algo.desc }}</p>
+								<p class="card-text" style="font-size:13px; height:70px">{{ algo.desc }}</p>
 						{% endif %}
 						<a href="{{ algo.page }}" class="btn btn-newcolor btn-sm">Utilizar</a>
 					</div>
