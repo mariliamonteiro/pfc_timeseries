@@ -7,7 +7,9 @@ UPLOAD_FOLDER = 'temp_files'
 
 def ma_plot(series, window):
     ma = series.rolling(window).mean()
-    plt.plot(ma)
+    plt.plot(series, linewidth=0.5, color='#65acff', label='Dados Originais')
+    plt.plot(ma, linewidth=0.7, color='#e00a0a', label=u'Média Móvel')
+    plt.legend()
     filename = secrets.token_hex(8)+'.png'
     figure_name = os.path.join('static','images', filename)
     plt.savefig(figure_name)
