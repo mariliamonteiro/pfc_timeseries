@@ -11,7 +11,8 @@ class FormACF(FlaskForm):
     dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho*', default= True)
-    datec = IntegerField('Coluna de datas', default= 0)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
 
     submit = SubmitField('Processar')
 
@@ -22,7 +23,8 @@ class FormPACF(FlaskForm):
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Coluna de datas', default= 0)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
 
     submit = SubmitField('Processar')
 
@@ -33,7 +35,8 @@ class FormMA(FlaskForm):
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Coluna de datas', default= 0)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
 
     submit = SubmitField('Processar')
 
@@ -44,6 +47,7 @@ class FormDecomposition(FlaskForm):
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
     sep = StringField('Separador', default=',', validators=[Length(min=1, max=2), InputRequired()])
     header = BooleanField('Cabeçalho', default= True)
-    datec = IntegerField('Coluna de datas', default= 0)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
 
     submit = SubmitField('Processar')

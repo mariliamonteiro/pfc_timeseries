@@ -52,32 +52,32 @@ def fileformats():
 def examples():
     return render_template('examples.html', title= 'Exemplos')
 # PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
-@app.route('/algorithms/arima', methods= ['GET', 'POST'])
-def algorithms_arima():
-    text = desc_list['arima']
-
-    form = FormARIMA()
-
-    if form.validate_on_submit():
-        filename = secrets.token_hex(8) + '.csv'
-        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        file_url = files.url(filename)
-
-        # Retrieving results from the form
-        p = form.p.data
-        q = form.q.data
-        d = form.d.data
-        result = (p, d, q, file_url)
-
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
-    else:
-        file_url = None
-
-    return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
+# @app.route('/algorithms/arima', methods= ['GET', 'POST'])
+# def algorithms_arima():
+#     text = desc_list['arima']
+#
+#     form = FormARIMA()
+#
+#     if form.validate_on_submit():
+#         filename = secrets.token_hex(8) + '.csv'
+#         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         file_url = files.url(filename)
+#
+#         # Retrieving results from the form
+#         p = form.p.data
+#         q = form.q.data
+#         d = form.d.data
+#         result = (p, d, q, file_url)
+#
+#         return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
+#     else:
+#         file_url = None
+#
+#     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
 
 @app.route('/algorithms/acf', methods= ['GET', 'POST'])
 def algorithms_acf():
-    text = desc_list['acf']
+    text = desc_list['01acf']
 
     form = FormACF()
 
@@ -93,8 +93,9 @@ def algorithms_acf():
         separator = form.sep.data
         header = form.header.data
         date_column = form.datec.data
+        main_column = form.datac.data
 
-        serie = read_csv(file_url, filename, separator, header, date_column)
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
         img_name = acf_plot(serie, lags)
@@ -112,7 +113,7 @@ def algorithms_acf():
 
 @app.route('/algorithms/pacf', methods= ['GET', 'POST'])
 def algorithms_pacf():
-    text = desc_list['pacf']
+    text = desc_list['02pacf']
 
     form = FormPACF()
 
@@ -128,8 +129,9 @@ def algorithms_pacf():
         separator = form.sep.data
         header = form.header.data
         date_column = form.datec.data
+        main_column = form.datac.data
 
-        serie = read_csv(file_url, filename, separator, header, date_column)
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -145,44 +147,9 @@ def algorithms_pacf():
 
     return render_template('algorithms_pacf.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
 
-@app.route('/algorithms/movingaverage', methods= ['GET', 'POST'])
-def algorithms_movingaverage():
-    text = desc_list['movingaverage']
-
-    form = FormMA()
-
-    if form.validate_on_submit() and request.method == 'POST':
-        filename = secrets.token_hex(8) + '.csv'
-        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        file_url = files.url(filename)
-
-        # Retrieving results from the form
-        window = form.window.data
-
-        # Get data from file
-        separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, 2, True)
-
-        # Generate plot
-        img_name = ma_plot(serie, window)
-        image_file = url_for('static', filename='images/'+ img_name)
-
-        # Generate array of values
-        ma_data = data_ma(serie, window)
-
-        return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data)
-
-    else:
-        file_url = None
-
-    return render_template('algorithms_movingaverage.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
-
 @app.route('/algorithms/decomposition', methods= ['GET', 'POST'])
 def algorithms_decomposition():
-    text = desc_list['decomposition']
+    text = desc_list['03decomposition']
 
     form = FormDecomposition()
 
@@ -198,15 +165,16 @@ def algorithms_decomposition():
         separator = form.sep.data
         header = form.header.data
         date_column = form.datec.data
+        main_column = form.datac.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, 2, True)
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
         img_name = decomposition_plot(serie, model)
         image_file = url_for('static', filename='images/'+ img_name)
 
         # Generate array of values
-        
+
 
 
         return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file)
@@ -215,6 +183,42 @@ def algorithms_decomposition():
         file_url = None
 
     return render_template('algorithms_decomposition.html', title='Decomposição de Séries', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/movingaverage', methods= ['GET', 'POST'])
+def algorithms_movingaverage():
+    text = desc_list['04movingaverage']
+
+    form = FormMA()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        window = form.window.data
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+        main_column = form.datac.data
+
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+
+        # Generate plot
+        img_name = ma_plot(serie, window)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        # Generate array of values
+        ma_data = data_ma(serie, window)
+
+        return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data, raw_data=rd)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_movingaverage.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':
