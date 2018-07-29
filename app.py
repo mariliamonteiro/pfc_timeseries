@@ -14,6 +14,9 @@ from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
 from algo_decomposition import *
+from delete_images import *
+
+
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -29,11 +32,13 @@ patch_request_class(app)
 
 algos_list = shortDesc()
 desc_list = longDesc()
+dias = 0.05
 
 # PAGINAS PRINCIPAIS ===========================================================
 @app.route('/')
 @app.route('/home')
 def home():
+    delete_images(dias)
     return render_template('home.html')
 
 @app.route('/docs')
@@ -42,6 +47,7 @@ def about():
 
 @app.route('/algorithms')
 def algorithms():
+    delete_images(dias)
     return render_template('algorithms.html', title= 'Algoritmos', algos_list= algos_list)
 
 @app.route('/fileformats')
