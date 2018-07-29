@@ -42,6 +42,8 @@ class FormMA(FlaskForm):
 
 class FormDecomposition(FlaskForm):
     model = SelectField('Modelo', choices=[('adictive','Aditivo'),('multiplicative','Multiplicativo')], validators= [InputRequired()])
+    freq = IntegerField('Frequência dos Dados', default=1)
+    reference = SelectField('Referência Média Móvel', choices=[(True, 'Centrada'), (False, 'À direita')])
 
     # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])

@@ -8,6 +8,16 @@
     {{ form.model(class="form-control form-control-md") }}
     <small class="form-text text-muted">Tipo de modelo a ser utilizado na decomposição</small>
   </div>
+  <div class="form-group col-md-4 mb-3">
+    {{ form.freq.label(class="form-control-label") }}
+    {{ form.freq(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Frequência dos dados em unidades de tempo escolhida</small>
+  </div>
+  <div class="form-group col-md-4 mb-3">
+    {{ form.reference.label(class="form-control-label") }}
+    {{ form.reference(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Centralização da referência para média módel.</small>
+  </div>
 </div>
 
 {% endblock formulario %}
