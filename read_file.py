@@ -31,15 +31,21 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
                 dates = pd.date_range('1900/01/01', periods=size, freq='D')
 
         elif (dates.dtype == np.float64):
-            size = len(dates)
-            dates = pd.date_range('1900/01/01', periods=size, freq='D')
+            try:
+                d_aux = [datetime(int(d), 1, 1) + timedelta(days= int((d-int(d))*365.2475)) for d in raw_data]
+                dates = pd.to_datetime(d_aux)
+            except:
+                size = len(dates)
+                dates = pd.date_range('1900/01/01', periods=size, freq='D')
 
         else:
             val=0
             for fmt in supported_formats:
                 try:
                     dates = pd.to_datetime(dates, format= fmt)
-                    val= val +1
+                    val = val +1
+                    if val >0:
+                        break
                 except:
                     pass
 
@@ -61,4 +67,5 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         df.set_index(dates, inplace= True)
         df.drop(df.columns[date_column -1], axis=1, inplace= True)
 
+    print(df)
     return df, raw_dates
