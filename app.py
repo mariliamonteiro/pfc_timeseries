@@ -58,28 +58,6 @@ def fileformats():
 def examples():
     return render_template('examples.html', title= 'Exemplos')
 # PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
-# @app.route('/algorithms/arima', methods= ['GET', 'POST'])
-# def algorithms_arima():
-#     text = desc_list['arima']
-#
-#     form = FormARIMA()
-#
-#     if form.validate_on_submit():
-#         filename = secrets.token_hex(8) + '.csv'
-#         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#         file_url = files.url(filename)
-#
-#         # Retrieving results from the form
-#         p = form.p.data
-#         q = form.q.data
-#         d = form.d.data
-#         result = (p, d, q, file_url)
-#
-#         return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
-#     else:
-#         file_url = None
-#
-#     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
 
 @app.route('/algorithms/acf', methods= ['GET', 'POST'])
 def algorithms_acf():
@@ -167,6 +145,29 @@ def algorithms_decomposition():
         # Retrieving results from the form
         model = form.model.data
 
+        translate = {'a':1, 's':2, 't':4, 'b':6, 'm':12, 'q':26, 's':52, 'd':365, 'o':None}
+
+        sazon_opt = form.sazon_opt.data
+        freq_opt = form.freq_opt.data
+
+        if translate[sazon_opt] != None:
+            sazon = translate[sazon_opt]
+        else:
+            sazon = form.sazon.data
+
+        if translate[freq_opt] != None:
+            freq = translate[freq_opt]
+        else:
+            freq = form.freq.data
+
+        frequencia = int(freq/sazon)
+
+        ts = form.reference.data
+        if ts == 'center':
+            two_sided = True
+        elif ts == 'right':
+            two_sided = False
+        print(ts)
         # Get data from file
         separator = form.sep.data
         header = form.header.data
@@ -176,14 +177,13 @@ def algorithms_decomposition():
         serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
-        img_name = decomposition_plot(serie, model)
+        img_name = decomposition_plot(serie, model, frequencia, two_sided)
         image_file = url_for('static', filename='images/'+ img_name)
 
         # Generate array of values
+        trend, seasonal, residual = data_decomposition(serie, model, frequencia, two_sided)
 
-
-
-        return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file)
+        return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file, trend=trend, seasonal=seasonal, residual=residual, rd=rd, two_sided=ts, frequencia=frequencia)
 
     else:
         file_url = None

@@ -35,7 +35,7 @@
         {% for i in range(lag) %}
         <tr class="d-flex">
           <td class="col-3">{{ i }}</td>
-          <td class="col-9">{{ data_acf[i] }}</td>
+          <td class="col-9">{{ data_acf[i]|round(5) }}</td>
         </tr>
         {% endfor %}
       </tbody>
