@@ -3,34 +3,77 @@
 {% block content %}
 <div class="container" style="margin-bottom:50px; margin-top:40px;">
   <h1 class="display-4">{{ title }}</h1>
-  <p class="text-muted">
+  <p class="text-muted" style="text-align:justify">
     Para que se faça uso da plataforma e dos seus diversos algoritmos é necessário que seja realizado inicialmente o <i>upload</i> dos dados sobre os quais serão realizadas as análises. A entrada de dados na plataforma é realizada apenas através de arquivos <code class="highlighter-rouge">.csv</code> e é importante que sejam passados os parâmetros corretos na leitura dos arquivos para garantir o bom funcionamento das funções. Entenda mais sobre a estrutura do arquivo e os parâmetros de entrada nos tópicos a seguir.
   </p>
 </div>
+
+
 
 <div class="container">
   <div class="row container">
     <h4>Parâmetros de entrada</h4>
   </div>
   <br />
+
   <div class="row">
-    <div class="col-md-4 border-right">
-      <h5>Separador</h5>
+    <div class="col-md-5" style="padding-bottom:20px">
+      <img src="{{ url_for('static', filename='fileform1.PNG') }}" class="img-responsive border" width=100%>
+    </div>
+    <div class="col-md-7">
+      <h5><b>Upload dos arquivos</b></h5>
       <p style="text-align:justify">
-        O separador é o símbolo empregado para separar os dados de diferentes colunas em um arquivo <code class="highlighter-rouge">.csv</code>. O separador mais comum (principalmente em arquivos na língua inglesa) é a vírgula (<code class="highlighter-rouge">,</code>) mas em muitos arquivos em português emprega-se o ponto-e-vírgula (<code class="highlighter-rouge">;</code>).
+        Todos os formulários dos algoritmos implementados na plataforma possuem uma seção em comum (figura ao lado) referente ao upload do arquivo das séries temporais que o usuário deseja analisar. Por questões de segurança e organização dos dados, são aceitos apenas arquivos no formato <code class="highlighter-rouge">.csv</code>.
       </p>
     </div>
-    <div class="col-md-4 border-right">
-      <h5>Coluna de Datas</h5>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <p style="text-align:justify">
-        O parâmetro "Coluna de datas" é utilizado para identificar qual das colunas do seu arquivo encontram-se os dados de tempo (caso exista uma coluna para tal).
+        Além disso, a melhor maneira de garantir a correta interpretação das datas de sua série temporal é utilizando os formatos <code class="highlighter-rouge">YYYY-mm-dd</code> ou <code class="highlighter-rouge">dd-mm-YYYY</code> (e algumas variações, como <code class="highlighter-rouge">/</code> ao invés de <code class="highlighter-rouge">-</code>), mesmo que os dados em questão tenham frequência mensal ou anual (nesse caso, recomenda-se que se utilize um dia fixo, como <code class="highlighter-rouge">YYYY-mm-01</code>). Essa construção foi pensada para garantir que os formatos planejados estejam livres de quaisquer problemas, ao invés de generalizar para as inúmeras possíveis combinações.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <span><b>Separador e Cabeçalho</b></span>
+      <p style="text-align:justify">
+        O parâmetro <u>Separador</u> é o símbolo empregado no arquivo <code class="highlighter-rouge">.csv</code> para separar os dados das diferentes colunas da tabela, definido na construção do arquivo (usuais: <code class="highlighter-rouge">,</code> e <code class="highlighter-rouge">;</code>). <br />A opção de <u>Cabeçalho</u> refere-se à presença ou não dos títulos das colunas da tabela no arquivo (marcado como Verdadeiro por padrão).
       </p>
     </div>
     <div class="col-md-4">
-      <h5>Cabeçalho</h5>
+      <span><b>Coluna de Datas</b></span>
       <p style="text-align:justify">
-        Assinale a opção "Cabeçalho" em caso de seu arquivo possuir um cabeçalho, ou seja, no caso da primeira linha do seu arquivo  <code class="highlighter-rouge">.csv</code> conter informações que não são dados a serem analisados, mas sim os títulos das colunas.
+        O parâmetro <u>Coluna de Datas</u> é utilizado para identificar em qual das colunas do seu arquivo encontram-se os dados que descrevam os instantes das observações da tabela (seja em dias, meses, anos ou outro formato). O valor padrão é <code class="highlighter-rouge">1</code>, referindo-se à primeira coluna do arquivo. Caso o arquivo não possua uma coluna de datas, passe o valor <code class="highlighter-rouge">0</code>, indicando que nenhuma coluna possui tal informação.
       </p>
+    </div>
+    <div class="col-md-4">
+      <span><b>Coluna Principal</b></span>
+      <p style="text-align:justify">
+        O parâmetro <u>Coluna Principal</u>, de modo semelhante, é utilizado para identificar em qual das colunas do seu arquivo encontram-se os dados que descrevem a sua principal Série Temporal, ou variável endógena/dependente, dependendo do contexto (as demais colunas são ignoradas ou interpretadas como variáveis exógenas/independentes, dependendo do algoritmo utilizado). O valor padrão é <code class="highlighter-rouge">2</code>, referindo-se à segunda coluna do arquivo.
+      </p>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="row">
+    <div class="col-md-8">
+      <h5><b>Exemplo</b></h5>
+      <p style="text-align:justify">
+        Nos dados ao lado (recorte de uma tela do <i>Microsoft Excel</i>), os parâmetros de entrada do arquivo seriam:
+        <ul>
+          <li><b>Separador</b>: depende da maneira como o arquivo <code class="highlighter-rouge">.csv</code> será salvo e o separador definido. Em programas como o <i>Microsoft Excel</i>, as configurações padrão da versão inglesa salvam com o separador <code class="highlighter-rouge">,</code>, e a versão portuguesa com o separador <code class="highlighter-rouge">;</code>.</li>
+          <li><b>Cabeçalho</b>: o arquivo possui cabeçalho, portanto mantém-se a opção marcada.</li>
+          <li><b>Coluna de datas</b>: as datas encontram-se na primeira coluna, portanto mantém-se o valor <code class="highlighter-rouge">1</code>.</li>
+          <li><b>Coluna principal</b>: os valores da Série Temporal encontram-se na segunda coluna, portanto mantém-se o valor <code class="highlighter-rouge">2</code>.</li>
+        </ul>
+      </p>
+    </div>
+    <div class="col-md-4">
+      <img src="{{ url_for('static', filename='fileform2.PNG') }}" class="img-responsive border" width=100%>
     </div>
   </div>
 

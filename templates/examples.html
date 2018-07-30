@@ -6,22 +6,82 @@
 </div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 border-right" style="text-align:justify; padding:30px;">
-      <h2>Sobre o Projeto</h2>
-      <p>A Plataforma de Análise de Séries Temporais faz parte de um dos Projetos de Fim de Curso desenvolvidos na Seção de Engenharia Cartográfica (SE/6) do Instituto Militar de Engenharia no ano de 2018.</p>
-      <p>O projeto faz parte do portifólio que busca desenvolver ferramentas de ajustamento e análise de dados empregando a linguagem de programaçao Python, com propósitos principalmente acadêmicos.</p>
-      <p>Para saber mais sobre o Instituto Militar de Engenharia (IME), acesse o <a href="http://www.ime.eb.mil.br/pt/">Site do Instituto</a></p>
-    </div>
-
-    <div class="col-md-6" style="text-align:justify; padding:30px;">
-
-      <h2>Código Aberto</h2>
-      <p>Uma das premissas do projeto foi que ele tivesse código aberto, de modo a poder ser editado mesmo depois da graduação de seus autores originais, permitindo melhorias constantes no sistema.</p>
-      <p>O código do projeto encontra-se disponível no <a href="https://github.com/mariliamonteiro/pfc_timeseries/tree/master">GitHub</a></p>
-      <p>Tendo sido desenvolvida em Python 3, a plataforma foi construida empregando <a href="http://flask.pocoo.org/">Flask</a> e os modelos aqui utilizados se baseiam principalmente naqueles disponibilizados pelo <a href="https://www.statsmodels.org/stable/index.html">StatsModels</a>. </p>
-
+  <div class="row" style="margin:10px">
+    <div class="col-md-12 border" style="text-align:justify; padding:30px;">
+      <h3>1) Emissão Global de Dióxido de Carbono na Atmosfera</h3>
+      <p>Dados originados a partir do órgão americano NOAA (<i>National Oceanic & Atmospheric Administration</i>). Dentre os produtos e dados oferecidos, encontra-se o <a href="https://www.esrl.noaa.gov/gmd/ccgg/trends/">acompanhamento de tendência de emissão de gás carbônico na atmosfera</a>, onde é possível extrair os dados <u>mensais</u> desde 1980.</p>
+      <p>O arquivo é composto pelas seguintes colunas:</p>
+      <ul>
+        <li><b>year</b>: numérico, ano da observação</li>
+        <li><b>month</b>: numérico, mês da observação</li>
+        <li><b>decimal</b>: numérico, ano decimal da observação</li>
+        <li><b>average</b>: numérico, quantidade de emissões globais, em parte por milhão</li>
+        <li><b>trend</b>: numérico, quantidade de emissões suavizadas (tendência)</li>
+      </ul>
+      <p><a href="https://www.esrl.noaa.gov/gmd/ccgg/trends/gl_data.html">Clique aqui</a> para mais detalhes sobre o arquivo.</p>
+      <p>Para utilizar o arquivo nos algoritmos implementados na plataforma, recomendam-se as seguintes configurações de entrada de arquivo:</p>
+      <ul>
+        <li><b>Separador</b>: "," (padrão)</li>
+        <li><b>Cabeçalho</b>: Possui (padrão)</li>
+        <li><b>Coluna de datas</b>: 3</li>
+        <li><b>Coluna principal</b>: 4</li>
+      </ul>
+      <p><a href="/examples/emissions.csv" class="btn btn-primary">DOWNLOAD</a></p>
+      <small style="color:#989898">Ed Dlugokencky and Pieter Tans, NOAA/ESRL (www.esrl.noaa.gov/gmd/ccgg/trends/)</small>
     </div>
   </div>
+
+  <div class="row" style="margin:10px">
+    <div class="col-md-12 border" style="text-align:justify; padding:30px;">
+      <h3>2) Nível Médio dos Mares</h3>
+      <p>Dados disponibilizados pelo órgão PSMSL (<i>Permanent Service for Mean Sea Level</i>). Para a obtenção da série temporal dos níveis médios dos mares, é preciso escolher o marégrafo (<i>Tide Gauge</i>) de referência. Nesse caso, tem-se como referência Seattle, EUA (devido completude dos dados e tamanho da série). A série temporal possui frequência dos dados <u>mensal</u>.</p>
+      <p>A lista completa de marégrafos e método de obtenção encontra-se disponível <a href="http://www.psmsl.org/data/obtaining/">nesse link</a>. As informações sobre o marégrafo selecionado em específico podem ser obtidas a partir dos seguintes links: <a href="http://www.psmsl.org/data/obtaining/stations/127.php">informações globais</a> e <a href="http://www.psmsl.org/data/obtaining/rlr.diagrams/127.php">diagrama de referências</a>.</p>
+      <p>O arquivo, portanto, é composto pelas seguintes colunas:</p>
+      <ul>
+        <li><b>MONTH</b>: numérico, ano decimal da observação</li>
+        <li><b>MSL</b>: numérico, nível médio do mar no mês a partir da RLR (<i>Revised Local Reference</i>)</li>
+        <li><b>MISSING</b>: numérico, apresenta indicativo de dados interpolados</li>
+        <li><b>FLAG</b>: numérico, apresenta indicativo de dados não-confiáveis (ver mais informações)</li>
+      </ul>
+      <p><a href="http://www.psmsl.org/data/obtaining/notes.php">Clique aqui</a> para mais detalhes sobre o arquivo e notas de atualizações.</p>
+      <p>Para utilizar o arquivo nos algoritmos implementados na plataforma, recomendam-se as seguintes configurações de entrada de arquivo:</p>
+      <ul>
+        <li><b>Separador</b>: "," (padrão)</li>
+        <li><b>Cabeçalho</b>: Possui (padrão)</li>
+        <li><b>Coluna de datas</b>: 1</li>
+        <li><b>Coluna principal</b>: 2</li>
+      </ul>
+      <p><a href="/examples/meansealevel.csv" class="btn btn-primary">DOWNLOAD</a></p>
+      <small style="color:#989898">Holgate et al., 2013; PSMSL, 2018 (http://www.psmsl.org/data/obtaining/)</small>
+    </div>
+  </div>
+
+  <div class="row" style="margin:10px">
+    <div class="col-md-12 border" style="text-align:justify; padding:30px;">
+      <h3>3) Posições e Velocidades Geodésicas (GPS Time Series)</h3>
+      <p>Dados originados a partir do órgão JPL (<i>Jet Propulsion Laboratory</i>), laboratório da NASA. No site, é possível obter as séries temporais das posições horizontais e vertical de cada um dos mais de 2000 receptores GPS disponíveis ao redor do mundo, além de visualizar outros produtos resultantes de tais informações. O acesso é feito a partir da <a href="https://sideshow.jpl.nasa.gov/post/series.html">página de séries temporais</a> (via <i>"FTP Time Series"</i>).</p>
+      <p>A estação de referência escolhida foi a ALGO, referente à cidade Algonquin Park, ON, Canadá (devido ao tamanho da série). Todas as informações sobre a estação podem ser vistas <a href="ftp://ftp.igs.org/pub/station/log/algo_20171017.log">nesse arquivo de log</a>. A frequência dos dados é <u>diária</u>, disponibilizada desde 1994.</p>
+      <p>O arquivo é composto pelas seguintes colunas:</p>
+      <ul>
+        <li><b>Coluna 1</b>: "Decimal_YR" (ano em decimal)</li>
+        <li><b>Colunas 2-4</b>: "East(m)", "North(m)", "Vert(m)" (coordenadas em Sistema Geodésico Local)</li>
+        <li><b>Colunas 5-7</b>: "East_sig(m)", "North_sig(m)", "Vert_sig(m)" (coordenadas em SGL, em SIRGAS)</li>
+        <li><b>Colunas 8-10</b>: "East_North_cor", "East_Vert_cor", "North_Vert_cor"</li>
+        <li><b>Coluna 11</b>: Tempo em segundos após J2000</li>
+        <li><b>Colunas 12-17</b>: Tempo separado nas partes "YEAR", "MM", "DD", "HR", "MN", "SS"</li>
+      </ul>
+      <p><a href="https://sideshow.jpl.nasa.gov/post/tables/GPS_Time_Series.pdf">Clique aqui</a> para mais detalhes sobre o método de obtenção dos dados.</p>
+      <p>Para utilizar o arquivo nos algoritmos implementados na plataforma, recomendam-se as seguintes configurações de entrada de arquivo:</p>
+      <ul>
+        <li><b>Separador</b>: "," (padrão)</li>
+        <li><b>Cabeçalho</b>: Possui (padrão)</li>
+        <li><b>Coluna de datas</b>: 1</li>
+        <li><b>Coluna principal</b>: 2, 3 ou 4</li>
+      </ul>
+      <p><a href="/examples/gps.csv" class="btn btn-primary">DOWNLOAD</a></p>
+      <small style="color:#989898">Point Positions: A. Moore, S. Owen | Time Series and Web Site: M. Heflin, JPL/NASA (https://sideshow.jpl.nasa.gov/post/series.html)</small>
+    </div>
+  </div>
+
 </div>
 {% endblock content %}
