@@ -2,5 +2,5 @@ Função de autocorrelação parcial da série principal dos dados utilizados. R
 <br />
 Parâmetros de entrada:
 <ul>
-<li>Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.
+<li>Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.</li>
 </ul>

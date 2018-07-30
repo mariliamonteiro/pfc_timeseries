@@ -3,21 +3,39 @@
 {% block formulario %}
 
 <div class="row">
-  <div class="form-group col-md-4 mb-3">
+  <div class="form-group col-md-5 mb-3">
     {{ form.model.label(class="form-control-label") }}
     {{ form.model(class="form-control form-control-md") }}
     <small class="form-text text-muted">Tipo de modelo a ser utilizado na decomposição</small>
   </div>
-  <div class="form-group col-md-4 mb-3">
-    {{ form.freq.label(class="form-control-label") }}
-    {{ form.freq(class="form-control form-control-md") }}
-    <small class="form-text text-muted">Frequência dos dados em unidades de tempo escolhida</small>
-  </div>
-  <div class="form-group col-md-4 mb-3">
+  <div class="form-group col-md-5 mb-3">
     {{ form.reference.label(class="form-control-label") }}
     {{ form.reference(class="form-control form-control-md") }}
     <small class="form-text text-muted">Centralização da referência para média módel.</small>
   </div>
 </div>
-
+<div class="row">
+  <div class="form-group col-md-5 mb-3">
+    {{ form.freq_opt.label(class="form-control-label") }}
+    {{ form.freq_opt(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Frequência de coleta dos dados</small>
+  </div>
+  <div class="form-group col-md-5 mb-3">
+    {{ form.freq.label(class="form-control-label") }}
+    {{ form.freq(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Input manual da frequência. Para preencher assinale "Outros" ao lado</small>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-md-5 mb-3">
+    {{ form.sazon_opt.label(class="form-control-label") }}
+    {{ form.sazon_opt(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Sazonalidade esperada ou conhecida dos dados</small>
+  </div>
+  <div class="form-group col-md-5 mb-3">
+    {{ form.sazon.label(class="form-control-label") }}
+    {{ form.sazon(class="form-control form-control-md") }}
+    <small class="form-text text-muted">Input manual da sazonalidade. Para preencher assinale "Outros" ao lado.</small>
+  </div>
+</div>
 {% endblock formulario %}
