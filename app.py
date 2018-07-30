@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, render_template, url_for, redirect, request, send_from_directory
 from flask_uploads import UploadSet, configure_uploads, DATA, patch_request_class
 
 from forms import *
@@ -15,8 +15,6 @@ from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
 from algo_decomposition import *
 from delete_images import *
-
-
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -57,30 +55,12 @@ def fileformats():
 @app.route('/examples')
 def examples():
     return render_template('examples.html', title= 'Exemplos')
-# PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
-# @app.route('/algorithms/arima', methods= ['GET', 'POST'])
-# def algorithms_arima():
-#     text = desc_list['arima']
-#
-#     form = FormARIMA()
-#
-#     if form.validate_on_submit():
-#         filename = secrets.token_hex(8) + '.csv'
-#         form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#         file_url = files.url(filename)
-#
-#         # Retrieving results from the form
-#         p = form.p.data
-#         q = form.q.data
-#         d = form.d.data
-#         result = (p, d, q, file_url)
-#
-#         return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form= form, file_url=file_url, result=result)
-#     else:
-#         file_url = None
-#
-#     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
 
+@app.route('/examples/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    return send_from_directory(directory='toydata', filename=filename, as_attachment= True)
+
+# PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
 @app.route('/algorithms/acf', methods= ['GET', 'POST'])
 def algorithms_acf():
     text = desc_list['01acf']
