@@ -34,7 +34,7 @@
         {% for i in range(data_ma|length) %}
         <tr class="d-flex">
           <td class="col-3">{{ raw_data[i] }}</td>
-          <td class="col-9">{{ data_ma[i] }}</td>
+          <td class="col-9">{{ data_ma[i]|round(5) }}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -8,8 +8,24 @@
   <table class="table table-striped table-bordered table-sm">
     <tbody>
       <tr class="d-flex">
-        <th class="col-3" scope="row">Modelo</th>
-        <td class="col-9">{{ model }}</td>
+        <th class="col-5" scope="row">Modelo</th>
+        {% if model == 'additive' %}
+          <td class="col-7">Aditivo</td>
+        {% elif model == 'multiplicative' %}
+          <td class="col-7">Multiplicativo</td>
+        {% endif %}
+      </tr>
+      <tr class="d-flex">
+        <th class="col-5" scope="row">Referência Média Móvel</th>
+        {% if two_sided == 'center' %}
+          <td class="col-7">Referência no centro</td>
+        {% elif two_sided == 'right'%}
+          <td class="col-7">Referência à direita</td>
+        {% endif %}
+      </tr>
+      <tr class="d-flex">
+        <th class="col-5" scope="row">Periodicidade (calculada)</th>
+          <td class="col-7">{{ frequencia }}</td>
       </tr>
     </tbody>
   </table>
@@ -26,15 +42,19 @@
     <table class="table table-striped table-bordered table-sm">
       <thead>
         <tr class="d-flex">
-          <th class="col-3">Lag</th>
-          <th class="col-9">ACF</th>
+          <th class="col-3">Data</th>
+          <th class="col-3">Tendência</th>
+          <th class="col-3">Sasonalidade</th>
+          <th class="col-3">Resíduo</th>
         </tr>
       </thead>
       <tbody>
-        {% for i in range(3) %}
+        {% for i in range(trend|length) %}
         <tr class="d-flex">
-          <td class="col-3">{{ i }}</td>
-          <td class="col-9">{{ i }}</td>
+          <td class="col-3">{{ rd[i] }}</td>
+          <td class="col-3">{{ trend[i]|round(5) }}</td>
+          <td class="col-3">{{ seasonal[i]|round(5) }}</td>
+          <td class="col-3">{{ residual[i]|round(5) }}</td>
         </tr>
         {% endfor %}
       </tbody>

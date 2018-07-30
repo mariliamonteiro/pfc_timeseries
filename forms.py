@@ -41,7 +41,14 @@ class FormMA(FlaskForm):
     submit = SubmitField('Processar')
 
 class FormDecomposition(FlaskForm):
-    model = SelectField('Modelo', choices=[('adictive','Aditivo'),('multiplicative','Multiplicativo')], validators= [InputRequired()])
+    model = SelectField('Modelo', choices=[('additive','Aditivo'),('multiplicative','Multiplicativo')], validators= [InputRequired()])
+    reference = SelectField('Referência Média Móvel', choices=[('center', 'Centrada'), ('right', 'À direita')], validators= [InputRequired()])
+
+    freq_opt = SelectField('Frequência dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
+    freq = IntegerField('Outra Frequência', default=0)
+
+    sazon_opt = SelectField('Sazonalidade dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
+    sazon = IntegerField('Outra Sazonalidade', default=0)
 
     # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
     dados = FileField('Dados', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
