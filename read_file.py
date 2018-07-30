@@ -23,8 +23,16 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         dates = df.iloc[:,date_column-1]
         raw_dates = list(dates)
 
-        if (dates.dtype == np.int64) or (dates.dtype == np.float64):
-            pass
+        if (dates.dtype == np.int64):
+            try:
+                dates = pd.DatetimeIndex([str(x) for x in dates])
+            except:
+                size = len(dates)
+                dates = pd.date_range('1900/01/01', periods=size, freq='D')
+
+        elif (dates.dtype == np.float64):
+            size = len(dates)
+            dates = pd.date_range('1900/01/01', periods=size, freq='D')
 
         else:
             val=0
@@ -37,7 +45,7 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
 
             if val == 0:
                 size = len(dates)
-                dates = np.arange(1,size+1)
+                dates = pd.date_range('1900/01/01', periods=size, freq='D')
 
     if isseries == True:
         df.set_index(dates, inplace= True)
@@ -52,6 +60,5 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
     else:
         df.set_index(dates, inplace= True)
         df.drop(df.columns[date_column -1], axis=1, inplace= True)
-
 
     return df, raw_dates

@@ -83,6 +83,9 @@ def algorithms_acf():
 
         serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
+        # Remove nan lines from serie
+        serie.dropna(inplace= True)
+
         # Generate plot
         img_name = acf_plot(serie, lags)
         image_file = url_for('static', filename='images/'+ img_name)
@@ -118,6 +121,9 @@ def algorithms_pacf():
         main_column = form.datac.data
 
         serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+
+        # Remove nan lines from serie
+        serie.dropna(inplace= True)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -169,7 +175,7 @@ def algorithms_decomposition():
             two_sided = True
         elif ts == 'right':
             two_sided = False
-        print(ts)
+
         # Get data from file
         separator = form.sep.data
         header = form.header.data
@@ -177,6 +183,9 @@ def algorithms_decomposition():
         main_column = form.datac.data
 
         serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+
+        # Remove nan lines from serie
+        serie.dropna(inplace= True)
 
         # Generate plot
         img_name = decomposition_plot(serie, model, frequencia, two_sided)
@@ -226,7 +235,7 @@ def algorithms_movingaverage():
     else:
         file_url = None
 
-    return render_template('algorithms_movingaverage.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url)
+    return render_template('algorithms_movingaverage.html', title='Média Móvel', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

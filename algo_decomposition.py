@@ -15,7 +15,7 @@ def decomposition_plot(series, model, freq, two_sided):
     return filename
 
 def data_decomposition(series, model, freq, two_sided):
-    result = seasonal_decompose(series, model=model)
+    result = seasonal_decompose(series, model=model, freq=freq, two_sided=two_sided)
     trend = list(result.trend.values)
     seasonal = list(result.seasonal.values)
     residual = list(result.resid.values)
