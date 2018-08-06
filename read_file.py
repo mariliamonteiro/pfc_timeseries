@@ -1,4 +1,5 @@
 import pandas as pd
+from datetime import datetime, timedelta
 import numpy as np
 import os
 
@@ -32,7 +33,7 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
 
         elif (dates.dtype == np.float64):
             try:
-                d_aux = [datetime(int(d), 1, 1) + timedelta(days= int((d-int(d))*365.2475)) for d in raw_data]
+                d_aux = [datetime(int(d), 1, 1) + timedelta(days= int((d-int(d))*365.2475)) for d in raw_dates]
                 dates = pd.to_datetime(d_aux)
             except:
                 size = len(dates)
@@ -67,5 +68,4 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         df.set_index(dates, inplace= True)
         df.drop(df.columns[date_column -1], axis=1, inplace= True)
 
-    print(df)
     return df, raw_dates
