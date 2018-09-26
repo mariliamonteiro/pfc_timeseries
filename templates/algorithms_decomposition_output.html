@@ -36,7 +36,7 @@
   <img src="{{ image }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Decomposição">
 </div>
 
-<h6>Tabelas</h6>
+<h5>Tabelas</h5>
 <div class="row">
   <div class="col-md-12">
     <table class="table table-striped table-bordered table-sm">
@@ -49,7 +49,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for i in range(trend|length) %}
+        {% for i in range(10) %}
         <tr class="d-flex">
           <td class="col-3">{{ rd[i] }}</td>
           <td class="col-3">{{ trend[i]|round(5) }}</td>
@@ -60,6 +60,38 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<h5>Download de Resultados</h5>
+<div class="container">
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-6">
+				<div class="card text-center" style="height:200px">
+					<div class="card-header" style="font-size:14px">
+						<b>Relatório (pdf)</b>
+					</div>
+					<div class="card-body" style="padding:10px">
+								<p class="card-text" style="font-size:13px; height:70px">
+                  Relatório de resultados, em formato .pdf contendo detalhes sobre a parâmetros e dados de entrada, qualidade dos dados e dados processados.
+                </p>
+						<a href = "/algorithms/{{ address_pdf }}" class="btn btn-primary">DOWNLOAD</a>
+					</div>
+				</div>
+			</div>
+      <div class="col-md-6">
+  				<div class="card text-center" style="height:200px">
+  					<div class="card-header" style="font-size:14px">
+  						<b>Dados Processados (csv)</b>
+  					</div>
+  					<div class="card-body" style="padding:10px">
+  								<p class="card-text" style="font-size:13px; height:70px">
+                    Arquivo em formato .csv contendo dados processados resultantes da aplicação do modelo.
+                  </p>
+  						<p><a href = "/algorithms/{{ address_csv }}" class="btn btn-primary">DOWNLOAD</a></p>
+  					</div>
+  				</div>
+  			</div>
+	</div>
 </div>
 
 {% endblock formulario %}

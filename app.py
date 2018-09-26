@@ -18,6 +18,8 @@ from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
 from algo_decomposition import *
 from delete_images import *
+from delete_reports import *
+from report import *
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -33,14 +35,16 @@ patch_request_class(app)
 
 algos_list = shortDesc()
 desc_list = longDesc()
-dias = 0.05
+dict_lista = shortDescDicionario()
+dias = 0.0005
 
 # PAGINAS PRINCIPAIS ===========================================================
 @app.route('/')
 @app.route('/home')
 def home():
     delete_images(dias)
-    return render_template('home.html')
+    delete_reports(dias)
+    return render_template('home.html', title = 'Home')
 
 @app.route('/docs')
 def about():
@@ -49,6 +53,7 @@ def about():
 @app.route('/algorithms')
 def algorithms():
     delete_images(dias)
+    delete_reports(dias)
     return render_template('algorithms.html', title= 'Algoritmos', algos_list= algos_list)
 
 @app.route('/fileformats')
@@ -62,6 +67,11 @@ def examples():
 @app.route('/examples/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     return send_from_directory(directory='toydata', filename=filename, as_attachment= True)
+
+@app.route('/algorithms/<path:filename>', methods=['GET', 'POST'])
+def download_acf(filename):
+    return send_from_directory(directory='static/reports', filename=filename, as_attachment= True)
+
 
 # PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
 @app.route('/algorithms/acf', methods= ['GET', 'POST'])
@@ -93,10 +103,30 @@ def algorithms_acf():
         img_name = acf_plot(serie, lags)
         image_file = url_for('static', filename='images/'+ img_name)
 
-        # Generate array of values
-        acf_data = data_acf(serie, lags)
+        ### Create report
 
-        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=acf_data)
+        # Report title
+        title = dict_lista['01acf']['title']
+
+        # Model parameters
+        model_param = {'Lags': lags,
+                      }
+        readdata_param = {'Separador': separator,
+                          'Cabeçalho': header,
+                          'Coluna de Datas': date_column,
+                          'Coluna Principal': main_column}
+        file_title = 'acf'
+        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+
+
+        # Generate array of values
+        acf_data, df_output = data_acf(serie, lags)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+
+        return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=acf_data, address_pdf = address_pdf, address_csv = address_csv)
 
     else:
         file_url = None
@@ -132,10 +162,29 @@ def algorithms_pacf():
         img_name = pacf_plot(serie, lags)
         image_file = url_for('static', filename='images/'+ img_name)
 
-        # Generate array of values
-        pacf_data = data_pacf(serie, lags)
+        ### Create report
 
-        return render_template('algorithms_pacf_output.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=pacf_data)
+        # Report title
+        title = dict_lista['02pacf']['title']
+
+        # Model parameters
+        model_param = {'Lags': lags,
+                      }
+        readdata_param = {'Separador': separator,
+                          'Cabeçalho': header,
+                          'Coluna de Datas': date_column,
+                          'Coluna Principal': main_column}
+        file_title = 'pacf'
+        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+
+        # Generate array of values
+        pacf_data, df_output = data_pacf(serie, lags, rd)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+
+        return render_template('algorithms_pacf_output.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=pacf_data, address_pdf = address_pdf, address_csv = address_csv)
 
     else:
         file_url = None
@@ -194,10 +243,34 @@ def algorithms_decomposition():
         img_name = decomposition_plot(serie, model, frequencia, two_sided)
         image_file = url_for('static', filename='images/'+ img_name)
 
-        # Generate array of values
-        trend, seasonal, residual = data_decomposition(serie, model, frequencia, two_sided)
+        ### Create report
 
-        return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file, trend=trend, seasonal=seasonal, residual=residual, rd=rd, two_sided=ts, frequencia=frequencia)
+        # Report title
+        title = dict_lista['03decomposition']['title']
+
+        # Model parameters
+        model_param = {'Modelo': model,
+                       'Referência da Média Móvel': ts,
+                       'Frequência dos Dados': freq,
+                       'Sazonalidade dos Dados': sazon,
+                       'Periodicidade (Calculada)': frequencia
+                      }
+        readdata_param = {'Separador': separator,
+                          'Cabeçalho': header,
+                          'Coluna de Datas': date_column,
+                          'Coluna Principal': main_column}
+        file_title = 'decomposition'
+        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+
+
+        # Generate array of values
+        trend, seasonal, residual, df_output = data_decomposition(serie, model, frequencia, two_sided, rd)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+
+        return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file, trend=trend, seasonal=seasonal, residual=residual, rd=rd, two_sided=ts, frequencia=frequencia, address_pdf = address_pdf, address_csv = address_csv)
 
     else:
         file_url = None
@@ -230,10 +303,29 @@ def algorithms_movingaverage():
         img_name = ma_plot(serie, window)
         image_file = url_for('static', filename='images/'+ img_name)
 
-        # Generate array of values
-        ma_data = data_ma(serie, window)
+        ### Create report
 
-        return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data, raw_data=rd)
+        # Report title
+        title = dict_lista['04movingaverage']['title']
+
+        # Model parameters
+        model_param = {'Janela': window
+                      }
+        readdata_param = {'Separador': separator,
+                          'Cabeçalho': header,
+                          'Coluna de Datas': date_column,
+                          'Coluna Principal': main_column}
+        file_title = 'movingaverage'
+        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+
+        # Generate array of values
+        ma_data, df_output = data_ma(serie, window, rd)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+
+        return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data, raw_data=rd, address_pdf = address_pdf, address_csv = address_csv)
 
     else:
         file_url = None
