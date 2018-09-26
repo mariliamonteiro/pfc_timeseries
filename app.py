@@ -9,7 +9,9 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 import secrets
 
-from pylab import rcParams
+import matplotlib
+matplotlib.use('agg')
+from matplotlib.pylab import rcParams
 rcParams['lines.linewidth'] = 0.5
 
 from read_file import read_csv
