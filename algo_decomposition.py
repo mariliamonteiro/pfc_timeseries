@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('agg')
 from matplotlib import pyplot
 from statsmodels.tsa.seasonal import seasonal_decompose
 import secrets

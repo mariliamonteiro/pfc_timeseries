@@ -49,7 +49,7 @@ class Report(FPDF):
                 string2 = string2 + '%s: %s\n' % (elem, readdata_param[elem])
 
             txt = string1 + '\n' + string2
-            print(txt)
+            
             # Times 12
             self.set_font('Times', '', 12)
             # Output justified text

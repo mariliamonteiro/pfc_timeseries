@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('agg')
 import pandas as pd
 from matplotlib import pyplot as plt
 import secrets

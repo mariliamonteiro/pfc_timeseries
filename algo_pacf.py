@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('agg')
 from matplotlib import pyplot
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.stattools import pacf
