@@ -3,6 +3,7 @@ from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.tsa.stattools import pacf
 import secrets
 import os
+import pandas as pd
 
 UPLOAD_FOLDER = 'temp_files'
 
@@ -14,6 +15,8 @@ def pacf_plot(series, lags):
     pyplot.close()
     return filename
 
-def data_pacf(series, lags):
+def data_pacf(series, lags, rd):
     autocorr = list(pacf(series, nlags = lags))
-    return autocorr
+    df_output = pd.DataFrame({'Lag': range(lags + 1),
+                              'Autocorrelacao': autocorr})
+    return autocorr, df_output

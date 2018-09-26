@@ -3,6 +3,7 @@ from statsmodels.graphics.tsaplots import plot_acf
 from statsmodels.tsa.stattools import acf
 import secrets
 import os
+import pandas as pd
 
 UPLOAD_FOLDER = 'temp_files'
 
@@ -16,4 +17,6 @@ def acf_plot(series, lags):
 
 def data_acf(series, lags):
     autocorr = list(acf(series, nlags = lags))
-    return autocorr
+    df_output = pd.DataFrame({'Lag': range(lags + 1),
+                              'Autocorrelacao': autocorr})
+    return autocorr, df_output

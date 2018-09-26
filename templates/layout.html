@@ -85,7 +85,7 @@
                 <a class="dropdown-item" href="/examples">Exemplos</a>
               </div>
             </li>
-          {% else %}
+          {% elif title == "Home" %}
             <li class="nav-item active">
               <a class="nav-link" href="/home">Página Inicial <span class="sr-only">(current)</span></a>
             </li>
@@ -93,6 +93,23 @@
               <a class="nav-link" href="/docs">Docs</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/algorithms">Algoritmos</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ajuda</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="/fileformats">Formato de Arquivos</a>
+                <a class="dropdown-item" href="/examples">Exemplos</a>
+              </div>
+            </li>
+          {% else %}
+            <li class="nav-item ">
+              <a class="nav-link" href="/home">Página Inicial <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/docs">Docs</a>
+            </li>
+            <li class="nav-item active">
               <a class="nav-link" href="/algorithms">Algoritmos</a>
             </li>
             <li class="nav-item dropdown">
