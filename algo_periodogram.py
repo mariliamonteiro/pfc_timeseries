@@ -6,6 +6,7 @@ import secrets
 import os
 import pandas as pd
 import numpy as np
+from scipy import interpolate
 
 UPLOAD_FOLDER = 'temp_files'
 
@@ -40,16 +41,27 @@ def periodogram_plot(series):
     with np.errstate(divide='ignore'):
         periodo = 1/freq
 
-    fig = pyplot.figure()
-    freq2 = fig.add_subplot(211)
-    periodo2 = fig.add_subplot(212)
-    freq2.plot(np.flip(periodo,0), np.flip(pgram,0), 'o')
-    pyplot.ylabel('P')
-    pyplot.xlabel('Periodo')
+    tickers = np.linspace(min(periodo[1:]),max(periodo[1:]),10*len(periodo[1:]))
+    Spline = interpolate.splrep(np.flip(periodo[1:],0), np.flip(pgram[1:],0))
+    y_alt = interpolate.splev(tickers, Spline)
 
-    periodo2.plot(freq, pgram)
+    fig = pyplot.figure()
+    fig.tight_layout()
+
+    freq2 = fig.add_subplot(211)
+    freq2.plot(freq, pgram)
     pyplot.ylabel('P')
     pyplot.xlabel('Frequência')
+    pyplot.grid(True)
+    pyplot.tight_layout()
+
+    periodo2 = fig.add_subplot(212)
+    periodo2.plot(np.flip(periodo,0), np.flip(pgram,0), '-o')
+    pyplot.ylabel('P')
+    pyplot.xlabel('Período')
+    pyplot.grid(True)
+    pyplot.tight_layout()
+
     fig.savefig(figure_name)
     pyplot.close()
     return filename
