@@ -2,5 +2,11 @@ Filtragem dos dados empregando média móvel. Retorna o gráfico dos dados filtr
 <br />
 Parâmetros de entrada:
 <ul>
-<li>Janela: define a quantidade de elementos que comporão a janela na operação de média, ou seja, a largura da janela. Quanto maior a janela, mais suavizada será a série de saída.
+<li style="text-align:justify;font-size:90%;">Janela: define a quantidade de elementos que comporão a janela na operação de média, ou seja, a largura da janela. Quanto maior a janela, mais suavizada será a série de saída.
 </ul>
+<hr />
+<p style="text-align:justify;font-size:90%;">
+Quer saber mais?
+<br />
+Essa foi a nossa <a href="https://www.springer.com/br/book/9781475777505" target="_blank">referência</a> e o algoritmo foi implementado com base nessa <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.rolling.html" target="_blank">função</a>.
+</p>

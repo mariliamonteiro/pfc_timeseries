@@ -353,7 +353,9 @@ def algorithms_periodogram():
 
         # Generate plot
         img_name = periodogram_plot(serie)
+
         image_file = url_for('static', filename='images/'+ img_name)
+
 
         ### Create report
 
