@@ -35,7 +35,7 @@
 
                     <h5 class="mb-3">
                       Upload de Arquivo
-                      <small class="text-muted" style="font-size:13px"><a href="/fileformats" style="color: #9c9fa2; text-decoration: none">(Saiba mais)</a></small>
+                      <small class="text-muted" style="font-size:13px"><a href="/fileformats" style="color: #9c9fa2; text-decoration: none">(Dúvidas? Saiba mais)</a></small>
                     </h5>
 
 
@@ -71,6 +71,13 @@
                       {{ form.datac.label(class="col-sm-2.5 col-form-label col-form-label-sm") }}
                       <div class="col-md-2">
                         {{ form.datac(class="form-control form-control-sm") }}
+                      </div>
+                    </div>
+
+                    <div class="form-group row container">
+                      {{ form.missing.label(class="col-sm-2.5 col-form-label col-form-label-sm") }}
+                      <div class="col-md-3">
+                        {{ form.missing(class="form-control form-control-sm") }}
                       </div>
                     </div>
 

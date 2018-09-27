@@ -14,7 +14,7 @@ matplotlib.use('agg')
 from matplotlib.pylab import rcParams
 rcParams['lines.linewidth'] = 0.5
 
-from read_file import read_csv
+from read_file import read_csv, summary_maincol
 from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
@@ -29,8 +29,6 @@ app = Flask(__name__)
 
 app.config['UPLOADED_FILES_DEST'] = 'temp_files'
 app.config['UPLOAD_FOLDER'] = 'temp_files'
-
-app.config['SECRET_KEY'] = 'd5fda74dcf2c2fdbfca06a4ebfc65b86a9e0da08d0115dce61f522f183b156d8'
 
 files = UploadSet('files', DATA)
 configure_uploads(app, files)
@@ -97,10 +95,7 @@ def algorithms_acf():
         date_column = form.datec.data
         main_column = form.datac.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
-
-        # Remove nan lines from serie
-        serie.dropna(inplace= True)
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
         img_name = acf_plot(serie, lags)
@@ -112,14 +107,14 @@ def algorithms_acf():
         title = dict_lista['01acf']['title']
 
         # Model parameters
-        model_param = {'Lags': lags,
-                      }
-        readdata_param = {'Separador': separator,
-                          'Cabeçalho': header,
-                          'Coluna de Datas': date_column,
-                          'Coluna Principal': main_column}
+        model_param = [['Lags', str(lags)]]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
         file_title = 'acf'
-        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
 
         # Generate array of values
@@ -127,7 +122,7 @@ def algorithms_acf():
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
         return render_template('algorithms_acf_output.html', title='Função de Autocorrelação', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=acf_data, address_pdf = address_pdf, address_csv = address_csv)
 
@@ -156,10 +151,7 @@ def algorithms_pacf():
         date_column = form.datec.data
         main_column = form.datac.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
-
-        # Remove nan lines from serie
-        serie.dropna(inplace= True)
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -171,21 +163,21 @@ def algorithms_pacf():
         title = dict_lista['02pacf']['title']
 
         # Model parameters
-        model_param = {'Lags': lags,
-                      }
-        readdata_param = {'Separador': separator,
-                          'Cabeçalho': header,
-                          'Coluna de Datas': date_column,
-                          'Coluna Principal': main_column}
+        model_param = [['Lags', str(lags)]]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
         file_title = 'pacf'
-        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
         # Generate array of values
         pacf_data, df_output = data_pacf(serie, lags, rd)
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
         return render_template('algorithms_pacf_output.html', title='Função de Autocorrelação Parcial', text=text, form= form, file_url=file_url, lag=lags, image=image_file, data_acf=pacf_data, address_pdf = address_pdf, address_csv = address_csv)
 
@@ -208,7 +200,7 @@ def algorithms_decomposition():
         # Retrieving results from the form
         model = form.model.data
 
-        translate = {'a':1, 's':2, 't':4, 'b':6, 'm':12, 'q':26, 's':52, 'd':365, 'o':None}
+        translate = {'a':365, 's':180, 't':90, 'b':60, 'm':30, 'q':15, 's':7, 'd':1, 'o':None}
 
         sazon_opt = form.sazon_opt.data
         freq_opt = form.freq_opt.data
@@ -223,7 +215,7 @@ def algorithms_decomposition():
         else:
             freq = form.freq.data
 
-        frequencia = int(freq/sazon)
+        frequencia = int(sazon/freq)
 
         ts = form.reference.data
         if ts == 'center':
@@ -237,10 +229,8 @@ def algorithms_decomposition():
         date_column = form.datec.data
         main_column = form.datac.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
-
-        # Remove nan lines from serie
-        serie.dropna(inplace= True)
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+        print(quality_param)
 
         # Generate plot
         img_name = decomposition_plot(serie, model, frequencia, two_sided)
@@ -252,18 +242,18 @@ def algorithms_decomposition():
         title = dict_lista['03decomposition']['title']
 
         # Model parameters
-        model_param = {'Modelo': model,
-                       'Referência da Média Móvel': ts,
-                       'Frequência dos Dados': freq,
-                       'Sazonalidade dos Dados': sazon,
-                       'Periodicidade (Calculada)': frequencia
-                      }
-        readdata_param = {'Separador': separator,
-                          'Cabeçalho': header,
-                          'Coluna de Datas': date_column,
-                          'Coluna Principal': main_column}
+        model_param = [['Modelo', str(model)],
+                       ['Referência da Média Móvel', str(ts)],
+                       ['Frequência dos Dados', str(freq)],
+                       ['Sazonalidade dos Dados', str(sazon)],
+                       ['Periodicidade (Calculada)', str(frequencia)]]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
         file_title = 'decomposition'
-        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
 
         # Generate array of values
@@ -271,7 +261,7 @@ def algorithms_decomposition():
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
         return render_template('algorithms_decomposition_output.html', title='Decomposição de Séries', text=text, form=form, file_url=file_url, model=model, image=image_file, trend=trend, seasonal=seasonal, residual=residual, rd=rd, two_sided=ts, frequencia=frequencia, address_pdf = address_pdf, address_csv = address_csv)
 
@@ -299,8 +289,9 @@ def algorithms_movingaverage():
         header = form.header.data
         date_column = form.datec.data
         main_column = form.datac.data
+        missing = form.missing.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
 
         # Generate plot
         img_name = ma_plot(serie, window)
@@ -312,21 +303,21 @@ def algorithms_movingaverage():
         title = dict_lista['04movingaverage']['title']
 
         # Model parameters
-        model_param = {'Janela': window
-                      }
-        readdata_param = {'Separador': separator,
-                          'Cabeçalho': header,
-                          'Coluna de Datas': date_column,
-                          'Coluna Principal': main_column}
+        model_param = [['Janela', str(window)]]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
         file_title = 'movingaverage'
-        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
         # Generate array of values
         ma_data, df_output = data_ma(serie, window, rd)
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
         return render_template('algorithms_movingaverage_output.html', title='Média Móvel', text=text, form=form, file_url=file_url, window=window, image=image_file, data_ma=ma_data, raw_data=rd, address_pdf = address_pdf, address_csv = address_csv)
 
