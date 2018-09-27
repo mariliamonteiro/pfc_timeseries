@@ -58,3 +58,14 @@ class FormDecomposition(FlaskForm):
     datac = IntegerField('Coluna principal', default= 2)
 
     submit = SubmitField('Processar')
+
+class FormPeriodogram(FlaskForm):
+
+    # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
+    dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
+    header = BooleanField('Cabeçalho*', default= True)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
+
+    submit = SubmitField('Processar')
