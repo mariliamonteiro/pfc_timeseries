@@ -27,6 +27,8 @@ from report import *
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = 'no-secret-but-should-be'
+
 app.config['UPLOADED_FILES_DEST'] = 'temp_files'
 app.config['UPLOAD_FOLDER'] = 'temp_files'
 
@@ -345,8 +347,9 @@ def algorithms_periodogram():
         header = form.header.data
         date_column = form.datec.data
         main_column = form.datac.data
+        missing = form.missing.data
 
-        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
 
         # Generate plot
         img_name = periodogram_plot(serie)
@@ -358,15 +361,14 @@ def algorithms_periodogram():
         title = dict_lista['05periodogram']['title']
 
         # Model parameters
-        model_param = {
-                      }
-        readdata_param = {'Separador': separator,
-                          'Cabeçalho': header,
-                          'Coluna de Datas': date_column,
-                          'Coluna Principal': main_column}
-
+        model_param = [['Não há parâmetros no método','-']]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
         file_title = 'periodogram'
-        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
         # Generate array of values
         periodogram_data, freq, df_output, index, freq_max = data_periodogram(serie)
