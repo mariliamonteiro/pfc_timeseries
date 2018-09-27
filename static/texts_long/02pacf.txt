@@ -4,3 +4,9 @@ Parâmetros de entrada:
 <ul>
 <li style="text-align:justify;font-size:90%;">Lags: define a quantidade de autocorrelações que serão exibidas, começando com a correlação com a série original (lag zero) e terminando com o atraso no valor definido no formulário.</li>
 </ul>
+<hr />
+<p style="text-align:justify;font-size:90%;">
+Quer saber mais?
+<br />
+Essa foi a nossa <a href="https://www.stat.pitt.edu/stoffer/tsa4/tsa4.pdf" target="_blank">referência</a> e o algoritmo foi implementado com base nessa <a href="https://www.statsmodels.org/dev/generated/statsmodels.tsa.stattools.pacf.html" target="_blank">função</a>.
+</p>
