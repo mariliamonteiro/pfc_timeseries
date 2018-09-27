@@ -39,23 +39,82 @@ class Report(FPDF):
         if data:
             model_param = data[0]
             readdata_param = data[1]
+            quality_param = data[2]
+            summary_param = data[3]
 
-            string1 = 'Parâmetros do Modelo \n'
-            for elem in model_param:
-                string1 = string1 + '%s: %s\n' % (elem, model_param[elem])
+            self.set_font('Arial', 'B', 10)
+            row_height = 1.05* self.font_size
 
-            string2 = 'Parâmetros para Leitura do Arquivo \n'
-            for elem in readdata_param:
-                string2 = string2 + '%s: %s\n' % (elem, readdata_param[elem])
+            col_width_model = [self.w /3, self.w /8]
+            col_width_readdata = [self.w /6, self.w /8]
+            col_width_quality = [self.w /2.5, self.w /8]
+            col_width_summary = self.w / 7
 
-            txt = string1 + '\n' + string2
-            
-            # Times 12
-            self.set_font('Times', '', 12)
-            # Output justified text
-            self.multi_cell(0, 5, txt)
-            # Line break
+            # Params do modelo
+            self.set_font('Arial', 'B', 10)
+            self.cell(0, row_height, 'Parâmetros do Modelo')
+            self.ln(row_height)
+
+            self.set_font('Arial', '', 10)
+            for row in model_param:
+                for i in [0,1]:
+                    self.cell(col_width_model[i], row_height,
+                             txt=row[i], border=1)
+                self.ln()
+            self.ln(5)
+
+            # Params da leitura do arquivo
+            self.set_font('Arial', 'B', 10)
+            self.cell(0, row_height, 'Parâmetros para Leitura do Arquivo \n\n')
+            self.ln(row_height)
+
+            self.set_font('Arial', '', 10)
+            for row in readdata_param:
+                for i in [0,1]:
+                    self.cell(col_width_readdata[i], row_height,
+                             txt=row[i], border=1)
+                self.ln()
+            self.ln(5)
+
+            # Params da Qualidade dos Dados de Entrada
+            self.set_font('Arial', 'B', 10)
+            self.cell(0, row_height, 'Qualidade dos Dados de Entrada \n\n')
+            self.ln(row_height)
+
+            self.set_font('Arial', '', 10)
+            for row in quality_param:
+                for i in [0,1]:
+                    self.cell(col_width_quality[i], row_height,
+                             txt=row[i], border=1)
+                self.ln()
+            self.ln(5)
+
+            # Params da sumarização
+            self.set_font('Arial', 'B', 10)
+            self.cell(0, row_height, 'Sumarização da série principal \n\n')
+            self.ln(row_height)
+
+            self.set_font('Arial', '', 10)
+            k = 0
+            for row in summary_param:
+                if k == 2:
+                    self.ln(3)
+
+                for item in row:
+                    self.cell(col_width_summary, row_height,
+                             txt=item, border=1)
+                self.ln()
+                k = k+1
             self.ln()
+
+            self.set_font('Arial', 'I', 7)
+            self.set_text_color(80,80,80)
+            av1 = '(1) IQR (inter-quantile range) = 1.5 * (Q75 - Q25) \n'
+            av2 = '(2) LBO (lower bound outliers) = quantidade de valores menores que (Q25 - IQR) \n'
+            av3 = '(3) UBO (upper bound outliers) = quantidade de valores maiores que (Q75 + IQR) \n'
+
+            self.multi_cell(0, self.font_size, av1+av2+av3)
+
         else:
             pass
 
@@ -68,13 +127,13 @@ class Report(FPDF):
             self.image(image[1:], 10, 50, 190)
 
 
-def create_report(title, model_param, readdata_param, images, file_title):
+def create_report(title, model_param, readdata_param, quality_param, summary_param, images, file_title):
     report = Report()
     report.alias_nb_pages()
     report.set_title(title)
 
     # Dados de Entrada
-    report.print_chapter('Dados de Entrada', data = [model_param, readdata_param], image = None)
+    report.print_chapter('Dados de Entrada', data = [model_param, readdata_param, quality_param, summary_param], image = None)
     for image in images:
         report.print_chapter('Resultados - Gráficos',data = None, image = image)
     str_title = '%s_%s.pdf' % (file_title, secrets.token_hex(6))
