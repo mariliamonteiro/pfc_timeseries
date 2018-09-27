@@ -19,6 +19,7 @@ from algo_acf import acf_plot, data_acf
 from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
 from algo_decomposition import *
+from algo_periodogram import *
 from delete_images import *
 from delete_reports import *
 from report import *
@@ -324,6 +325,65 @@ def algorithms_movingaverage():
         file_url = None
 
     return render_template('algorithms_movingaverage.html', title='Média Móvel', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/periodogram', methods= ['GET', 'POST'])
+def algorithms_periodogram():
+    text = desc_list['05periodogram']
+
+    form = FormPeriodogram()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+        main_column = form.datac.data
+
+        serie, rd = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+
+        # Generate plot
+        img_name = periodogram_plot(serie)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        ### Create report
+
+        # Report title
+        title = dict_lista['05periodogram']['title']
+
+        # Model parameters
+        model_param = {
+                      }
+        readdata_param = {'Separador': separator,
+                          'Cabeçalho': header,
+                          'Coluna de Datas': date_column,
+                          'Coluna Principal': main_column}
+
+        file_title = 'periodogram'
+        address_pdf = create_report(title, model_param, readdata_param, [image_file], file_title)
+
+        # Generate array of values
+        periodogram_data, freq, df_output, index, freq_max = data_periodogram(serie)
+
+        T = len(serie)/index
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
+
+        return render_template('algorithms_periodogram_output.html', title='Periodograma', text=text, form=form, file_url=file_url, image=image_file, data_periodogram=periodogram_data, address_pdf = address_pdf, address_csv = address_csv, periodo=T, index=index, freq_max=freq_max)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_periodogram.html', title='Periodograma', text=text, form= form, file_url=file_url)
+
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

@@ -40,3 +40,14 @@ class FormDecomposition(UploadGlobal):
 
     sazon_opt = SelectField('Sazonalidade dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
     sazon = IntegerField('Outra Sazonalidade', default=0)
+
+class FormPeriodogram(FlaskForm):
+
+    # CAMPOS FIXOS PARA TODOS OS FORMULÁRIOS (ARQUIVO)
+    dados = FileField('Dados*', validators=[FileAllowed(['csv'], 'Somente arquivos .csv'), FileRequired()])
+    sep = StringField('Separador*', default=',', validators=[Length(min=1, max=2), InputRequired()])
+    header = BooleanField('Cabeçalho*', default= True)
+    datec = IntegerField('Coluna de datas', default= 1)
+    datac = IntegerField('Coluna principal', default= 2)
+
+    submit = SubmitField('Processar')
