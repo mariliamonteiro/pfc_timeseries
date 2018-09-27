@@ -1,0 +1,4 @@
+Criação do Periodograma a partir da série de dados. Retorna o Periodograma bem como os valores de P para cada uma das frequências e o valor da frequência e período de maior valor no gráfico.
+
+O Periodograma consiste em um tipo de análise espectral voltado que, considerando que a série pode ser explicada como um somatório de funções seno e cosseno de diferentes frequências, busca identificar quais dessas frequências são dominantes. A partir de tais informações pode-se obter a periodicidade característica dos dados, como sendo advinda da frequência dominante.
+<br />

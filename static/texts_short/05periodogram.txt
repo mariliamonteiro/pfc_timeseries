@@ -1,0 +1,4 @@
+page: periodogram
+title: Periodograma
+subtitle: Análise Espectral
+desc: Medida da importância relativa da frequência de valores que podem explicar o padrão de oscilação dos dados observados.
