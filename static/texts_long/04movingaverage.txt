@@ -2,5 +2,5 @@ Filtragem dos dados empregando média móvel. Retorna o gráfico dos dados filtr
 <br />
 Parâmetros de entrada:
 <ul>
-<li>Janela: define a quantidade de elementos que comporão a janela na operação de média, ou seja, a largura da janela. Quanto maior a janela, mais suavizada será a série de saída.
+<li style="text-align:justify;font-size:90%;">Janela: define a quantidade de elementos que comporão a janela na operação de média, ou seja, a largura da janela. Quanto maior a janela, mais suavizada será a série de saída.
 </ul>

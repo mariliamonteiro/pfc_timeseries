@@ -3,16 +3,16 @@ Decomposição da série temporal em componentes representantes de diferentes pa
 
 Parâmetros de entrada:
 <ul>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Modelo</b>: define o modelo a ser empregado para a decomposição da série, podendo ser aditivo ou multiplicativo. O modelo aditivo é linear, admitindo que as componentes resultantes (tendência, sazonalidade e resíduo) somadas resultam no dado observado. Já o modelo multiplicativo é não linear, e assim, o impacto das mudanças de cada uma das componentes é variado (o produto das componentes resulta na série observada).
   </li>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Referência Média Móvel</b>: no processo da decomposição os dados são filtrados empregando média móvel. O parâmetro define a centragem da janela da média móvel, sendo "Centrada" a janela com valores à direita e à esquerda e "À direita" a janela que considera no cálculo da média somente valores passados.
   </li>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Frequência dos Dados</b>: define a fequência de aparição dos dados, variando de diária a anual. Para outras opções, assinalar a opção "Outros" e prencher o campo "Outra Frequência".
   </li>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Sazonalidade dos Dados</b>: define a sazonalidade esparada para os dados, ou seja, em que intervalo de tempo espera-se que o fenômeno se repita, ou seja, o tempo do "ciclo" do dado empregado. Para outras opções, assinalar a opção "Outros" e prencher o campo "Outra Frequência".
   </li>
 </ul>
