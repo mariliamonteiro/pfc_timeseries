@@ -20,6 +20,7 @@ from algo_pacf import pacf_plot, data_pacf
 from algo_movingaverage import *
 from algo_decomposition import *
 from algo_periodogram import *
+from algo_arima import *
 from delete_images import *
 from delete_reports import *
 from report import *
@@ -388,6 +389,68 @@ def algorithms_periodogram():
 
     return render_template('algorithms_periodogram.html', title='Periodograma', text=text, form= form, file_url=file_url)
 
+@app.route('/algorithms/arima', methods= ['GET', 'POST'])
+def algorithms_arimafit():
+    text = desc_list['06arima']
+
+    form = FormARIMAfit()
+
+    if form.validate_on_submit():
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        p = form.p.data
+        q = form.q.data
+        d = form.d.data
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+        main_column = form.datac.data
+        missing = form.missing.data
+
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
+        print(quality_param)
+
+        # Generate plot
+        #img_name = decomposition_plot(serie, model, frequencia, two_sided)
+        #image_file = url_for('static', filename='images/'+ img_name)
+
+        ### Create report
+
+        # Report title
+        title = dict_lista['06arima']['title']
+
+        # Model parameters
+        model_param = [['p', str(p)],
+                       ['d', str(d)],
+                       ['q', str(q)],
+                       ]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
+        file_title = 'arima'
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [], file_title)
+
+
+        # Generate array of values
+        tables = fit_arima(serie, p, d, q)
+        print(tables)
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        #df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
+
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, rd=rd, address_pdf = address_pdf, address_csv = address_csv, table=tables)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':
