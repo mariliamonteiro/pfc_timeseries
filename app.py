@@ -21,6 +21,7 @@ from algo_movingaverage import *
 from algo_decomposition import *
 from algo_periodogram import *
 from algo_arima import *
+from algo_diff import *
 from delete_images import *
 from delete_reports import *
 from report import *
@@ -454,6 +455,59 @@ def algorithms_arimafit():
         file_url = None
 
     return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/diff', methods= ['GET', 'POST'])
+def algorithms_diff():
+    text = desc_list['07diff']
+
+    form = FormDiff()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        order = form.diff.data
+
+        # Get data from file
+        separator = form.sep.data
+        header = form.header.data
+        date_column = form.datec.data
+        main_column = form.datac.data
+        missing = form.missing.data
+
+        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
+
+        # Generate plot and array of values
+        img_name, diff_data, df_output = diff(serie, order, rd)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        ### Create report
+
+        # Report title
+        title = dict_lista['07diff']['title']
+
+        # Model parameters
+        model_param = [['Ordem', str(order)]]
+        readdata_param = [['Separador', str(separator)],
+                          ['Cabeçalho', str(header)],
+                          ['Coluna de Datas', str(date_column)],
+                          ['Coluna Principal', str(main_column)]]
+        summary_param = summary_maincol(serie)
+        file_title = 'diff'
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
+
+        return render_template('algorithms_diff_output.html', title='Diferença', text=text, form=form, file_url=file_url, order=order, image=image_file, data_diff=diff_data, raw_data=rd, address_pdf = address_pdf, address_csv = address_csv)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_diff.html', title='Diferença', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

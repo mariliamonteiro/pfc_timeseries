@@ -1,0 +1,4 @@
+page: diff
+title: Diferença
+subtitle: Análise Exploratória
+desc: Cálculo da x-ésima diferença da série (Integração). Passo importante para verificar estacionaridade.

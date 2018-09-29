@@ -52,3 +52,6 @@ class FormARIMAfit(UploadGlobal):
     d = IntegerField('d',default=1, validators= [InputRequired()])
     percent_test = FloatField('Teste (%)',default=10, validators= [InputRequired()])
     predict_range = IntegerField('Intervalo de Predição',default=100, validators= [InputRequired()])
+
+class FormDiff(UploadGlobal):
+    diff = IntegerField('Ordem',default=1, validators= [InputRequired()])
