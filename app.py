@@ -357,7 +357,6 @@ def algorithms_periodogram():
 
         image_file = url_for('static', filename='images/'+ img_name)
 
-
         ### Create report
 
         # Report title
@@ -404,6 +403,8 @@ def algorithms_arimafit():
         p = form.p.data
         q = form.q.data
         d = form.d.data
+        ptest = form.percent_test.data
+        predict_range = form.predict_range.data
 
         # Get data from file
         separator = form.sep.data
@@ -416,8 +417,11 @@ def algorithms_arimafit():
         print(quality_param)
 
         # Generate plot
-        #img_name = decomposition_plot(serie, model, frequencia, two_sided)
-        #image_file = url_for('static', filename='images/'+ img_name)
+        elementos, img_name_residuo, img_name_hist = fit_arima(serie, p, d, q, ptest)
+
+        image_file_residuo = url_for('static', filename='images/'+ img_name_residuo)
+        image_file_hist = url_for('static', filename='images/'+ img_name_hist)
+
 
         ### Create report
 
@@ -435,17 +439,16 @@ def algorithms_arimafit():
                           ['Coluna Principal', str(main_column)]]
         summary_param = summary_maincol(serie)
         file_title = 'arima'
-        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [], file_title)
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file_residuo, image_file_hist], file_title)
 
 
         # Generate array of values
-        tables = fit_arima(serie, p, d, q)
-        print(tables)
+
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
         #df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, rd=rd, address_pdf = address_pdf, address_csv = address_csv, table=tables)
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, p = p, q=q, d=d, ptest=ptest, range=predict_range, image_residuo = image_file_residuo, image_hist = image_file_hist, rd=rd, address_pdf = address_pdf, address_csv = address_csv)
 
     else:
         file_url = None

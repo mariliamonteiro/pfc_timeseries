@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, FloatField
 from wtforms.validators import InputRequired, Length
 from wtforms import SubmitField
 
@@ -50,3 +50,5 @@ class FormARIMAfit(UploadGlobal):
     p = IntegerField('p',default=1, validators= [InputRequired()])
     q = IntegerField('q',default=1, validators= [InputRequired()])
     d = IntegerField('d',default=1, validators= [InputRequired()])
+    percent_test = FloatField('Teste (%)',default=10, validators= [InputRequired()])
+    predict_range = IntegerField('Intervalo de Predição',default=100, validators= [InputRequired()])
