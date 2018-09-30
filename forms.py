@@ -42,7 +42,7 @@ class FormDecomposition(UploadGlobal):
 class FormPeriodogram(UploadGlobal):
     _ignore = 0
 
-# Fit ARIMA
+# ARIMA
 class FormARIMA(UploadGlobal):
     p = IntegerField('p',default=1, validators= [InputRequired()])
     q = IntegerField('q',default=1, validators= [InputRequired()])
@@ -52,3 +52,15 @@ class FormARIMA(UploadGlobal):
 
 class FormDiff(UploadGlobal):
     diff = IntegerField('Ordem',default=1, validators= [InputRequired()])
+
+# SARIMA
+class FormSARIMA(UploadGlobal):
+    p = IntegerField('p',default=1, validators= [InputRequired()])
+    q = IntegerField('q',default=1, validators= [InputRequired()])
+    d = IntegerField('d',default=1, validators= [InputRequired()])
+    P = IntegerField('P',default=1, validators= [InputRequired()])
+    D = IntegerField('D',default=1, validators= [InputRequired()])
+    Q = IntegerField('Q',default=1, validators= [InputRequired()])
+    sazon = IntegerField('Sazonalidade',default=12, validators= [InputRequired()])
+    percent_test = FloatField('Teste (%)',default=10, validators= [InputRequired()])
+    predict_range = IntegerField('Intervalo de Predição',default=10, validators= [InputRequired()])
