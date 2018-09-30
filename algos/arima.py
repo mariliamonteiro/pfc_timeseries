@@ -12,13 +12,14 @@ UPLOAD_FOLDER = 'temp_files'
 def individual_data(tables, p, d, q):
     csv = tables.as_csv()
     lista = csv.replace('\n',',').replace(' ','').split(',')
-    if d is not 0:
-        x = 0
-    else:
-        x = 1
 
-    elementos = {'titulo': lista[1],
-                 'n_obs': lista[3],
+    if d == 0:
+        x = 1
+    else:
+        x = 0
+
+    elementos = {'titulo': lista[2],
+                 'n_obs': lista[4],
                  'LogLikelihood': lista[10-x],
                  'metodo': lista[12-x],
                  'data': lista[17-x],
@@ -35,9 +36,9 @@ def individual_data(tables, p, d, q):
                  }
 
     if d == 0:
-        elementos['modelo']: lista[6]+','+lista[7]
+        elementos['modelo'] = lista[6]+','+lista[7]
     else:
-        elementos['modelo']: lista[6]+','+lista[7]+','+lista[8]
+        elementos['modelo'] = lista[6]+','+lista[7]+','+lista[8]
 
     index = 46 - x
     for i in range(p):
@@ -69,15 +70,16 @@ def fit_arima(series, p, d, q, test):
     mod = ARIMA(series_clipped,
                 order = (p, d, q))
 
+
     # Realizar fit do ARIMA
-    results = mod.fit()
+    results = mod.fit(start_ar_lags = p + 1)
 
     # Tabelas com parâmetros dos resultados gerados
     # Os parâmentros são salvos individualmente no dict "elementos"
     tables = results.summary()
     elementos = individual_data(tables, p, d, q)
     elementos['n_obs_orig'] = len(series)
-
+    print(tables)
     # Análise de erros do fit
 
     # Gráfico dos resíduos
@@ -104,4 +106,38 @@ def fit_arima(series, p, d, q, test):
     pyplot.savefig(figure_name_hist)
     pyplot.close()
 
-    return elementos, filename_residuo, filename_hist
+    # Forecast dentro da série para exibição
+    forecast, stderr, conf_int = results.forecast(len(series)-len(series_clipped))
+
+    real = series[int((1-test/100)*len(series)):]
+
+    df = pd.DataFrame(real)
+    df['predict'] = forecast
+
+    pyplot.plot(df)
+
+    filename_forecast = secrets.token_hex(8)+'.png'
+    figure_name_forecast = os.path.join('static','images', filename_forecast)
+    pyplot.savefig(figure_name_forecast)
+    pyplot.close()
+
+
+    return elementos, filename_residuo, filename_hist, filename_forecast
+
+def predict_arima(series, p, d, q, predict_range):
+    # Rodar ARIMA com parâmetros dados
+    mod = ARIMA(series,
+                order = (p, d, q))
+    results = mod.fit(start_ar_lags = p + 1)
+
+    results.plot_predict(start = int(0.9*len(series)),
+                         end = len(series) + predict_range,
+                         dynamic = False,
+                         plot_insample = True)
+
+    filename_predict = secrets.token_hex(8)+'.png'
+    figure_name_predict = os.path.join('static','images', filename_predict)
+    pyplot.savefig(figure_name_predict)
+    pyplot.close()
+
+    return filename_predict

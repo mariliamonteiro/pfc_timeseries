@@ -345,10 +345,10 @@ def algorithms_periodogram():
     return render_template('algorithms_periodogram.html', title='Periodograma', text=text, form= form, file_url=file_url)
 
 @app.route('/algorithms/arima', methods= ['GET', 'POST'])
-def algorithms_arimafit():
+def algorithms_arima():
     text = desc_list['06arima']
 
-    form = FormARIMAfit()
+    form = FormARIMA()
 
     if form.validate_on_submit():
         filename = secrets.token_hex(8) + '.csv'
@@ -367,11 +367,13 @@ def algorithms_arimafit():
         serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
-        elementos, img_name_residuo, img_name_hist = fit_arima(serie, p, d, q, ptest)
+        elementos, img_name_residuo, img_name_hist, img_name_forecast = fit_arima(serie, p, d, q, ptest)
+        img_name_predict = predict_arima(serie, p, d, q, predict_range)
 
         image_file_residuo = url_for('static', filename='images/'+ img_name_residuo)
         image_file_hist = url_for('static', filename='images/'+ img_name_hist)
-
+        image_file_forecast = url_for('static', filename='images/'+ img_name_forecast)
+        image_file_predict = url_for('static', filename='images/'+ img_name_predict)
 
         ### Create report
 
@@ -386,7 +388,7 @@ def algorithms_arimafit():
         readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'arima'
-        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file_residuo, image_file_hist], file_title)
+        address_pdf = create_report_arima(title, model_param, readdata_param, quality_param, summary_param, [image_file_residuo, image_file_hist, image_file_forecast, image_file_predict], file_title, elementos)
 
 
         # Generate array of values
@@ -395,7 +397,7 @@ def algorithms_arimafit():
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
         #df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
 
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, p = p, q=q, d=d, ptest=ptest, range=predict_range, image_residuo = image_file_residuo, image_hist = image_file_hist, rd=rd, address_pdf = address_pdf, address_csv = address_csv)
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, p = p, q=q, d=d, listap = list(range(p)), listaq = list(range(q)), ptest=ptest, range=predict_range, image_residuo = image_file_residuo, image_hist = image_file_hist, image_forecast=image_file_forecast, image_predict = image_file_predict, rd=rd, address_pdf = address_pdf, address_csv = address_csv, result_data = elementos)
 
     else:
         file_url = None
