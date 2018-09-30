@@ -43,7 +43,7 @@ class FormPeriodogram(UploadGlobal):
     _ignore = 0
 
 # Fit ARIMA
-class FormARIMAfit(UploadGlobal):
+class FormARIMA(UploadGlobal):
     p = IntegerField('p',default=1, validators= [InputRequired()])
     q = IntegerField('q',default=1, validators= [InputRequired()])
     d = IntegerField('d',default=1, validators= [InputRequired()])
