@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container" style="margin-bottom:50px; margin-top:40px;">
+  <div class="container row">
+    <div class="col-md-5">
+      <img src="{{ url_for('static', filename='404-error.png') }}" class="img-responsive" width=100%>
+    </div>
+    <div class="col-md-7">
+      <h3><b>Error 404</b></h3>
+      <h4>Página não encontrada</h4>
+      <p style="text-align:justify; vertical-align:middle">
+        Essa página não existe ou foi removida pelos administradores. Por favor, retorne ao menu inicial.
+        <p><a href="/" class="btn btn-primary">INÍCIO</a></p>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock content %}

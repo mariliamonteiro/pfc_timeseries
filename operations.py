@@ -4,7 +4,42 @@ import numpy as np
 from scipy import stats
 import os
 
-def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, main_column= 1, isseries= False, missing= 'drop'):
+# Construir DatetimeIndex a partir da frequência passada e dos dados originais
+def infer_dates(dates, freq='D'):
+    qty = len(dates)
+
+    if (dates.dtype == np.int64):
+        try:
+            final_dates = pd.DatetimeIndex([str(x) for x in dates])
+        except:
+            final_dates = pd.date_range('1900-01-01', periods= qty, freq= freq)
+
+    elif (dates.dtype == np.float64):
+        try:
+            beg = dates[0]
+            start_date = datetime(int(beg),1,1) + timedelta(days= int((beg-int(beg))*365))
+
+            final_dates = pd.date_range(start_date, periods= qty, freq= freq)
+
+        except:
+            final_dates = pd.date_range('1900-01-01', periods= qty, freq= freq)
+
+    else:
+        try:
+            final_dates = pd.to_datetime(dates)
+            final_dates.freq = pd.tseries.frequencies.to_offset(freq)
+
+            if final_dates.freq == None:
+                start_date = final_dates[0]
+                final_dates = pd.date_range(start_date, periods= qty, freq= freq)
+
+        except:
+            final_dates = pd.date_range('1900-01-01', periods= qty, freq= freq)
+
+    return final_dates
+
+# Leitura do arquivo, considerando as opções na plataforma
+def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, main_column= 1, freq= 'D', missing= 'drop', isseries= True):
 
     if header == True:
         header = 0
@@ -15,9 +50,6 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
 
     os_path = 'temp_files/'
     os.remove(os_path + filename)
-
-    supported_formats = ['%d-%m-%Y', '%d-%m-%y', '%d/%m/%Y', '%d/%m/%y',
-                         '%Y-%m-%d', '%y-%m-%d', '%Y/%m/%d', '%y/%m/%d']
 
     mainc = list(df.iloc[:,main_column-1])
 
@@ -36,35 +68,12 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         dates = df.iloc[:,date_column-1]
         raw_dates = list(dates)
 
-        if (dates.dtype == np.int64):
-            try:
-                dates = pd.DatetimeIndex([str(x) for x in dates])
-            except:
-                size = len(dates)
-                dates = pd.date_range('1900/01/01', periods=size, freq='D')
+        dates = infer_dates(dates, freq)
 
-        elif (dates.dtype == np.float64):
-            try:
-                d_aux = [datetime(int(d), 1, 1) + timedelta(days= int((d-int(d))*365.2475)) for d in raw_dates]
-                dates = pd.to_datetime(d_aux)
-            except:
-                size = len(dates)
-                dates = pd.date_range('1900/01/01', periods=size, freq='D')
-
-        else:
-            val=0
-            for fmt in supported_formats:
-                try:
-                    dates = pd.to_datetime(dates, format= fmt)
-                    val = val +1
-                    if val >0:
-                        break
-                except:
-                    pass
-
-            if val == 0:
-                size = len(dates)
-                dates = pd.date_range('1900/01/01', periods=size, freq='D')
+    else:
+        qty = sizedf[0]
+        dates = pd.date_range('1900-01-01', periods= qty, freq= freq)
+        raw_dates = list(range(1,qty+1))
 
     # Problema univariado ou multivariado
     col = list(df.columns.values)
@@ -102,6 +111,40 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
 
     return df, raw_dates, df_summary
 
+# Função para reduzir número de linhas no app (limpeza)
+def deal_inputs(filepath, filename, form, isseries= True):
+
+    separator = form.sep.data
+    header = form.header.data
+    date_column = form.datec.data
+    main_column = form.datac.data
+    missing = form.missing.data
+    freq = form.freq.data
+
+    serie, rd, quality_param = read_csv(filepath, filename, separator, header, date_column, main_column, freq, missing, isseries)
+
+    return serie, rd, quality_param
+
+# Geração de tabela para inclusão no relatório
+def readdata_table(form):
+
+    separator = form.sep.data
+    header = form.header.data
+    date_column = form.datec.data
+    main_column = form.datac.data
+    missing = form.missing.data
+    freq = form.freq.data
+
+    readdata_param = [['Separador', str(separator)],
+                      ['Cabeçalho', str(header)],
+                      ['Coluna de Datas', str(date_column)],
+                      ['Coluna Principal', str(main_column)],
+                      ['Frequência dos Dados', str(freq)],
+                      ['Tratamento de Dados Faltantes', str(missing)]]
+
+    return readdata_param
+
+# Sumarização dos dados iniciais para inclusão no relatório
 def summary_maincol(df):
 
     if isinstance(df, pd.Series):

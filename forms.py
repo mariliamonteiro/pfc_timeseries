@@ -13,6 +13,7 @@ class UploadGlobal(FlaskForm):
     datec = IntegerField('Coluna de datas', default= 1)
     datac = IntegerField('Coluna principal', default= 2)
     missing = SelectField('Tratamento de Dados Faltantes', choices=[('drop','Remoção'),('ffill','Forward Fill'),('linear','Interpolação Linear'),('cubic','Interpolação Cúbica')], validators= [InputRequired()], default='drop')
+    freq = SelectField('Frequência dos Dados', choices=[('H','Hora em hora'),('D','Diária'),('W','Semanal'),('SMS','Quinzenal'),('MS','Mensal'),('QS','Trimestral'),('YS','Anual')], validators= [InputRequired()], default='MS')
 
     submit = SubmitField('Processar')
 
@@ -33,17 +34,13 @@ class FormMA(UploadGlobal):
 # Decomposição clássica de séries temporais
 class FormDecomposition(UploadGlobal):
     model = SelectField('Modelo', choices=[('additive','Aditivo'),('multiplicative','Multiplicativo')], validators= [InputRequired()])
-    reference = SelectField('Referência Média Móvel', choices=[('center', 'Centrada'), ('right', 'À direita')], validators= [InputRequired()])
+    reference = SelectField('Referência Média Móvel', choices=[('center', 'Centrada'), ('right', 'À direita')], validators= [InputRequired()], default='right')
 
-    freq_opt = SelectField('Frequência dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
-    freq = IntegerField('Outra Frequência', default=0)
-
-    sazon_opt = SelectField('Sazonalidade dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
-    sazon = IntegerField('Outra Sazonalidade', default=0)
+    sazon = IntegerField('Sazonalidade dos Dados', default=12)
 
 # Periodograma
 class FormPeriodogram(UploadGlobal):
-    a = 1
+    _ignore = 0
 
 # Fit ARIMA
 class FormARIMAfit(UploadGlobal):
