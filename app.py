@@ -14,15 +14,18 @@ matplotlib.use('agg')
 from matplotlib.pylab import rcParams
 rcParams['lines.linewidth'] = 0.5
 
-from read_file import read_csv, summary_maincol
-from algo_acf import acf_plot, data_acf
-from algo_pacf import pacf_plot, data_pacf
-from algo_movingaverage import *
-from algo_decomposition import *
-from algo_periodogram import *
+from operations import deal_inputs, readdata_table, summary_maincol
 from delete_images import *
 from delete_reports import *
 from report import *
+
+from algos.acf import *
+from algos.pacf import *
+from algos.movingaverage import *
+from algos.decomposition import *
+from algos.periodogram import *
+from algos.arima import *
+from algos.diff import *
 
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
@@ -31,6 +34,7 @@ app.config['SECRET_KEY'] = 'no-secret-but-should-be'
 
 app.config['UPLOADED_FILES_DEST'] = 'temp_files'
 app.config['UPLOAD_FOLDER'] = 'temp_files'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 files = UploadSet('files', DATA)
 configure_uploads(app, files)
@@ -75,6 +79,15 @@ def download(filename):
 def download_acf(filename):
     return send_from_directory(directory='static/reports', filename=filename, as_attachment= True)
 
+@app.errorhandler(403)
+@app.errorhandler(413)
+@app.errorhandler(500)
+def page_error(e):
+    return render_template('500.html', title = 'Erro na aplicação'), 500
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', title = 'Página não encontrada', link= request.referrer), 404
 
 # PAGINAS DE FORMULARIOS DOS ALGORITMOS UTILIZADOS =============================
 @app.route('/algorithms/acf', methods= ['GET', 'POST'])
@@ -93,11 +106,7 @@ def algorithms_acf():
 
         # Get data from file
         separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-        main_column = form.datac.data
-
-        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
         img_name = acf_plot(serie, lags)
@@ -110,10 +119,7 @@ def algorithms_acf():
 
         # Model parameters
         model_param = [['Lags', str(lags)]]
-        readdata_param = [['Separador', str(separator)],
-                          ['Cabeçalho', str(header)],
-                          ['Coluna de Datas', str(date_column)],
-                          ['Coluna Principal', str(main_column)]]
+        readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'acf'
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
@@ -149,11 +155,7 @@ def algorithms_pacf():
 
         # Get data from file
         separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-        main_column = form.datac.data
-
-        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
         img_name = pacf_plot(serie, lags)
@@ -166,10 +168,7 @@ def algorithms_pacf():
 
         # Model parameters
         model_param = [['Lags', str(lags)]]
-        readdata_param = [['Separador', str(separator)],
-                          ['Cabeçalho', str(header)],
-                          ['Coluna de Datas', str(date_column)],
-                          ['Coluna Principal', str(main_column)]]
+        readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'pacf'
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
@@ -201,23 +200,7 @@ def algorithms_decomposition():
 
         # Retrieving results from the form
         model = form.model.data
-
-        translate = {'a':365, 's':180, 't':90, 'b':60, 'm':30, 'q':15, 's':7, 'd':1, 'o':None}
-
-        sazon_opt = form.sazon_opt.data
-        freq_opt = form.freq_opt.data
-
-        if translate[sazon_opt] != None:
-            sazon = translate[sazon_opt]
-        else:
-            sazon = form.sazon.data
-
-        if translate[freq_opt] != None:
-            freq = translate[freq_opt]
-        else:
-            freq = form.freq.data
-
-        frequencia = int(sazon/freq)
+        frequencia = form.sazon.data
 
         ts = form.reference.data
         if ts == 'center':
@@ -227,12 +210,7 @@ def algorithms_decomposition():
 
         # Get data from file
         separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-        main_column = form.datac.data
-
-        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True)
-        print(quality_param)
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
         img_name = decomposition_plot(serie, model, frequencia, two_sided)
@@ -246,13 +224,8 @@ def algorithms_decomposition():
         # Model parameters
         model_param = [['Modelo', str(model)],
                        ['Referência da Média Móvel', str(ts)],
-                       ['Frequência dos Dados', str(freq)],
-                       ['Sazonalidade dos Dados', str(sazon)],
-                       ['Periodicidade (Calculada)', str(frequencia)]]
-        readdata_param = [['Separador', str(separator)],
-                          ['Cabeçalho', str(header)],
-                          ['Coluna de Datas', str(date_column)],
-                          ['Coluna Principal', str(main_column)]]
+                       ['Periodicidade', str(frequencia)]]
+        readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'decomposition'
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
@@ -288,12 +261,7 @@ def algorithms_movingaverage():
 
         # Get data from file
         separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-        main_column = form.datac.data
-        missing = form.missing.data
-
-        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
         img_name = ma_plot(serie, window)
@@ -306,10 +274,7 @@ def algorithms_movingaverage():
 
         # Model parameters
         model_param = [['Janela', str(window)]]
-        readdata_param = [['Separador', str(separator)],
-                          ['Cabeçalho', str(header)],
-                          ['Coluna de Datas', str(date_column)],
-                          ['Coluna Principal', str(main_column)]]
+        readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'movingaverage'
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
@@ -344,18 +309,12 @@ def algorithms_periodogram():
 
         # Get data from file
         separator = form.sep.data
-        header = form.header.data
-        date_column = form.datec.data
-        main_column = form.datac.data
-        missing = form.missing.data
-
-        serie, rd, quality_param = read_csv(file_url, filename, separator, header, date_column, main_column, True, missing)
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
 
         # Generate plot
         img_name = periodogram_plot(serie)
 
         image_file = url_for('static', filename='images/'+ img_name)
-
 
         ### Create report
 
@@ -364,10 +323,7 @@ def algorithms_periodogram():
 
         # Model parameters
         model_param = [['Não há parâmetros no método','-']]
-        readdata_param = [['Separador', str(separator)],
-                          ['Cabeçalho', str(header)],
-                          ['Coluna de Datas', str(date_column)],
-                          ['Coluna Principal', str(main_column)]]
+        readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'periodogram'
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
@@ -388,6 +344,108 @@ def algorithms_periodogram():
 
     return render_template('algorithms_periodogram.html', title='Periodograma', text=text, form= form, file_url=file_url)
 
+@app.route('/algorithms/arima', methods= ['GET', 'POST'])
+def algorithms_arimafit():
+    text = desc_list['06arima']
+
+    form = FormARIMAfit()
+
+    if form.validate_on_submit():
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        p = form.p.data
+        q = form.q.data
+        d = form.d.data
+        ptest = form.percent_test.data
+        predict_range = form.predict_range.data
+
+        # Get data from file
+        separator = form.sep.data
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
+
+        # Generate plot
+        elementos, img_name_residuo, img_name_hist = fit_arima(serie, p, d, q, ptest)
+
+        image_file_residuo = url_for('static', filename='images/'+ img_name_residuo)
+        image_file_hist = url_for('static', filename='images/'+ img_name_hist)
+
+
+        ### Create report
+
+        # Report title
+        title = dict_lista['06arima']['title']
+
+        # Model parameters
+        model_param = [['p', str(p)],
+                       ['d', str(d)],
+                       ['q', str(q)],
+                       ]
+        readdata_param = readdata_table(form)
+        summary_param = summary_maincol(serie)
+        file_title = 'arima'
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file_residuo, image_file_hist], file_title)
+
+
+        # Generate array of values
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        #df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
+
+        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, p = p, q=q, d=d, ptest=ptest, range=predict_range, image_residuo = image_file_residuo, image_hist = image_file_hist, rd=rd, address_pdf = address_pdf, address_csv = address_csv)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_arima.html', title='ARIMA', text=text, form= form, file_url=file_url)
+
+@app.route('/algorithms/diff', methods= ['GET', 'POST'])
+def algorithms_diff():
+    text = desc_list['07diff']
+
+    form = FormDiff()
+
+    if form.validate_on_submit() and request.method == 'POST':
+        filename = secrets.token_hex(8) + '.csv'
+        form.dados.data.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file_url = files.url(filename)
+
+        # Retrieving results from the form
+        order = form.diff.data
+
+        # Get data from file
+        separator = form.sep.data
+        serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
+
+        # Generate plot and array of values
+        img_name, diff_data, df_output = diff(serie, order, rd)
+        image_file = url_for('static', filename='images/'+ img_name)
+
+        ### Create report
+
+        # Report title
+        title = dict_lista['07diff']['title']
+
+        # Model parameters
+        model_param = [['Ordem', str(order)]]
+        readdata_param = readdata_table(form)
+        summary_param = summary_maincol(serie)
+        file_title = 'diff'
+        address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
+
+        # Create csv for downloading
+        address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False, encoding='utf-8-sig')
+
+        return render_template('algorithms_diff_output.html', title='Diferença', text=text, form=form, file_url=file_url, order=order, image=image_file, data_diff=diff_data, raw_data=rd, address_pdf = address_pdf, address_csv = address_csv)
+
+    else:
+        file_url = None
+
+    return render_template('algorithms_diff.html', title='Diferença', text=text, form= form, file_url=file_url)
 
 # INICIAR SERVIDOR =============================================================
 if __name__ == '__main__':

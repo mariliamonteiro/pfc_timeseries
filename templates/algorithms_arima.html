@@ -1,21 +1,35 @@
 {% extends "layout_algorithms.html" %}
 
 {% block formulario %}
+<h6>Fit do Modelo</h6>
 <div class="row">
-  <div class="form-group col-md-4 mb-3">
+  <div class="form-group col-md-3 mb-3">
     {{ form.p.label(class="form-control-label") }}
     {{ form.p(class="form-control form-control-lg") }}
     <small class="form-text text-muted">Ordem da componente autorregressiva</small>
   </div>
-  <div class="form-group col-md-4 mb-3">
+  <div class="form-group col-md-3 mb-3">
     {{ form.d.label(class="form-control-label") }}
     {{ form.d(class="form-control form-control-lg") }}
     <small class="form-text text-muted">Número de diferenças tomadas na série</small>
   </div>
-  <div class="form-group col-md-4 mb-3">
+  <div class="form-group col-md-3 mb-3">
     {{ form.q.label(class="form-control-label") }}
     {{ form.q(class="form-control form-control-lg") }}
     <small class="form-text text-muted">Ordem da componente das médias móveis</small>
+  </div>
+  <div class="form-group col-md-3 mb-3">
+    {{ form.percent_test.label(class="form-control-label") }}
+    {{ form.percent_test(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Porcentagem de dados tomados para teste</small>
+  </div>
+</div>
+<h6>Predição do Modelo</h6>
+<div class="row">
+  <div class="form-group col-md-4 mb-3">
+    {{ form.predict_range.label(class="form-control-label") }}
+    {{ form.predict_range(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Número de registros a serem preditos a partir do fim da série de dados</small>
   </div>
 </div>
 {% endblock formulario %}

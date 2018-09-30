@@ -1,0 +1,11 @@
+{% extends "layout_algorithms.html" %}
+
+{% block formulario %}
+<div class="row">
+  <div class="form-group col-md-3 mb-3">
+    {{ form.diff.label(class="form-control-label") }}
+    {{ form.diff(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Número de diferenças a serem aplicadas na série</small>
+  </div>
+</div>
+{% endblock formulario %}

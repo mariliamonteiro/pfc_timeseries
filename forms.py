@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, FloatField
 from wtforms.validators import InputRequired, Length
 from wtforms import SubmitField
 
@@ -13,6 +13,7 @@ class UploadGlobal(FlaskForm):
     datec = IntegerField('Coluna de datas', default= 1)
     datac = IntegerField('Coluna principal', default= 2)
     missing = SelectField('Tratamento de Dados Faltantes', choices=[('drop','Remoção'),('ffill','Forward Fill'),('linear','Interpolação Linear'),('cubic','Interpolação Cúbica')], validators= [InputRequired()], default='drop')
+    freq = SelectField('Frequência dos Dados', choices=[('H','Hora em hora'),('D','Diária'),('W','Semanal'),('SMS','Quinzenal'),('MS','Mensal'),('QS','Trimestral'),('YS','Anual')], validators= [InputRequired()], default='MS')
 
     submit = SubmitField('Processar')
 
@@ -33,14 +34,21 @@ class FormMA(UploadGlobal):
 # Decomposição clássica de séries temporais
 class FormDecomposition(UploadGlobal):
     model = SelectField('Modelo', choices=[('additive','Aditivo'),('multiplicative','Multiplicativo')], validators= [InputRequired()])
-    reference = SelectField('Referência Média Móvel', choices=[('center', 'Centrada'), ('right', 'À direita')], validators= [InputRequired()])
+    reference = SelectField('Referência Média Móvel', choices=[('center', 'Centrada'), ('right', 'À direita')], validators= [InputRequired()], default='right')
 
-    freq_opt = SelectField('Frequência dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
-    freq = IntegerField('Outra Frequência', default=0)
-
-    sazon_opt = SelectField('Sazonalidade dos Dados', choices=[('a','Anual'), ('s', 'Semestral'), ('t', 'Trimestral'), ('b', 'Bimestral'), ('m', 'Mensal'), ('q', 'Quinzenal'), ('s', 'Semanal'), ('d', 'Diário'), ('o', 'Outros')], validators= [InputRequired()], default='o')
-    sazon = IntegerField('Outra Sazonalidade', default=0)
+    sazon = IntegerField('Sazonalidade dos Dados', default=12)
 
 # Periodograma
 class FormPeriodogram(UploadGlobal):
-    a = 1
+    _ignore = 0
+
+# Fit ARIMA
+class FormARIMAfit(UploadGlobal):
+    p = IntegerField('p',default=1, validators= [InputRequired()])
+    q = IntegerField('q',default=1, validators= [InputRequired()])
+    d = IntegerField('d',default=1, validators= [InputRequired()])
+    percent_test = FloatField('Teste (%)',default=10, validators= [InputRequired()])
+    predict_range = IntegerField('Intervalo de Predição',default=100, validators= [InputRequired()])
+
+class FormDiff(UploadGlobal):
+    diff = IntegerField('Ordem',default=1, validators= [InputRequired()])

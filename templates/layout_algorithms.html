@@ -75,6 +75,13 @@
                     </div>
 
                     <div class="form-group row container">
+                      {{ form.freq.label(class="col-sm-2.5 col-form-label col-form-label-sm") }}
+                      <div class="col-md-4">
+                        {{ form.freq(class="form-control form-control-sm") }}
+                      </div>
+                    </div>
+
+                    <div class="form-group row container">
                       {{ form.missing.label(class="col-sm-2.5 col-form-label col-form-label-sm") }}
                       <div class="col-md-3">
                         {{ form.missing(class="form-control form-control-sm") }}

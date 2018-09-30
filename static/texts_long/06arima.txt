@@ -1,0 +1,20 @@
+Visa encontrar curva que melhor descreve o conjunto de dados aplicando o modelo ARIMA (<i>Auto Regressive Integrated Moving Average</i>).
+Parâmetros de entrada:
+<ul>
+  <li style="text-align:justify;font-size:90%;">
+    <b>p</b>: parâmetro referente à componente autorregressiva do modelo. Incorpora, assim, o efeito de valores passados ao modelo.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>q</b>: parâmetro referente à componente de integração do modelo.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>d</b>: configura o erro como sendo a combinação linear dos erros de registros anteriores na série de dados.
+  </li>
+</ul>
+<br />
+<hr />
+<p style="text-align:justify;font-size:90%;">
+Quer saber mais?
+<br />
+Essa foi a nossa <a href="https://www.stat.pitt.edu/stoffer/tsa4/tsa4.pdf" target="_blank">referência</a> e o algoritmo foi implementado com base nessa <a href="https://www.statsmodels.org/dev/generated/statsmodels.tsa.arima_model.ARIMA.html#statsmodels.tsa.arima_model.ARIMA" target="_blank">função</a>.
+</p>
