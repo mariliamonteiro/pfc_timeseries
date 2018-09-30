@@ -8,7 +8,7 @@ Análise de Séries Temporais - IME
 <br/>
 
 <p align="center">
-  <a href="#why"><strong>Por que?</strong></a> ·
+  <a href="#why"><strong>Por quê?</strong></a> ·
   <a href="#principles"><strong>Princípios</strong></a> ·
   <a href="#tools"><strong>Recursos</strong></a> ·
   <a href="#structure"><strong>Estrutura</strong></a> ·
