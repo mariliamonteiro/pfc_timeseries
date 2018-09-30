@@ -8,16 +8,14 @@
   </p>
 </div>
 
-
-
 <div class="container">
-  <div class="row container">
+  <div class="row container" style="vertical-align:middle;">
     <h4>Parâmetros de entrada</h4>
   </div>
   <br />
 
   <div class="row">
-    <div class="col-md-5" style="padding-bottom:20px">
+    <div class="col-md-5" style="padding-bottom:20px;">
       <img src="{{ url_for('static', filename='fileform1.PNG') }}" class="img-responsive border" width=100%>
     </div>
     <div class="col-md-7">
@@ -25,16 +23,19 @@
       <p style="text-align:justify">
         Todos os formulários dos algoritmos implementados na plataforma possuem uma seção em comum (figura ao lado) referente ao upload do arquivo das séries temporais que o usuário deseja analisar. Por questões de segurança e organização dos dados, são aceitos apenas arquivos no formato <code class="highlighter-rouge">.csv</code>.
       </p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
       <p style="text-align:justify">
-        Além disso, a melhor maneira de garantir a correta interpretação das datas de sua série temporal é utilizando os formatos <code class="highlighter-rouge">YYYY-mm-dd</code> ou <code class="highlighter-rouge">dd-mm-YYYY</code> (e algumas variações, como <code class="highlighter-rouge">/</code> ao invés de <code class="highlighter-rouge">-</code>), mesmo que os dados em questão tenham frequência mensal ou anual (nesse caso, recomenda-se que se utilize um dia fixo, como <code class="highlighter-rouge">YYYY-mm-01</code>). Essa construção foi pensada para garantir que os formatos planejados estejam livres de quaisquer problemas, ao invés de generalizar para as inúmeras possíveis combinações.
+        Além disso, a melhor maneira de garantir a correta interpretação das datas de sua série temporal é utilizando os formatos <code class="highlighter-rouge">YYYY-mm-dd</code> ou <code class="highlighter-rouge">dd-mm-YYYY</code> (e algumas variações, como <code class="highlighter-rouge">/</code> ao invés de <code class="highlighter-rouge">-</code>), mesmo que os dados em questão tenham frequência mensal ou anual (nesse caso, recomenda-se que se utilize um dia fixo, como <code class="highlighter-rouge">YYYY-mm-01</code>).
       </p>
     </div>
   </div>
+
+<div class="row">
+  <div class="col-md-12">
+    <p style="text-align:justify">
+      Essa construção foi pensada para garantir que os formatos planejados estejam livres de quaisquer problemas, ao invés de generalizar para as inúmeras possíveis combinações. Ainda assim, caso sejam passados números inteiros ou fracionários como a informação de data, a aplicação tentará interpretar a parte inteira como <i>ano</i>, e a parte decimal como <i>fração do ano</i>, e ajustar de acordo com a frequência escolhida nas opções.
+    </p>
+  </div>
+</div>
 
   <div class="row">
     <div class="col-md-4">
@@ -57,6 +58,24 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-12">
+      <span><b>Frequência dos Dados</b></span>
+      <p style="text-align:justify">
+        Esse parâmetro refere-se à frequência dos dados de entrada, ou seja, o intervalo de tempo que cada registro na série representa. Atualmente, os intervalos implementados são <i>Hora, Dia, Semana, Quinzena, Mês, Trimestre e Ano</i>. Recomenda-se que, caso os dados estejam em outra frequência de datas, seja selecionada a opção <i>Dia</i>.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <span><b>Tratamento de Dados Faltantes</b></span>
+      <p style="text-align:justify">
+        Esse parâmetro refere-se ao método de tratamento de registros sem valor atribuído na Coluna Principal. Por padrão, estes dados são removidos da série previamente, mas há outros três métodos possíveis: <b>Forward Fill</b>, que repete o valor do último dado disponível; <b>Interpolação Linear</b>, que realiza interpolação linear entre o valor anterior e posterior ao(s) registro(s) sem valor atribuído; e <b>Interpolação Cúbica</b>, que segue o mesmo processo, porém operando interpolação cúbica. É importante ressaltar que tais métodos solucionam apenas os dados faltantes internamente (ou seja, que possuam valores em registros anteriores e posteriores), e as pontas de início e fim da série sem dados serão removidas, independente do método.
+      </p>
+    </div>
+  </div>
+
   <hr />
 
   <div class="row">
@@ -69,6 +88,8 @@
           <li><b>Cabeçalho</b>: o arquivo possui cabeçalho, portanto mantém-se a opção marcada.</li>
           <li><b>Coluna de datas</b>: as datas encontram-se na primeira coluna, portanto mantém-se o valor <code class="highlighter-rouge">1</code>.</li>
           <li><b>Coluna principal</b>: os valores da Série Temporal encontram-se na segunda coluna, portanto mantém-se o valor <code class="highlighter-rouge">2</code>.</li>
+          <li><b>Frequência dos Dados</b>: analisando a primeira coluna do extrato, nota-se que os dados estão dispostos diariamente. Portanto, marca-se a opção <code class="highlighter-rouge">Diária</code>.</li>
+          <li><b>Tratamento de Dados Faltantes</b>: esse parâmetro está a critério do usuário. Em geral, mantém-se a opção padrão <code class="highlighter-rouge">Remoção</code>.</li>
         </ul>
       </p>
     </div>
