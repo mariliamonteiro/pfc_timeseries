@@ -13,6 +13,7 @@ def acf_plot(series, lags):
     plot_acf(series, lags=lags)
     filename = secrets.token_hex(8)+'.png'
     figure_name = os.path.join('static','images', filename)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name)
     pyplot.close()
     return filename

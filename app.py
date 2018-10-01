@@ -13,6 +13,18 @@ import matplotlib
 matplotlib.use('agg')
 from matplotlib.pylab import rcParams
 rcParams['lines.linewidth'] = 0.5
+rcParams["figure.figsize"] = (15,10)
+SMALL_SIZE = 20
+MEDIUM_SIZE = 20
+BIGGER_SIZE = 50
+
+matplotlib.pyplot.rc('font', size=SMALL_SIZE)          # controls default text sizes
+matplotlib.pyplot.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+matplotlib.pyplot.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
+matplotlib.pyplot.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+matplotlib.pyplot.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+matplotlib.pyplot.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
+matplotlib.pyplot.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 from operations import deal_inputs, readdata_table, summary_maincol
 from delete_images import *
@@ -330,15 +342,24 @@ def algorithms_periodogram():
         address_pdf = create_report(title, model_param, readdata_param, quality_param, summary_param, [image_file], file_title)
 
         # Generate array of values
-        periodogram_data, freq, df_output, index, freq_max = data_periodogram(serie)
-
-        T = len(serie)/index
+        periodogram_data, freq, df_output, index, freq_max, T = data_periodogram(serie)
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
         df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = False)
 
-        return render_template('algorithms_periodogram_output.html', title='Periodograma', text=text, form=form, file_url=file_url, image=image_file, data_periodogram=periodogram_data, address_pdf = address_pdf, address_csv = address_csv, periodo=T, index=index, freq_max=freq_max)
+        return render_template('algorithms_periodogram_output.html',
+                                title='Periodograma',
+                                text=text,
+                                form=form,
+                                file_url=file_url,
+                                image=image_file,
+                                data_periodogram=periodogram_data,
+                                address_pdf = address_pdf,
+                                address_csv = address_csv,
+                                periodo=T,
+                                index=index,
+                                freq_max=freq_max)
 
     else:
         file_url = None
@@ -385,7 +406,8 @@ def algorithms_arima():
         model_param = [['p', str(p)],
                        ['d', str(d)],
                        ['q', str(q)],
-                       ]
+                       ['Porcentagem de dados para Teste', str(ptest)],
+                       ['Dados Preditos', str(predict_range)]]
         readdata_param = readdata_table(form)
         summary_param = summary_maincol(serie)
         file_title = 'arima'
@@ -398,7 +420,27 @@ def algorithms_arima():
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
         df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig')
 
-        return render_template('algorithms_arima_output.html', title='ARIMA', text=text, form=form, file_url=file_url, p = p, q=q, d=d, listap = list(range(p)), listaq = list(range(q)), ptest=ptest, range=predict_range, image_residuo = image_file_residuo, image_hist = image_file_hist, image_forecast=image_file_forecast, image_predict = image_file_predict, rd=rd, address_pdf = address_pdf, address_csv = address_csv, result_data = elementos)
+        rd = list(df_output.index)
+        pred = list(df_output)
+
+        return render_template('algorithms_arima_output.html',
+                                title='ARIMA',
+                                text=text, form=form,
+                                file_url=file_url,
+                                p = p, q=q, d=d,
+                                listap = list(range(p)),
+                                listaq = list(range(q)),
+                                ptest=ptest,
+                                range=predict_range,
+                                image_residuo = image_file_residuo,
+                                image_hist = image_file_hist,
+                                image_forecast=image_file_forecast,
+                                image_predict = image_file_predict,
+                                rd=rd,
+                                pred=pred,
+                                address_pdf=address_pdf,
+                                address_csv = address_csv,
+                                result_data = elementos)
 
     else:
         file_url = None
@@ -511,6 +553,9 @@ def algorithms_sarima():
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
         df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig')
 
+        rd = list(df_output.index)
+        pred = list(df_output)
+
         return render_template('algorithms_sarima_output.html',
                                 title='SARIMA',
                                 text=text,
@@ -525,10 +570,13 @@ def algorithms_sarima():
                                 ptest=ptest,
                                 range=predict_range,
                                 image_diag = image_file_diag,
-                                image_mse = image_file_mse, image_forecast=image_file_forecast,rd=rd,
+                                image_mse = image_file_mse,
+                                image_forecast=image_file_forecast,
                                 address_pdf = address_pdf,
                                 address_csv = address_csv,
-                                result_data = elementos)
+                                result_data = elementos,
+                                rd=rd,
+                                pred=pred)
 
     else:
         file_url = None

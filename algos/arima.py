@@ -6,6 +6,7 @@ import secrets
 import os
 import pandas as pd
 from flask import Markup
+import numpy as np
 
 UPLOAD_FOLDER = 'temp_files'
 
@@ -70,7 +71,6 @@ def fit_arima(series, p, d, q, test):
     mod = ARIMA(series_clipped,
                 order = (p, d, q))
 
-
     # Realizar fit do ARIMA
     results = mod.fit(start_ar_lags = p + 1)
 
@@ -79,45 +79,63 @@ def fit_arima(series, p, d, q, test):
     tables = results.summary()
     elementos = individual_data(tables, p, d, q)
     elementos['n_obs_orig'] = len(series)
-    print(tables)
     # Análise de erros do fit
 
     # Gráfico dos resíduos
     residuals = pd.DataFrame(results.resid)
+    pyplot.figure(figsize=(20, 15)).tight_layout()
     std = residuals.plot(title='Erro', legend=False)
     std.set_xlabel('Tempo')
     std.set_ylabel('Resíduo')
 
     filename_residuo = secrets.token_hex(8)+'.png'
     figure_name_residuo = os.path.join('static','images', filename_residuo)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name_residuo)
     pyplot.close()
 
     # Histograma de erros e densidade de kernel
-    ax = residuals.plot(kind='hist', density=True, label='Histograma')
+    pyplot.figure(figsize=(20, 15)).tight_layout()
+    ax = residuals.plot(kind='hist', density=True, label='Histograma', figsize=(20, 15), bins = 50)
     hist = residuals.plot(kind='kde',
                           ax=ax,
                           title = 'Histograma e Estimador de Densidade dos Erros',
                           label ='KDE')
+
     hist.legend(['KDE', 'Histograma'])
 
     filename_hist = secrets.token_hex(8)+'.png'
     figure_name_hist = os.path.join('static','images', filename_hist)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name_hist)
     pyplot.close()
 
     # Forecast dentro da série para exibição
-    forecast, stderr, conf_int = results.forecast(len(series)-len(series_clipped))
+    forecast = results.predict(start = len(series_clipped),
+                               end = len(series),
+                               dynamic=True,
+                               typ = 'levels')
 
-    real = series[int((1-test/100)*len(series)):]
+    real = series[int((1-test/100)*len(series))-1:]
 
     df = pd.DataFrame(real)
-    df['predict'] = forecast
+    df['predict'] = np.array(forecast)
 
+    pyplot.figure(figsize=(20, 15)).tight_layout()
     pyplot.plot(df)
+
+    # Cálculo do erro médio quadrático
+    y_forecasted = forecast
+    y_real = real
+    mse = ((y_forecasted - y_real) ** 2).mean()
+    mape = ((abs((y_forecasted - y_real)/y_real))).mean()
+
+    elementos['mse'] = mse
+    elementos['mape'] = mape
 
     filename_forecast = secrets.token_hex(8)+'.png'
     figure_name_forecast = os.path.join('static','images', filename_forecast)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name_forecast)
     pyplot.close()
 
@@ -130,14 +148,23 @@ def predict_arima(series, p, d, q, predict_range):
                 order = (p, d, q))
     results = mod.fit(start_ar_lags = p + 1)
 
-    results.plot_predict(start = int(0.9*len(series)),
+    pyplot.figure(figsize=(20, 15)).tight_layout()
+    results.plot_predict(start = 1,
                          end = len(series) + predict_range,
                          dynamic = False,
-                         plot_insample = True)
+                         plot_insample = True,
+                         )
 
     filename_predict = secrets.token_hex(8)+'.png'
     figure_name_predict = os.path.join('static','images', filename_predict)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name_predict)
     pyplot.close()
 
-    return filename_predict
+    df_output = results.predict(start = len(series),
+                                end = len(series) + predict_range,
+                                dynamic = False,
+                                typ = 'levels'
+                                )
+
+    return filename_predict, df_output

@@ -109,6 +109,7 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
 
     filename_diag = secrets.token_hex(8)+'.png'
     figure_name_diag = os.path.join('static','images', filename_diag)
+    plt.tight_layout()
     plt.savefig(figure_name_diag)
     plt.close()
 
@@ -123,18 +124,19 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
     pred = res.get_prediction()
     pred_ci = pred.conf_int()
 
-    ax = series[int((1-test/100)*len(series)):].plot(label='observed')
+    ax = series[int((1-test/100)*len(series)):].plot(label='Observado')
     pred.predicted_mean[int((1-test/100)*len(series)):].plot(ax=ax, label='Predição um passo a frente', alpha=.7)
 
     ax.fill_between(pred_ci[int((1-test/100)*len(series)):].index,
                     pred_ci[int((1-test/100)*len(series)):].iloc[:, 0],
                     pred_ci[int((1-test/100)*len(series)):].iloc[:, 1], color='k', alpha=.2)
 
-    ax.set_xlabel('Date')
+    ax.set_xlabel('Data')
     plt.legend()
 
     filename_mse = secrets.token_hex(8)+'.png'
     figure_name_mse = os.path.join('static','images', filename_mse)
+    plt.tight_layout()
     plt.savefig(figure_name_mse)
     plt.close()
 
@@ -162,6 +164,7 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
 
     filename_forecast = secrets.token_hex(8)+'.png'
     figure_name_forecast = os.path.join('static','images', filename_forecast)
+    plt.tight_layout()
     plt.savefig(figure_name_forecast)
     plt.close()
 

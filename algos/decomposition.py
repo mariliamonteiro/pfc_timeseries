@@ -13,6 +13,7 @@ def decomposition_plot(series, model, freq, two_sided):
     result.plot()
     filename = secrets.token_hex(8)+'.png'
     figure_name = os.path.join('static','images', filename)
+    pyplot.tight_layout()
     pyplot.savefig(figure_name)
     pyplot.close()
     return filename

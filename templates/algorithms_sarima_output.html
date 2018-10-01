@@ -158,15 +158,39 @@
   </div>
 </div>
 
+<h6>Dados Preditos</h6>
+<div class="row">
+  <div class="col-md-6">
+    <table class="table table-striped table-bordered table-sm">
+      <thead>
+        <tr class="d-flex">
+          <th class="col-6">Data</th>
+          <th class="col-6">Dado Predito</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] %}
+        <tr class="d-flex">
+          <td class="col-6">{{ (rd[i]|string)[:10] }}</td>
+          <td class="col-6">{{ pred[i]|round(5) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <div>
   <h5>Gráficos</h5>
-  <h6>Resíduos do Fit</h6>
-  <img src="{{ image_diag }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Resíduo">
   <h6>Diagnóstico do Fit</h6>
+  <img src="{{ image_diag }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Resíduo">
+  <br />
+  <h6>Predição na série (análise do modelo)</h6>
   <img src="{{ image_mse }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Diagnóstico">
-
+  <br />
   <h6>Predição</h6>
   <img src="{{ image_forecast }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Predição Externa">
+  <br />
 </div>
 
 <h5>Download de Resultados</h5>

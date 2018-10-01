@@ -1,0 +1,4 @@
+page: sarima
+title: SARIMA
+subtitle: Modelos Preditivos
+desc: ESCREVER DESCRIÇÃO

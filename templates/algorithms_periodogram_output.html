@@ -22,24 +22,36 @@
   <table class="table table-striped table-bordered table-sm">
     <tbody>
       <tr class="d-flex">
+        <th class="col-3" scope="row"></th>
+        <th class="col-3">Primeiro Pico</th>
+        <th class="col-3">Segundo Pico</th>
+        <th class="col-3">Terceiro Pico</th>
+      </tr>
+      <tr class="d-flex">
         <th class="col-3" scope="row">Frequência de pico</th>
-        <td class="col-9">{{ freq_max }}</td>
+        <td class="col-3">{{ freq_max[2]|round(5) }}</td>
+        <td class="col-3">{{ freq_max[1]|round(5) }}</td>
+        <td class="col-3">{{ freq_max[0]|round(5) }}</td>
       </tr>
       <tr class="d-flex">
         <th class="col-3" scope="row">Período estimado para os dados</th>
-        <td class="col-9">{{ periodo }}</td>
+        <td class="col-3">{{ periodo[2]|round(5) }}</td>
+        <td class="col-3">{{ periodo[1]|round(5) }}</td>
+        <td class="col-3">{{ periodo[0]|round(5) }}</td>
       </tr>
       <tr class="d-flex">
         <th class="col-3" scope="row">Índice da ocorrência do pico</th>
-        <td class="col-9">{{ index + 1 }}</td>
+        <td class="col-3">{{ index[2]|round(5) }}</td>
+        <td class="col-3">{{ index[1]|round(5) }}</td>
+        <td class="col-3">{{ index[0]|round(5) }}</td>
       </tr>
     </tbody>
   </table>
 </div>
 
 <div class="row">
-  <h6>Extrato dos Dados</h6>
   <div class="col-md-12">
+  <h6>Extrato dos Dados</h6>
     <table class="table table-striped table-bordered table-sm">
       <thead>
         <tr class="d-flex">
