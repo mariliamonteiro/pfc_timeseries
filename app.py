@@ -43,7 +43,7 @@ from algos.sarima import *
 # VARIAVEIS DE INICIALIZACAO ===================================================
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'no-secret-but-should-be'
+app.config['SECRET_KEY'] = str(os.getenv("APP_SECRET_KEY"))
 
 app.config['UPLOADED_FILES_DEST'] = 'temp_files'
 app.config['UPLOAD_FOLDER'] = 'temp_files'
