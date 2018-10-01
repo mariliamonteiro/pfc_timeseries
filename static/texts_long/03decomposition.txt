@@ -3,18 +3,19 @@ Decomposição da série temporal em componentes representantes de diferentes pa
 
 Parâmetros de entrada:
 <ul>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Modelo</b>: define o modelo a ser empregado para a decomposição da série, podendo ser aditivo ou multiplicativo. O modelo aditivo é linear, admitindo que as componentes resultantes (tendência, sazonalidade e resíduo) somadas resultam no dado observado. Já o modelo multiplicativo é não linear, e assim, o impacto das mudanças de cada uma das componentes é variado (o produto das componentes resulta na série observada).
   </li>
-  <li>
+  <li style="text-align:justify;font-size:90%;">
     <b>Referência Média Móvel</b>: no processo da decomposição os dados são filtrados empregando média móvel. O parâmetro define a centragem da janela da média móvel, sendo "Centrada" a janela com valores à direita e à esquerda e "À direita" a janela que considera no cálculo da média somente valores passados.
   </li>
-  <li>
-    <b>Frequência dos Dados</b>: define a fequência de aparição dos dados, variando de diária a anual. Para outras opções, assinalar a opção "Outros" e prencher o campo "Outra Frequência".
-  </li>
-  <li>
-    <b>Sazonalidade dos Dados</b>: define a sazonalidade esparada para os dados, ou seja, em que intervalo de tempo espera-se que o fenômeno se repita, ou seja, o tempo do "ciclo" do dado empregado. Para outras opções, assinalar a opção "Outros" e prencher o campo "Outra Frequência".
+  <li style="text-align:justify;font-size:90%;">
+    <b>Sazonalidade dos Dados</b>: define a sazonalidade esperada para os dados, fornecidos em quantidades de registros. Ou seja, esse número corresponde ao Período em que há repetição de características de sazonalidade. Por exemplo, em dados de quantidade mensal de chuva, espera-se uma sazonalidade anual. Como os dados estão dispostos mês a mês, atribui-se a sazonalidade 12, pois o padrão se repetirá a cada doze meses.
   </li>
 </ul>
+<hr />
+<p style="text-align:justify;font-size:90%;">
+Quer saber mais?
 <br />
-Observação: Os parâmetros <b>Frequência dos Dados</b> e <b>Sazonalidade dos Dados</b> juntamente geram a <b>Periodicidade</b> do conjunto de dados, ou seja, o número inteiro de registros que compõem um ciclo. Para se obter tal valor calcula-se a razão entre frequência e sazonalidade.
+Essa foi a nossa <a href="https://www.springer.com/br/book/9781475777505" target="_blank">referência</a> e o algoritmo foi implementado com base nessa <a href="https://www.statsmodels.org/dev/generated/statsmodels.tsa.seasonal.seasonal_decompose.html" target="_blank">função</a>.
+</p>

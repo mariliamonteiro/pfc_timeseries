@@ -8,8 +8,8 @@
   <table class="table table-striped table-bordered table-sm">
     <tbody>
       <tr class="d-flex">
-        <th class="col-3" scope="row">{{ form.window.label }}</th>
-        <td class="col-9">{{ window }}</td>
+        <th class="col-5" scope="row">Ordem</th>
+        <td class="col-7">{{ order }}</td>
       </tr>
     </tbody>
   </table>
@@ -17,7 +17,7 @@
 
 <div>
   <h5>Gráfico</h5>
-  <img src="{{ image }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Média Móvel">
+  <img src="{{ image }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Diferenças">
 </div>
 
 <h5>Tabelas</h5>
@@ -33,8 +33,8 @@
       <tbody>
         {% for i in range(10) %}
         <tr class="d-flex">
-          <td class="col-3">{{ (raw_data[i]|string)[:9] }}</td>
-          <td class="col-9">{{ data_ma[i]|round(5) }}</td>
+          <td class="col-3">{{ (raw_data[i]|string)[:10] }}</td>
+          <td class="col-9">{{ data_diff[i]|round(5) }}</td>
         </tr>
         {% endfor %}
       </tbody>

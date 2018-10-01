@@ -24,6 +24,28 @@
     <small class="form-text text-muted">Porcentagem de dados tomados para teste</small>
   </div>
 </div>
+<div class="row">
+  <div class="form-group col-md-3 mb-3">
+    {{ form.P.label(class="form-control-label") }}
+    {{ form.P(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Ordem da componente autorregressiva para o modelo sazonal</small>
+  </div>
+  <div class="form-group col-md-3 mb-3">
+    {{ form.D.label(class="form-control-label") }}
+    {{ form.D(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Número de diferenças tomadas na série para o modelo sazonal</small>
+  </div>
+  <div class="form-group col-md-3 mb-3">
+    {{ form.Q.label(class="form-control-label") }}
+    {{ form.Q(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Ordem da componente das médias móveis para o modelo sazonal</small>
+  </div>
+  <div class="form-group col-md-3 mb-3">
+    {{ form.sazon.label(class="form-control-label") }}
+    {{ form.sazon(class="form-control form-control-lg") }}
+    <small class="form-text text-muted">Sazonalidade dos dados e número de registros</small>
+  </div>
+</div>
 <h6>Predição do Modelo</h6>
 <div class="row">
   <div class="form-group col-md-4 mb-3">

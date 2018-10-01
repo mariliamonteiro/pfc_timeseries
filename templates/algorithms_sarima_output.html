@@ -20,6 +20,22 @@
         <td class="col-7">{{ q }}</td>
       </tr>
       <tr class="d-flex">
+        <th class="col-5" scope="row">P</th>
+        <td class="col-7">{{ P }}</td>
+      </tr>
+      <tr class="d-flex">
+        <th class="col-5" scope="row">D</th>
+        <td class="col-7">{{ D }}</td>
+      </tr>
+      <tr class="d-flex">
+        <th class="col-5" scope="row">Q</th>
+        <td class="col-7">{{ Q }}</td>
+      </tr>
+      <tr class="d-flex">
+        <th class="col-5" scope="row">s</th>
+        <td class="col-7">{{ s }}</td>
+      </tr>
+      <tr class="d-flex">
         <th class="col-5" scope="row">Teste (%)</th>
         <td class="col-7">{{ ptest }}%</td>
       </tr>
@@ -32,7 +48,6 @@
 </div>
 
 <h5>Tabelas</h5>
-<h6>Avaliação dos Resultados</h6>
 <div class="row">
   <div class="col-md-12">
     <table class="table table-striped table-bordered table-sm" style="text-align:justify;font-size:90%;">
@@ -51,9 +66,9 @@
         </tr>
         <tr class="d-flex">
           <th class="col-3">Modelo</th>
-          <td class="col-3">{{ result_data['modelo'] }}</td>
-          <th class="col-3">Método</th>
-          <td class="col-3">{{ result_data['metodo'] }}</td>
+          <td class="col-3" style="font-size:80%">{{ result_data['modelo'] }}</td>
+          <th class="col-3">Data</th>
+          <td class="col-3">{{ result_data['data'] }}</td>
         </tr>
 
         <tr class="d-flex">
@@ -76,6 +91,7 @@
           <th class="col-3">MAPE</th>
           <td class="col-3">{{ (result_data['mape']*100)|round(5) }}%</td>
         </tr>
+
       </tbody>
     </table>
     <table class="table table-striped table-bordered table-sm" style="font-size:90%;">
@@ -88,16 +104,6 @@
           <th class="col-1">P>|z|</th>
           <th class="col-2">[0.025</th>
           <th class="col-2">0.975]</th>
-        </tr>
-
-        <tr class="d-flex">
-          <th class="col-2">Const</th>
-          <td class="col-2">{{ result_data['coef_const']}}</td>
-          <td class="col-2">{{ result_data['std_err_const']}}</td>
-          <td class="col-1">{{ result_data['z_const']}}</td>
-          <td class="col-1">{{ result_data['P>|z|_const']}}</td>
-          <td class="col-2">{{ result_data['0.025_const']}}</td>
-          <td class="col-2">{{ result_data['0.975_const']}}</td>
         </tr>
 
         {% for n in listap %}
@@ -123,10 +129,35 @@
           <td class="col-2">{{ result_data['0.975_ma.L%s'%(n+1)]}}</td>
         </tr>
         {% endfor %}
+
+        {% for n in listaP %}
+        <tr class="d-flex">
+          <th class="col-2">AR.S_{{n+1}}</th>
+          <td class="col-2">{{ result_data['coef_ar.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['std_err_ar.S.L%s'%(n+1)]}}</td>
+          <td class="col-1">{{ result_data['z_ar.S.L%s'%(n+1)]}}</td>
+          <td class="col-1">{{ result_data['P>|z|_ar.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['0.025_ar.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['0.975_ar.S.L%s'%(n+1)]}}</td>
+        </tr>
+        {% endfor %}
+
+        {% for n in listaQ %}
+        <tr class="d-flex">
+          <th class="col-2">MA.S_{{n+1}}</th>
+          <td class="col-2">{{ result_data['coef_ma.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['std_err_ma.S.L%s'%(n+1)]}}</td>
+          <td class="col-1">{{ result_data['z_ma.S.L%s'%(n+1)]}}</td>
+          <td class="col-1">{{ result_data['P>|z|_ma.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['0.025_ma.S.L%s'%(n+1)]}}</td>
+          <td class="col-2">{{ result_data['0.975_ma.S.L%s'%(n+1)]}}</td>
+        </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+
 <h6>Dados Preditos</h6>
 <div class="row">
   <div class="col-md-6">
@@ -149,22 +180,19 @@
   </div>
 </div>
 
-
 <div>
   <h5>Gráficos</h5>
-  <h6>Resíduos do Fit</h6>
-  <img src="{{ image_residuo }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Resíduo">
+  <h6>Diagnóstico do Fit</h6>
+  <img src="{{ image_diag }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Resíduo">
   <br />
-  <h6>Histograma e KDE dos Resíduos</h6>
-  <img src="{{ image_hist }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Histograma">
-  <br />
-  <h6>Análise do Fit Comparando com dados teste</h6>
-  <img src="{{ image_forecast }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Predição Interna">
+  <h6>Predição na série (análise do modelo)</h6>
+  <img src="{{ image_mse }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Diagnóstico">
   <br />
   <h6>Predição</h6>
-  <img src="{{ image_predict }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Predição Externa">
+  <img src="{{ image_forecast }}" class="img-fluid img-rounded mx-auto d-block" alt="Gráfico Predição Externa">
+  <br />
 </div>
-<br />
+
 <h5>Download de Resultados</h5>
 <div class="container">
 	<div class="row" style="margin-top:20px">

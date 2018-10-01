@@ -51,7 +51,7 @@
       <tbody>
         {% for i in range(10) %}
         <tr class="d-flex">
-          <td class="col-3">{{ rd[i] }}</td>
+          <td class="col-3">{{ (rd[i]|string)[:10] }}</td>
           <td class="col-3">{{ trend[i]|round(5) }}</td>
           <td class="col-3">{{ seasonal[i]|round(5) }}</td>
           <td class="col-3">{{ residual[i]|round(5) }}</td>

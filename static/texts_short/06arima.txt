@@ -1,0 +1,4 @@
+page: arima
+title: ARIMA
+subtitle: Modelos Preditivos
+desc: Modelo para análise de série e predição de valores. Pressupõe série não-estacionária.

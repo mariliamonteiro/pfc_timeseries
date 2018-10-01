@@ -1,0 +1,4 @@
+page: diff
+title: Diferença
+subtitle: Filtragem
+desc: Cálculo da n-ésima diferença da série (Integração). Passo importante para verificar estacionaridade.
