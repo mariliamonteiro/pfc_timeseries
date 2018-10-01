@@ -1,4 +1,4 @@
-Visa encontrar o conjunto de parâmentros que melhor descrevem os dados aplicando o modelo ARIMA (<i>Auto Regressive Integrated Moving Average</i>). O método é aplicado tanto para melhor compreensão do comportamento da série de dados, como para a predição de dados futuros. O modelo ARIMA pressupõe não-estacionariedade dos dados, que pode ser eliminado através da diferenciação ("<i>Integrated</i>").
+Visa encontrar o conjunto de parâmentros que melhor descrevem os dados aplicando o modelo SARIMA (<i>Seasonal Auto Regressive Integrated Moving Average</i>). O método é aplicado tanto para melhor compreensão do comportamento da série de dados, como para a predição de dados futuros. O modelo SARIMA pressupõe não-estacionariedade dos dados, que pode ser eliminada através da diferenciação ("<i>Integrated</i>"), e também a Sazonalidade dos dados, eliminada através da modelagem da sazonalidade.
 
 Parâmetros de entrada:
 <ul>
@@ -6,10 +6,22 @@ Parâmetros de entrada:
     <b>p</b>: parâmetro referente à componente autorregressiva do modelo.
   </li>
   <li style="text-align:justify;font-size:90%;">
-    <b>d</b>: parâmetro referente à componente de integração do modelo. O máximo valor aceito para esse parâmetro é 2. Caso você configure qualquer valor maior que 2, ele será automaticamente alterado para 2.
+    <b>d</b>: parâmetro referente à componente de integração do modelo.
   </li>
   <li style="text-align:justify;font-size:90%;">
     <b>q</b>: configura o erro como sendo a combinação linear dos erros de registros anteriores na série de dados. Parâmetro referente à componente de Média Móvel dos erros para o modelo.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>P</b>: parâmetro referente à componente autorregressiva do modelo sazonal.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>D</b>: parâmetro referente à componente de integração do modelo sazonal.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>Q</b>: Parâmetro referente à componente de Média Móvel dos erros para o modelo sazonal.
+  </li>
+  <li style="text-align:justify;font-size:90%;">
+    <b>Sazonalidade</b>: define a sazonalidade esperada para os dados, ou seja, o período em que se espera a repetição do comportamento apresentado pela série de dados. Deve ser preenchida com o número de registros esperado para tal intervalo.
   </li>
   <li style="text-align:justify;font-size:90%;">
     <b>Teste (%)</b>: define o percentual de dados a ser extraído da modelagem para ser empregado como teste do modelo resultante; o percentual de dados configurado é extraído do final da série de dados. O modelo é calculado considerando todos os dados com exceção dos dados de teste, e em seguida é avaliado o erro de dados preditos pelo modelo e os dados reais inicialmente separados. Os dados de teste são configurados somente para a etapa de "Fit" do processo; na etapa de predição toda a série de dados é utilizada.
@@ -19,9 +31,7 @@ Parâmetros de entrada:
   </li>
 </ul>
 <br />
-<p style="text-align:justify;font-size:90%;">
-O modelo ARIMA possui algumas limitações de performance. Caso tenha problemas persistentes, indicamos que tente realizar sua análise utilizando o <a href="/algorithms/sarima">SARIMA</a>.
-</p>
+
 <hr />
 <p style="text-align:justify;font-size:90%;">
 Quer saber mais?

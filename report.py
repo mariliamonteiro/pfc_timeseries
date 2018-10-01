@@ -71,7 +71,7 @@ class Report(FPDF):
                 self.set_font('Arial', '', 10)
                 for row in readdata_param:
                     for i in [0,1]:
-                        self.cell(col_width_readdata[i], row_height,
+                        self.cell(2*col_width_readdata[i], row_height,
                                  txt=row[i], border=1)
                     self.ln()
                 self.ln(5)
@@ -134,15 +134,15 @@ class Report(FPDF):
 
             self.set_font('Arial', '', 10)
 
-            self.cell(2 * col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt='Título', border=1)
-            self.cell((0.017857142857142905) * self.w + col_width_results * 4, row_height,
+            self.cell((0.017857142857142905) * self.w + col_width_results * 4.5, row_height,
                      txt=str(elementos['titulo']), border=1)
             self.ln()
 
-            self.cell(2 * col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt='Amostra Reduzida (Fit)', border=1)
-            self.cell(col_width_results, row_height,
+            self.cell(1.5 *col_width_results, row_height,
                      txt=str(elementos['n_obs']), border=1)
             self.cell(2 * col_width_results, row_height,
                      txt='Amostra Original (Predição)', border=1)
@@ -150,19 +150,25 @@ class Report(FPDF):
                      txt=str(elementos['n_obs_orig']), border=1)
             self.ln()
 
-            self.cell(2 * col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt='Modelo', border=1)
-            self.cell(col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt=str(elementos['modelo']), border=1)
-            self.cell(2 * col_width_results, row_height,
-                     txt='Método', border=1)
-            self.cell((0.017857142857142905) * self.w + col_width_results, row_height,
-                     txt=str(elementos['metodo']), border=1)
+
+            try:
+                elementos['metodo']
+                self.cell(2 * col_width_results, row_height,
+                         txt='Método', border=1)
+                self.cell((0.017857142857142905) * self.w + col_width_results, row_height, txt=str(elementos['metodo']), border=1)
+            except:
+                self.cell(2 * col_width_results, row_height,
+                         txt='Data', border=1)
+                self.cell((0.017857142857142905) * self.w + col_width_results, row_height, txt=str(elementos['data']), border=1)
             self.ln()
 
-            self.cell(2 * col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt='AIC', border=1)
-            self.cell(col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt=str(elementos['AIC']), border=1)
             self.cell(2 * col_width_results, row_height,
                      txt='HQIC', border=1)
@@ -170,14 +176,24 @@ class Report(FPDF):
                      txt=str(elementos['HQIC']), border=1)
             self.ln()
 
-            self.cell(2 * col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt='BIC', border=1)
-            self.cell(col_width_results, row_height,
+            self.cell(1.5 * col_width_results, row_height,
                      txt=str(elementos['BIC']), border=1)
             self.cell(2 * col_width_results, row_height,
                      txt='LogLikelihood', border=1)
             self.cell((0.017857142857142905) * self.w + col_width_results, row_height,
                      txt=str(elementos['LogLikelihood']), border=1)
+            self.ln()
+
+            self.cell(1.5 * col_width_results, row_height,
+                     txt='MSE', border=1)
+            self.cell(1.5 * col_width_results, row_height,
+                     txt=str(elementos['mse']), border=1)
+            self.cell(2 * col_width_results, row_height,
+                     txt='MAPE', border=1)
+            self.cell((0.017857142857142905) * self.w + col_width_results, row_height,
+                     txt=str(elementos['mape']), border=1)
             self.ln()
 
             self.ln(5)
@@ -199,21 +215,25 @@ class Report(FPDF):
                       txt ='0.975]', border=1)
             self.ln()
 
-            self.cell(col_width_results, row_height,
-                      txt ='Constante', border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['coef_const'], border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['std_err_const'], border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['z_const'], border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['P>|z|_const'], border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['0.025_const'], border=1)
-            self.cell(col_width_results, row_height,
-                      txt =elementos['0.975_const'], border=1)
-            self.ln()
+            try:
+                elementos['coef_const']
+                self.cell(col_width_results, row_height,
+                          txt ='Constante', border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['coef_const'], border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['std_err_const'], border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['z_const'], border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['P>|z|_const'], border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['0.025_const'], border=1)
+                self.cell(col_width_results, row_height,
+                          txt =elementos['0.975_const'], border=1)
+                self.ln()
+            except:
+                pass
 
             for n in range(int(model_param[0][1])):
                 self.cell(col_width_results, row_height,

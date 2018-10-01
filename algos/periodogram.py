@@ -20,23 +20,25 @@ def data_periodogram(dados):
     pgram = periodogram(dados)
     if len(pgram) % 2 == 0:
         pgram = pgram[0:int(len(dados)/2)]
-        index = np.argmax(pgram)
+        indexes = sorted(range(len(pgram)), key=lambda i: pgram[i])[-3:]
     else:
         pgram = pgram[0:int((len(dados))/2)+1]
-        index = np.argmax(pgram)
+        indexes = sorted(range(len(pgram)), key=lambda i: pgram[i])[-3:]
 
-    freq_max = freq[index]
-    T = len(dados)/index
+    print('marilia', indexes)
+    indexes = list(indexes)
+    freq_max = [freq[index] for index in indexes]
+    T = [len(dados)/index for index in indexes]
 
     df_output = pd.DataFrame({'Frequencia': freq,
                               'Periodograma': pgram})
-    return pgram, freq, df_output, index, freq_max
+    return pgram, freq, df_output, indexes, freq_max, T
 
 def periodogram_plot(series):
     filename = secrets.token_hex(8)+'.png'
     figure_name = os.path.join('static','images', filename)
 
-    pgram, freq, df, index, freq_max = data_periodogram(series)
+    pgram, freq, df, index, freq_max, T = data_periodogram(series)
 
     with np.errstate(divide='ignore'):
         periodo = 1/freq
@@ -62,6 +64,7 @@ def periodogram_plot(series):
     pyplot.grid(True)
     pyplot.tight_layout()
 
+    pyplot.tight_layout()
     fig.savefig(figure_name)
     pyplot.close()
     return filename

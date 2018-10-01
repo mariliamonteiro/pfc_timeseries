@@ -1,0 +1,4 @@
+page: sarima
+title: SARIMA
+subtitle: Modelos Preditivos
+desc: Modelo para análise de série e predição de valores. Pressupõe série não-estacionária e sazonalidade conhecida.

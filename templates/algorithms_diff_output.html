@@ -33,7 +33,7 @@
       <tbody>
         {% for i in range(10) %}
         <tr class="d-flex">
-          <td class="col-3">{{ raw_data[i] }}</td>
+          <td class="col-3">{{ (raw_data[i]|string)[:10] }}</td>
           <td class="col-9">{{ data_diff[i]|round(5) }}</td>
         </tr>
         {% endfor %}
