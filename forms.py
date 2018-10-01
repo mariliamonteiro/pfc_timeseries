@@ -29,7 +29,7 @@ class FormPACF(UploadGlobal):
 
 # Média móvel
 class FormMA(UploadGlobal):
-    window = IntegerField('Janela',default=3, validators= [InputRequired()])
+    window = IntegerField('Janela',default=12, validators= [InputRequired()])
 
 # Decomposição clássica de séries temporais
 class FormDecomposition(UploadGlobal):
@@ -48,7 +48,7 @@ class FormARIMA(UploadGlobal):
     q = IntegerField('q',default=1, validators= [InputRequired()])
     d = IntegerField('d',default=1, validators= [InputRequired()])
     percent_test = FloatField('Teste (%)',default=10, validators= [InputRequired()])
-    predict_range = IntegerField('Intervalo de Predição',default=100, validators= [InputRequired()])
+    predict_range = IntegerField('Intervalo de Predição',default=10, validators= [InputRequired()])
 
 class FormDiff(UploadGlobal):
     diff = IntegerField('Ordem',default=1, validators= [InputRequired()])

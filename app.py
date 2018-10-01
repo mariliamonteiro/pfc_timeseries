@@ -384,6 +384,9 @@ def algorithms_arima():
         ptest = form.percent_test.data
         predict_range = form.predict_range.data
 
+        if d>2:
+            d=2
+
         # Get data from file
         separator = form.sep.data
         serie, rd, quality_param = deal_inputs(file_url, filename, form, isseries= True)
@@ -418,7 +421,8 @@ def algorithms_arima():
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig')
+
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig', header=['Dado_predito'])
 
         rd = list(df_output.index)
         pred = list(df_output)
@@ -551,7 +555,8 @@ def algorithms_sarima():
 
         # Create csv for downloading
         address_csv = '%s_%s.csv' % (file_title, secrets.token_hex(6))
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig')
+
+        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig', header=['Dado_predito'])
 
         rd = list(df_output.index)
         pred = list(df_output)

@@ -1,4 +1,4 @@
 page: arima
-title: Fit ARIMA
+title: ARIMA
 subtitle: Modelos Preditivos
-desc: ESCREVER DESCRIÇÃO
+desc: Modelo para análise de série e predição de valores. Pressupõe série não-estacionária.

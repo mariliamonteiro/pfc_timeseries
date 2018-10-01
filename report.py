@@ -71,7 +71,7 @@ class Report(FPDF):
                 self.set_font('Arial', '', 10)
                 for row in readdata_param:
                     for i in [0,1]:
-                        self.cell(col_width_readdata[i], row_height,
+                        self.cell(2*col_width_readdata[i], row_height,
                                  txt=row[i], border=1)
                     self.ln()
                 self.ln(5)

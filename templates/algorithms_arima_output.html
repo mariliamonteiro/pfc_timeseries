@@ -72,7 +72,7 @@
 
         <tr class="d-flex">
           <th class="col-3">MSE</th>
-          <td class="col-3">{{ result_data['mse'] }}</td>
+          <td class="col-3">{{ result_data['mse']|round(5) }}</td>
           <th class="col-3">MAPE</th>
           <td class="col-3">{{ (result_data['mape']*100)|round(5) }}%</td>
         </tr>
