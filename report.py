@@ -189,11 +189,11 @@ class Report(FPDF):
             self.cell(1.5 * col_width_results, row_height,
                      txt='MSE', border=1)
             self.cell(1.5 * col_width_results, row_height,
-                     txt=str(elementos['mse']), border=1)
+                     txt=str(elementos['mse'])[:16], border=1)
             self.cell(2 * col_width_results, row_height,
                      txt='MAPE', border=1)
             self.cell((0.017857142857142905) * self.w + col_width_results, row_height,
-                     txt=str(elementos['mape']), border=1)
+                     txt=str(elementos['mape'])[:16], border=1)
             self.ln()
 
             self.ln(5)
