@@ -64,6 +64,9 @@ def individual_data(tables, p, d, q):
 
 def fit_arima(series, p, d, q, test):
 
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+
     # Reduzir a série retirando dados de teste
     series_clipped = series[0:int((1-test/100)*len(series))]
 
@@ -89,7 +92,7 @@ def fit_arima(series, p, d, q, test):
     std.set_ylabel('Resíduo')
 
     filename_residuo = secrets.token_hex(8)+'.png'
-    figure_name_residuo = os.path.join('static','images', filename_residuo)
+    figure_name_residuo = os.path.join(root, 'static','images', filename_residuo)
     pyplot.tight_layout()
     pyplot.savefig(figure_name_residuo)
     pyplot.close()
@@ -105,7 +108,7 @@ def fit_arima(series, p, d, q, test):
     hist.legend(['KDE', 'Histograma'])
 
     filename_hist = secrets.token_hex(8)+'.png'
-    figure_name_hist = os.path.join('static','images', filename_hist)
+    figure_name_hist = os.path.join(root, 'static','images', filename_hist)
     pyplot.tight_layout()
     pyplot.savefig(figure_name_hist)
     pyplot.close()
@@ -134,7 +137,7 @@ def fit_arima(series, p, d, q, test):
     elementos['mape'] = mape
 
     filename_forecast = secrets.token_hex(8)+'.png'
-    figure_name_forecast = os.path.join('static','images', filename_forecast)
+    figure_name_forecast = os.path.join(root, 'static','images', filename_forecast)
     pyplot.tight_layout()
     pyplot.savefig(figure_name_forecast)
     pyplot.close()
@@ -143,6 +146,9 @@ def fit_arima(series, p, d, q, test):
     return elementos, filename_residuo, filename_hist, filename_forecast
 
 def predict_arima(series, p, d, q, predict_range):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     # Rodar ARIMA com parâmetros dados
     mod = ARIMA(series,
                 order = (p, d, q))
@@ -156,7 +162,7 @@ def predict_arima(series, p, d, q, predict_range):
                          )
 
     filename_predict = secrets.token_hex(8)+'.png'
-    figure_name_predict = os.path.join('static','images', filename_predict)
+    figure_name_predict = os.path.join(root, 'static','images', filename_predict)
     pyplot.tight_layout()
     pyplot.savefig(figure_name_predict)
     pyplot.close()
