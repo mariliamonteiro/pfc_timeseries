@@ -4,11 +4,13 @@ import re
 import codecs
 from flask import Markup
 
+dir = path.dirname(__file__)
+
 # DESCRICAO DOS CARDS PARA SELECAO DE ALGORITMOS ===============================
 
 def shortDesc():
 
-    mypath = 'static/texts_short'
+    mypath = path.join(dir, 'static','texts_short')
 
     files_list = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -28,7 +30,7 @@ def shortDesc():
 
 def shortDescDicionario():
 
-    mypath = 'static/texts_short'
+    mypath = path.join(dir, 'static','texts_short')
 
     files_list = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -46,7 +48,7 @@ def shortDescDicionario():
 # TEXTOS PARA DESCRICAO COMPLETA DE CADA ALGORITMO =============================
 def longDesc():
 
-    mypath = 'static/texts_long'
+    mypath = path.join(dir, 'static','texts_long')
 
     files_list = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 

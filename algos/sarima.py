@@ -75,6 +75,9 @@ def individual_data_sarima(lista, p, q, P, Q):
     return elementos
 
 def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     test=ptest
     # Reduzir a série retirando dados de teste
     series_clipped = series[0:int((1-test/100)*len(series))]
@@ -108,7 +111,7 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
     results.plot_diagnostics(figsize=(15,12))
 
     filename_diag = secrets.token_hex(8)+'.png'
-    figure_name_diag = os.path.join('static','images', filename_diag)
+    figure_name_diag = os.path.join(root, 'static','images', filename_diag)
     plt.tight_layout()
     plt.savefig(figure_name_diag)
     plt.close()
@@ -135,7 +138,7 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
     plt.legend()
 
     filename_mse = secrets.token_hex(8)+'.png'
-    figure_name_mse = os.path.join('static','images', filename_mse)
+    figure_name_mse = os.path.join(root, 'static','images', filename_mse)
     plt.tight_layout()
     plt.savefig(figure_name_mse)
     plt.close()
@@ -163,7 +166,7 @@ def fit_sarima(series, p, d, q, P, D, Q, s, ptest, predict_range):
     plt.legend()
 
     filename_forecast = secrets.token_hex(8)+'.png'
-    figure_name_forecast = os.path.join('static','images', filename_forecast)
+    figure_name_forecast = os.path.join(root, 'static','images', filename_forecast)
     plt.tight_layout()
     plt.savefig(figure_name_forecast)
     plt.close()
