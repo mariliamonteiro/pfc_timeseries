@@ -1,10 +1,20 @@
 from fpdf import FPDF
 import secrets
+import os
+from flask import url_for
 
 class Report(FPDF):
+
+    dir = os.path.dirname(__file__)
+    rep_path = os.path.join(dir, 'static', 'reports')
+
     def header(self):
         # Logo
-        self.image('favicon.png', 10, 8, 8)
+
+        uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+        root = uppath(__file__, 1)
+
+        self.image(os.path.join(root, 'favicon.png'), 10, 8, 8)
         # Arial bold 15
         self.set_font('Arial', '', 15)
         # Move to the right
@@ -275,7 +285,10 @@ class Report(FPDF):
         if data:
             self.chapter_body(data, first)
         elif image:
-            self.image(image[1:], 10, 50, 190)
+            root = os.path.dirname(os.path.abspath(__file__))
+
+            #self.image(image[1:], 10, 50, 190)
+            self.image(os.path.join(root, 'static', 'images', image), 10, 50, 190)
 
 
 def create_report(title, model_param, readdata_param, quality_param, summary_param, images, file_title):
@@ -289,11 +302,15 @@ def create_report(title, model_param, readdata_param, quality_param, summary_par
     for image in images:
         report.print_chapter('Resultados - Gráficos',data = None, image = image, first=False)
     str_title = '%s_%s.pdf' % (file_title, secrets.token_hex(6))
-    report.output('static/reports/'+str_title, 'F')
+    rep_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'reports', str_title)
+    report.output(rep_path , 'F')
 
     return str_title
 
 def create_report_arima(title, model_param, readdata_param, quality_param, summary_param, images, file_title, resultados):
+    dir = os.path.dirname(__file__)
+    rep_path = os.path.join(dir, 'static', 'reports')
+
     report = Report()
     report.alias_nb_pages()
     report.set_title(title)
@@ -306,6 +323,6 @@ def create_report_arima(title, model_param, readdata_param, quality_param, summa
     for image in images:
         report.print_chapter('Resultados - Gráficos',data = None, image = image, first=False)
     str_title = '%s_%s.pdf' % (file_title, secrets.token_hex(6))
-    report.output('static/reports/'+str_title, 'F')
+    report.output(rep_path +str_title, 'F')
 
     return str_title

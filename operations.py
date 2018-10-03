@@ -1,8 +1,11 @@
 import pandas as pd
 from datetime import datetime, timedelta
 import numpy as np
-from scipy import stats
+import scipy.stats as stats
 import os
+
+dir = os.path.dirname(__file__)
+mypath = os.path.join(dir, 'temp_files')
 
 # Construir DatetimeIndex a partir da frequência passada e dos dados originais
 def infer_dates(dates, freq='D'):
@@ -48,8 +51,7 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
 
     df = pd.read_csv(fullpath, sep= separator, header= header)
 
-    os_path = 'temp_files/'
-    os.remove(os_path + filename)
+    os.remove(os.path.join(mypath, filename))
 
     mainc = list(df.iloc[:,main_column-1])
 

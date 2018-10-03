@@ -9,12 +9,15 @@ import pandas as pd
 UPLOAD_FOLDER = 'temp_files'
 
 def ma_plot(series, window):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     ma = series.rolling(window).mean()
     plt.plot(series, color='#65acff', label='Dados Originais')
     plt.plot(ma, color='#e00a0a', label=u'Média Móvel')
     plt.legend()
     filename = secrets.token_hex(8)+'.png'
-    figure_name = os.path.join('static','images', filename)
+    figure_name = os.path.join(root, 'static','images', filename)
     plt.tight_layout()
     plt.savefig(figure_name)
     plt.close()

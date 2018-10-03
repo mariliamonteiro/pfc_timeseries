@@ -35,8 +35,11 @@ def data_periodogram(dados):
     return pgram, freq, df_output, indexes, freq_max, T
 
 def periodogram_plot(series):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     filename = secrets.token_hex(8)+'.png'
-    figure_name = os.path.join('static','images', filename)
+    figure_name = os.path.join(root, 'static','images', filename)
 
     pgram, freq, df, index, freq_max, T = data_periodogram(series)
 

@@ -9,13 +9,16 @@ import pandas as pd
 UPLOAD_FOLDER = 'temp_files'
 
 def diff(series, order, rd):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     diff = series
     for i in range(order):
         diff = diff - diff.shift()
 
     pyplot.plot(diff)
     filename = secrets.token_hex(8)+'.png'
-    figure_name = os.path.join('static','images', filename)
+    figure_name = os.path.join(root, 'static','images', filename)
     pyplot.tight_layout()
     pyplot.savefig(figure_name)
     pyplot.close()

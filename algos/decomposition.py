@@ -9,10 +9,13 @@ import pandas as pd
 UPLOAD_FOLDER = 'temp_files'
 
 def decomposition_plot(series, model, freq, two_sided):
+    uppath = lambda _path, n: os.sep.join(_path.split(os.sep)[:-n])
+    root = uppath(__file__, 2)
+    
     result = seasonal_decompose(series, model=model, freq=freq, two_sided=two_sided)
     result.plot()
     filename = secrets.token_hex(8)+'.png'
-    figure_name = os.path.join('static','images', filename)
+    figure_name = os.path.join(root, 'static','images', filename)
     pyplot.tight_layout()
     pyplot.savefig(figure_name)
     pyplot.close()
