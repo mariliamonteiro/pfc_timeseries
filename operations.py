@@ -23,8 +23,6 @@ def infer_dates(dates, freq='D'):
             start_date = datetime(int(beg),1,1) + timedelta(days= int((beg-int(beg))*365))
 
             final_dates = pd.date_range(start_date, periods= qty, freq= freq)
-            print(final_dates)
-            print(final_dates.freq)
 
         except:
             final_dates = pd.date_range('1900-01-01', periods= qty, freq= freq)
@@ -110,10 +108,6 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
     # Converter para série (step final)
     if isseries == True:
         df = df.iloc[:,0]
-
-    print(df.index)
-    print(df.index.freq)
-    print(df.index.astype('O'))
 
     return df, raw_dates, df_summary
 
