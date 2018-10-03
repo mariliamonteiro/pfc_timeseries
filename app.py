@@ -591,7 +591,7 @@ def algorithms_sarima():
 
         mydir = os.path.join(dir, 'static', 'reports', address_csv)
 
-        df_output.to_csv('static/reports/%s' % (address_csv), sep = separator, index = True, encoding='utf-8-sig', header=['Dado_predito'])
+        df_output.to_csv(mydir, sep = separator, index = True, encoding='utf-8-sig', header=['Dado_predito'])
 
         rd = list(df_output.index)
         pred = list(df_output)

@@ -50,8 +50,21 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         header = None
 
     df = pd.read_csv(fullpath, sep= separator, header= header)
-
     os.remove(os.path.join(mypath, filename))
+
+    col = list(df.columns.values)
+    title = col[main_column -1]
+
+    # Tratamento de dados faltantes na coluna principal
+    if missing == 'ffill':
+        df[title] = df[title].ffill()
+    elif missing == 'linear':
+        df[title] = df[title].interpolate(method= 'linear')
+    elif missing == 'cubic':
+        df[title] = df[title].interpolate(method= 'cubic')
+
+    logical = pd.notnull(df[title])
+    df = df[logical]
 
     mainc = list(df.iloc[:,main_column-1])
 
@@ -78,9 +91,6 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         raw_dates = list(range(1,qty+1))
 
     # Problema univariado ou multivariado
-    col = list(df.columns.values)
-    title = col[main_column -1]
-
     if isseries == True:
         df.set_index(dates, inplace= True)
 
@@ -94,18 +104,6 @@ def read_csv(fullpath, filename, separator= ',', header= True, date_column= 0, m
         rest_title = col.remove(title); rest_title = rest_title.remove(date_title)
 
         df = df[[title]+rest_title]
-
-    # Tratamento de dados faltantes na coluna principal
-    if missing == 'ffill':
-        df[title] = df[title].ffill()
-    elif missing == 'linear':
-        df[title] = df[title].interpolate(method= 'linear')
-    elif missing == 'cubic':
-        df[title] = df[title].interpolate(method= 'cubic')
-
-    logical = pd.notnull(df[title])
-    df = df[logical]
-    raw_dates = list(np.array(raw_dates)[logical])
 
     # Converter para série (step final)
     if isseries == True:

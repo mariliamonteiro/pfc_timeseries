@@ -323,6 +323,6 @@ def create_report_arima(title, model_param, readdata_param, quality_param, summa
     for image in images:
         report.print_chapter('Resultados - Gráficos',data = None, image = image, first=False)
     str_title = '%s_%s.pdf' % (file_title, secrets.token_hex(6))
-    report.output(rep_path +str_title, 'F')
+    report.output(os.path.join(dir, 'static', 'reports', str_title), 'F')
 
     return str_title
